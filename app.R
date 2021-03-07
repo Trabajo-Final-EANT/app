@@ -10,27 +10,85 @@ library(gganimate)
 library(readr)
 library(data.table)
 library(plotly)
+library(ggmap)
+library(patchwork)
+library(spatialEco)
+library(rgeos)
+library(rgdal)
+library(sf)
+library(viridis)
+library(viridisLite)
+library(data.table)
+library(gganimate)
+library(lubridate)
+library(gifski)
+library(htmlwidgets)
+
+
+rm(list = ls())
 
 #Archivos
-Pobreza <- fread("Pobreza.csv")
+Pobreza <- read_csv("Pobreza.csv")
 NBI <- read_csv("NBI.csv")
 Pobreza_anual <- read_csv("Pobreza_anual.csv")
 Poblacion_Edad <- read_csv("Poblacion_Edad.csv")
 Piramide <- read_csv("PiramidePoblacion.csv")
 
+Esc_Com <- read_csv("EscCom.csv")
+
+Muestra_escuelas <- read_csv("Escuelas.csv")
+Muestra_escuelas <- Muestra_escuelas[,c(-14)]
+
+Hosp_Com <- read_csv("HospCom.csv")
+
+Hospitales_reducido <- read_csv("Hospitales.csv")
+Hospitales_reducido <-Hospitales_reducido[,c(1,2,3,4,5)]
+
+
+#Mapa escuela
+getColor_Escuela <- function(Muestra_escuelas) {
+    sapply(Muestra_escuelas$num_niv, function(num_niv) {
+        if(num_niv == 1) {
+            "green"
+        } else if(num_niv == 2) {
+            "red"
+        } else if(num_niv == 3) {
+            "blue"
+        } else {
+            "orange"
+        } })
+}
+
+icons_Escuela <- awesomeIcons(
+    icon = 'ios-close',
+    library = 'ion',
+    markerColor = getColor_Escuela(Muestra_escuelas)
+)
+
+labels_esc <- sprintf("<strong>%s</strong><br/>%s  <sup></sup>",
+                      Muestra_escuelas$COMUNA,
+                      Muestra_escuelas$NIVELMODAL)%>%
+    lapply(htmltools::HTML)
+
+bins <- c(0,1,2,3,4)
+
+pal_EEE<- colorBin(c("#6d9d37", "red", "#35aee6", "#fb8e33"), 
+                   domain = Muestra_escuelas$num_niv, bins = bins)
+
 
 #UI
 ui <- fluidPage(
     
-    theme = shinytheme("darkly"),
+    theme = shinytheme("united"),
     
     titlePanel("Merecer la ciudad: el derecho al uso y disposición del espacio urbano en la Ciudad Autónoma de Buenos Aires"),
     
     tabsetPanel(
         tabPanel("Introducción",
+                 tabPanel("Introducción",
+                          textOutput(outputId = "Prueba"))),
+        tabPanel("Indagando la población",
                  navlistPanel(
-                     tabPanel("Introducción",
-                              textOutput(outputId = "Prueba")),
                      tabPanel("Pobreza",
                               highchartOutput(outputId = "G_Pob"),
                               br(),
@@ -45,7 +103,19 @@ ui <- fluidPage(
                                           choices = Piramide$Año,
                                           label = "Seleccione año del censo"))
                      )
-                     )
+                     ),
+        tabPanel("Servicios Públicos",
+                 navlistPanel(
+                     tabPanel("Escuelas",
+                              highchartOutput(outputId = "G_Esc"),
+                              br(),
+                              leafletOutput(outputId = "M_escuelas")),
+                     tabPanel("Hospitales",
+                              highchartOutput(outputId = "G_Hosp"),
+                              br(),
+                              leafletOutput(outputId = "M_hospitales"))
+                 )
+                 )
                  )
 )
 
@@ -63,7 +133,8 @@ server <- function(input, output) {
                 })
 
         output$G_Pob <- renderHighchart({
-            Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% hc_add_theme(hc_theme_gridlight()) %>%
+            Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% 
+                hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Personas en situación de Pobreza e Indigencia, por año y trimestre.")%>%
                 hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2015-2019)")%>%
                 hc_yAxis(title = list(text = "Situación de pobreza (en %)"),
@@ -124,8 +195,43 @@ server <- function(input, output) {
                 coord_flip()+
                 theme_classic()
                 ggplotly(Pir)
-            })
+                })
         
+        output$G_Esc <- renderHighchart({
+            Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>% hc_add_theme(hc_theme_gridlight()) %>%
+                hc_title(text = "Cantidad de escuelas por comuna.")%>%
+                hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2020)")%>%
+                hc_yAxis(title = list(text = "Cantidad de escuelas"),
+                         labels = list(format = "{value}")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
+                hc_add_theme(hc_theme_flat())
+                })
+        
+        output$M_Escuelas <- renderLeaflet({
+            Geo_esc <- leaflet(data = Muestra_escuelas) %>% 
+                setView(long = -58.445531, lat = -34.606653, zoom = 11) %>%
+                addProviderTiles(providers$CartoDB.Positron) %>%
+                addMarkers(~long, ~lat)
+            Geo_esc
+                })
+        
+        output$G_Hosp <- renderHighchart({
+            Grafico_hosp <- hchart(Hosp_Com, "bar", hcaes(x = Comuna, y = Hospitales, group = Hospitales))  %>% hc_add_theme(hc_theme_gridlight()) %>%
+                hc_title(text = "Cantidad de hospitales por comuna.")%>%
+                hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2020)")%>%
+                hc_yAxis(title = list(text = "Cantidad de hospitales"),
+                         labels = list(format = "{value}")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
+                hc_add_theme(hc_theme_flat())
+                })
+        
+        output$M_Hospitales <- renderLeaflet({
+            Geo_hosp <- leaflet(data = Hospitales_reducido) %>% 
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
+                addProviderTiles(providers$CartoDB.Positron) %>%
+                addMarkers(~long, ~lat)
+            Geo_hosp
+        })
 }
             
             
