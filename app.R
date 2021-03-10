@@ -4,7 +4,6 @@ library(shinythemes)
 library(tidyverse)
 library(readr)
 library(data.table)
-library(ggplot2)
 library(plotly)
 library(highcharter)
 library(hrbrthemes)
@@ -231,7 +230,7 @@ server <- function(input, output) {
                 })
         
         output$M_Escuelas <- renderLeaflet({
-            leaflet(data = Muestra_escuelas) %>% 
+            Geo_esc <- leaflet(data = Muestra_escuelas) %>% 
                 setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
                 addProviderTiles(providers$CartoDB.Positron) %>%
                 addAwesomeMarkers(~long, ~lat, icon = icons_Escuela, label = labels_esc, labelOptions = labelOptions(textsize = "15px"))%>%
@@ -242,6 +241,7 @@ server <- function(input, output) {
                           title = "Cantidad de niveles ofrecidos por escuela.",
                           labFormat = labelFormat(suffix=""),
                           position = "bottomleft")
+            Geo_esc
                 })
         
         output$G_Hosp <- renderHighchart({
