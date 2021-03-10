@@ -26,17 +26,36 @@ library(dplyr)
 rm(list = ls())
 
 #Archivos
+##Intro
 Pobreza <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Pobreza.csv")
 NBI <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/NBI.csv")
 Pobreza_anual <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Pobreza_anual.csv")
 Poblacion_Edad <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Poblacion_Edad.csv")
 Piramide <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/PiramidePoblacion.csv")
+##Desarrollo Humano(Educacion; Salud)
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
 Muestra_escuelas <- st_read("MuestraEsc.shp")
 Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
 Hospitales_reducido <- st_read("HospitalesR.shp")
 Comunas <- st_read("Comunas.shp")
-
+##Transporte
+Red_Bondis<-st_read("Colectivos/Colectivos.shp")
+Red_Subte<-st_read("Subte/Subte.shp")
+Acce_Subte<-fread("Subte/Accesubte.csv",encoding = "UTF-8")
+Red_Tren<-st_read("Trenes/Trenes.shp")
+Red_CicloV<-st_read("Bicis/Ciclovias.shp")
+EcoBici<-st_read("Bicis/EcoBici.shp")
+Transp_x_C<-st_read("TranspXC/TranspxC.shp")
+###Paletas e Iconos
+SillaDeRuedas <- makeIcon(
+    iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
+    iconWidth = 20, iconHeight = 20,
+    iconAnchorX = 5, iconAnchorY = 30)
+palColec <- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Colecx100)
+palSubte<- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Subtex100)
+palTren <- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Trenx100)
+palCicloV<-colorNumeric(palette = "YlOrRd", domain= Transp_x_C$CicloVx100)
+palEcoB<-colorNumeric(palette = "YlOrRd", domain= Transp_x_C$EcoBx100)
 
 #Mapa escuela
 getColor_Escuela <- function(Muestra_escuelas) {
@@ -132,6 +151,37 @@ ui <- fluidPage(
                               leafletOutput(outputId = "M_hospitales"))
                  )
                  )
+        tabPanel("Transporte",
+                 navlistPanel(
+                     tabPanel("Colectivo",
+                              leafletOutput(outputId = "Recorrido_Bondis"),
+                              br(),
+                              leafletOutput(outputId= "Coro_Bondis"),
+                              br(),
+                              plotOutput(outputId = "Distr_Bondis")),
+                     
+                     tabPanel("Subterraneo/Metro",
+                              leafletOutput(outputId = "Recorrido_Subte"),
+                              br(),
+                              leafletOutput(outputId = "Coro_Subte"),
+                              plotOutput(outputId = "Distr_Subte")),
+                       
+                     tabPanel("Tren/Ferrocarril",
+                              leafletOutput(outputId = "Recorrido_Trenes"),
+                              br(),
+                              leafletOutput(outputId= "Coro_Trenes"),
+                              br(),
+                              plotOutput(outputId = "Distr_Trenes")),
+                     
+                     tabPanel("Bicicletas",
+                              leafletOutput(outputId = "Recorrido_Bicicletas"),
+                              br(),
+                              leafletOutput(outputId= "Coro_CicloV"),
+                              br(),
+                              leafletOutput(outputId="Coro_EcoB"),
+                              plotOutput(outputId = "Distr_Bicicletas"))))
+               )
+    )
                  )
 )
 
@@ -261,6 +311,288 @@ server <- function(input, output) {
                 addAwesomeMarkers(~long.x, ~lat.x, icon = icons, label = ~as.character(TIPO)) %>%
                 addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
                 })
+    output$Recorrido_Bondis<-renderLeaflet({
+        MapaBondis<-leaflet() %>%
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron) %>%
+            addPolylines(data = Red_Bondis, color="#09ed46", opacity = .3, weight = .5)%>%
+            addLegend(position = "topright", colors = c("#09ed46"), labels = c("Red de Colectivos en CABA"))%>%
+            addPolygons(data=Comunas,
+                        color = "#444444",
+                        weight = 1,
+                        smoothFactor = 0.5,
+                        opacity = 1.0,
+                        fillOpacity = 0.25,
+                        highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                            bringToFront = TRUE))
+        MapaBondis
+    })
+    output$Coro_Bondis<-renderLeaflet({
+        CoroBondis<-leaflet(Transp_x_C) %>% 
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron)%>%
+            addPolygons(
+                fillColor = ~palColec(Colecx100),
+                weight = 1,
+                opacity = 1,
+                color = "black",
+                dashArray = "3",
+                fillOpacity = 0.7,
+                highlight = highlightOptions(
+                    weight = 5,
+                    color = "#666",
+                    dashArray = "",
+                    fillOpacity = 0.7,
+                    bringToFront = TRUE))%>%
+            addLegend(pal=palColec, 
+                      values = ~Colecx100,
+                      opacity = 0.7, 
+                      title = "Porcentaje del total de Paradas",
+                      labFormat = labelFormat(suffix="%"),
+                      position = "bottomleft")%>%
+            addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
+                                  labelOptions = labelOptions(noHide = T, size=1,
+                                                              direction='top',textOnly = F))
+        CoroBondis
+    })
+    output$Distr_Bondis<-renderPlot({
+        BarrasBondis<-ggplot(Transp_x_C,mapping = aes(
+            reorder(Comuna, Colectivo),
+            Colectivo))+
+            geom_col(fill="#09ed46",
+                     color="black")+
+            geom_text(aes(label = Colectivo), 
+                      vjust = 2, size = 3.5)+
+            labs(title ="Paradas de Colectivo por Comuna",
+                 x="Comuna",
+                 y="Cantidad de Paradas",
+                 caption = "Fuente: https://data.buenosaires.gob.ar")+
+            theme_classic()
+        BarrasBondis 
+    })
+    
+    
+    #SUBTE
+    output$Recorrido_Subte<-renderLeaflet({
+        MapaSubte<-leaflet() %>%
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron) %>%
+            addPolylines(data = Red_Subte , color ="#eb34d5",  opacity = 2, weight = 3)%>%
+            addMarkers(data= Acce_Subte, ~long, ~lat, icon = SillaDeRuedas)%>%
+            addLegend(position = "topright", colors = c("#eb34d5"), labels = c("Subte"))%>%
+            addPolygons(data=Comunas,
+                        color = "#444444",
+                        weight = 1,
+                        smoothFactor = 0.5,
+                        opacity = 1.0,
+                        fillOpacity = 0.25,
+                        highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                            bringToFront = TRUE))
+        MapaSubte
+    })
+    output$Coro_Subte<-renderLeaflet({
+        CoroSubte<-leaflet(Transp_x_C) %>% 
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron)%>%
+            addPolygons(
+                fillColor = ~palSubte(Subtex100),
+                weight = 1,
+                opacity = 1,
+                color = "black",
+                dashArray = "3",
+                fillOpacity = 0.7,
+                highlight = highlightOptions(
+                    weight = 5,
+                    color = "#666",
+                    dashArray = "",
+                    fillOpacity = 0.7,
+                    bringToFront = TRUE))%>%
+            addLegend(pal = palSubte, 
+                      values = ~Subtex100,
+                      opacity = 0.7, 
+                      title = "Porcentaje del total de 
+            Estaciones de Subte",
+                      labFormat = labelFormat(suffix="%"),
+                      position = "bottomleft")%>%
+            addLabelOnlyMarkers( ~lat,~long, label =  ~as.character(Comuna), 
+                                  labelOptions = labelOptions(
+                                      noHide = T, size=1,
+                                      direction='top',textOnly = F))
+        CoroSubte
+    })
+    output$Distr_Subte<-renderPlot({
+        BarrasSubte<-ggplot(Transp_x_C,mapping = aes(
+            reorder(Comuna, Subte),
+            Subte)) +
+            geom_col(fill="#eb34d5",
+                     color="black")+
+            geom_text(aes(label = Subte), 
+                      vjust = 2.1, size = 3.5)+
+            labs(title = "Estaciones de Subte por Comuna",
+                 x="Comuna",
+                 y="Cantidad de Estaciones",
+                 caption = "Fuente: https://data.buenosaires.gob.ar")+
+            theme_classic()
+        BarrasSubte
+    })     
+       
+    
+    #TREN 
+        output$Recorrido_Trenes<-renderLeaflet({
+            MapaTrenes<-leaflet() %>%
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+                addProviderTiles(providers$CartoDB.Positron) %>%
+                addPolylines(data = Red_Tren, color="#30c9fc", opacity = .4, weight = 3)%>%
+                addLegend(position = "topright", colors = c("#30c9fc"), labels = c("Tren"))%>%
+                addPolygons(data=Comunas,
+                            color = "#444444",
+                            weight = 1,
+                            smoothFactor = 0.5,
+                            opacity = 1.0,
+                            fillOpacity = 0.25,
+                            highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                                bringToFront = TRUE))
+            MapaTrenes
+        })
+        output$Coro_Trenes<-renderLeaflet({
+            CoroTrenes<-leaflet(Transp_x_C) %>% 
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+                addProviderTiles(providers$CartoDB.Positron)%>%
+                addPolygons(
+                    fillColor = ~palTren(Trenx100),
+                    weight = 1,
+                    opacity = 1,
+                    color = "black",
+                    dashArray = "3",
+                    fillOpacity = 0.7,
+                    highlight = highlightOptions(
+                        weight = 5,
+                        color = "#666",
+                        dashArray = "",
+                        fillOpacity = 0.7,
+                        bringToFront = TRUE))%>%
+                addLegend(pal = palTren, 
+                          values = ~Trenx100,
+                          opacity = 0.7, 
+                          title = "Porcentaje del total de Estaciones de Tren",
+                          labFormat = labelFormat(suffix="%"),
+                          position = "bottomleft")%>%
+                addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
+                                      labelOptions = labelOptions(noHide = T, size=1,
+                                                                  direction='top',textOnly = F))
+            CoroTrenes
+        })
+        output$Distr_Trenes<-renderPlot({
+            BarrasTrenes<-ggplot(Transp_x_C,mapping = aes(
+                reorder(Comuna, Tren),
+                Tren)) +
+                geom_col(fill="#30c9fc",
+                         color="black")+
+                geom_text(aes(label = Tren),
+                          vjust = 2, size = 3.5)+
+                labs(caption ="Estaciones de Tren por Comuna",
+                     x="Comuna",
+                     y="Cantidad de Estaciones")+
+                theme_classic()
+            BarrasTrenes
+        })    
+       
+        
+        #BICICLETAS     
+        output$Recorrido_Bicicletas<-renderLeaflet({
+                MapaBicis<-leaflet() %>%
+                    setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+                    addProviderTiles(providers$CartoDB.Positron) %>%  
+                    addMarkers(data=EcoBici, clusterOptions = markerClusterOptions())%>%
+                    addPolylines(data = Red_CicloV, color = "#c7730c", opacity = 1, weight = 1)%>%
+                    addPolygons(data=Comunas,
+                                color = "#444444",
+                                weight = 1,
+                                smoothFactor = 0.5,
+                                opacity = 1.0,
+                                fillOpacity = 0.25,
+                                highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                                    bringToFront = TRUE))
+                MapaBicis
+            })
+            output$Coro_CicloV<-renderLeaflet({
+                CoroCicloV<-leaflet(Transp_x_C) %>% 
+                    setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+                    addProviderTiles(providers$CartoDB.Positron)%>%
+                    addPolygons(
+                        fillColor = ~palCicloV(CicloVx100),
+                        weight = 1,
+                        opacity = 1,
+                        color = "black",
+                        dashArray = "3",
+                        fillOpacity = 0.7,
+                        highlight = highlightOptions(
+                            weight = 5,
+                            color = "#666",
+                            dashArray = "",
+                            fillOpacity = 0.7,
+                            bringToFront = TRUE))%>%
+                    addLegend(pal = palCicloV, 
+                              values = ~CicloVx100,
+                              opacity = 0.7, 
+                              title = "Porcentaje del total de Ciclovias",
+                              labFormat = labelFormat(suffix="%"),
+                              position = "bottomleft")%>%
+                    addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
+                                          labelOptions = labelOptions(noHide = T,
+                                                                      direction='top',textOnly = F))
+                CoroCicloV
+            })
+            output$Coro_EcoB<-renderLeaflet({
+                CoroEcoB<-leaflet(Transp_x_C) %>% 
+                    setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+                    addProviderTiles(providers$CartoDB.Positron)%>%
+                    addPolygons(
+                        fillColor = ~palEcoB(EcoBx100),
+                        weight = 1,
+                        opacity = 1,
+                        color = "black",
+                        dashArray = "3",
+                        fillOpacity = 0.7,
+                        highlight = highlightOptions(
+                            weight = 5,
+                            color = "#666",
+                            dashArray = "",
+                            fillOpacity = 0.7,
+                            bringToFront = TRUE))%>%
+                    addLegend(pal = palEcoB, 
+                              values = ~EcoBx100,
+                              opacity = 0.7, 
+                              title = "Porcentaje del total de Ecobicis",
+                              labFormat = labelFormat(suffix="%"),
+                              position = "bottomleft")%>%
+                    addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
+                                          labelOptions = labelOptions(noHide = T,
+                                                                      direction='top',textOnly = F))
+                CoroEcoB  
+            })
+            output$Distr_Bicicletas<-renderPlot({
+                BarrasBici<-ggplot(Transp_x_C)+
+                    geom_col(mapping = aes(
+                        x=reorder(Comuna,Ciclovias),
+                        y=Ciclovias),
+                        fill= "tan1",
+                        width = .5,
+                        position = position_nudge(x = -0.225))+
+                    geom_col(mapping = aes(
+                        x=Comuna,
+                        y=Ecobicis),
+                        fill= "slategray4",
+                        width = 0.5,
+                        position = position_nudge(x = 0.225))+
+                    labs(title ="Servicios de Bicicleta segun Comuna.",
+                         x="Comuna",
+                         y="Cantidad",
+                         caption = "Fuente: https://data.buenosaires.gob.ar")+
+                    theme_classic()+
+                    coord_flip()
+                BarrasBici        
+            })
 }
             
             
