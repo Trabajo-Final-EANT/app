@@ -20,26 +20,23 @@ library(viridis)
 library(viridisLite)
 library(gifski)
 library(htmlwidgets)
+library(reactlog)
+library(dplyr)
 
 
 rm(list = ls())
 
 #Archivos
-Pobreza <- read_csv("Pobreza.csv")
-NBI <- read_csv("NBI.csv")
-Pobreza_anual <- read_csv("Pobreza_anual.csv")
-Poblacion_Edad <- read_csv("Poblacion_Edad.csv")
-Piramide <- read_csv("PiramidePoblacion.csv")
-
-Esc_Com <- read_csv("EscCom.csv")
-
-Muestra_escuelas <- read_csv("Escuelas.csv")
-Muestra_escuelas <- Muestra_escuelas[,c(-14)]
-
-Hosp_Com <- read_csv("HospCom.csv")
-
-Hospitales_reducido <- read_csv("Hospitales.csv")
-Hospitales_reducido <-Hospitales_reducido[,c(1,2,3,4,5)]
+Pobreza <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Pobreza.csv")
+NBI <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/NBI.csv")
+Pobreza_anual <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Pobreza_anual.csv")
+Poblacion_Edad <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Poblacion_Edad.csv")
+Piramide <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/PiramidePoblacion.csv")
+Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
+Muestra_escuelas <- st_read("MuestraEsc.shp")
+Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
+Hospitales_reducido <- st_read("HospitalesR.shp")
+Comunas <- st_read("Comunas.shp")
 
 
 #Mapa escuela
@@ -72,11 +69,30 @@ bins <- c(0,1,2,3,4)
 pal_EEE<- colorBin(c("#6d9d37", "red", "#35aee6", "#fb8e33"), 
                    domain = Muestra_escuelas$num_niv, bins = bins)
 
+#Mapa hospitales
+getColor <- function(Hospitales_reducido) {
+    sapply(Hospitales_reducido$TINUM, function(TINUM) {
+        if(TINUM == 1) {
+            "green"
+        } else if(TINUM == 2) {
+            "red"
+        } else {
+            "orange"
+        } })
+}
+
+icons <- awesomeIcons(
+    icon = 'ios-close',
+    library = 'ion',
+    markerColor = getColor(Hospitales_reducido)
+)
+
 
 #UI
 ui <- fluidPage(
     
     theme = shinytheme("united"),
+    
     
     titlePanel("Merecer la ciudad: el derecho al uso y disposición del espacio urbano en la Ciudad Autónoma de Buenos Aires"),
     
@@ -98,13 +114,17 @@ ui <- fluidPage(
                               plotlyOutput(outputId = "G_Pir"),
                               selectInput(inputId = "input_fecha",
                                           choices = Piramide$Año,
-                                          label = "Seleccione año del censo"))
+                                          label = "Seleccione año del censo",
+                                          selected = NULL))
                      )
                      ),
         tabPanel("Servicios Públicos",
                  navlistPanel(
                      tabPanel("Escuelas",
                               highchartOutput(outputId = "G_Esc"),
+                              selectInput(inputId = "input_comuEscuela",
+                                          choices = Esc_Com$Comuna,
+                                          label = "Seleccione comuna"),
                               br(),
                               leafletOutput(outputId = "M_escuelas")),
                      tabPanel("Hospitales",
@@ -122,6 +142,11 @@ server <- function(input, output) {
                 pir_filt <- reactive({
                     pir_filt = Piramide[Piramide$Año == input$input_fecha,]
                     pir_filt
+                })
+                
+                esc_filt <- reactive({
+                    esc_filt = Esc_Com[Esc_Com$Comuna == input$input_comuEscuela,]
+                    esc_filt
                 })
                 
                 
@@ -195,7 +220,8 @@ server <- function(input, output) {
                 })
         
         output$G_Esc <- renderHighchart({
-            Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>% hc_add_theme(hc_theme_gridlight()) %>%
+            Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
+                hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Cantidad de escuelas por comuna.")%>%
                 hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2020)")%>%
                 hc_yAxis(title = list(text = "Cantidad de escuelas"),
@@ -205,11 +231,17 @@ server <- function(input, output) {
                 })
         
         output$M_Escuelas <- renderLeaflet({
-            Geo_esc <- leaflet(data = Muestra_escuelas) %>% 
-                setView(long = -58.445531, lat = -34.606653, zoom = 11) %>%
+            leaflet(data = Muestra_escuelas) %>% 
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
                 addProviderTiles(providers$CartoDB.Positron) %>%
-                addMarkers(~long, ~lat)
-            Geo_esc
+                addAwesomeMarkers(~long, ~lat, icon = icons_Escuela, label = labels_esc, labelOptions = labelOptions(textsize = "15px"))%>%
+                addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2) %>%
+                addLegend(pal=pal_EEE, 
+                          values = ~num_niv,
+                          opacity = 1, 
+                          title = "Cantidad de niveles ofrecidos por escuela.",
+                          labFormat = labelFormat(suffix=""),
+                          position = "bottomleft")
                 })
         
         output$G_Hosp <- renderHighchart({
@@ -223,12 +255,12 @@ server <- function(input, output) {
                 })
         
         output$M_Hospitales <- renderLeaflet({
-            Geo_hosp <- leaflet(data = Hospitales_reducido) %>% 
+            leaflet(data = Hospitales_reducido) %>% 
                 setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
                 addProviderTiles(providers$CartoDB.Positron) %>%
-                addMarkers(~long, ~lat)
-            Geo_hosp
-        })
+                addAwesomeMarkers(~long.x, ~lat.x, icon = icons, label = ~as.character(TIPO)) %>%
+                addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
+                })
 }
             
             
@@ -236,5 +268,4 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
 
