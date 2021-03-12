@@ -144,11 +144,11 @@ ui <- fluidPage(
                                           choices = Esc_Com$Comuna,
                                           label = "Seleccione comuna"),
                               br(),
-                              leafletOutput(outputId = "M_escuelas")),
+                              leafletOutput(outputId = "M_Escuelas")),
                      tabPanel("Hospitales",
                               highchartOutput(outputId = "G_Hosp"),
                               br(),
-                              leafletOutput(outputId = "M_hospitales"))
+                              leafletOutput(outputId = "M_Hospitales"))
                  )
                  )
         tabPanel("Transporte",
@@ -308,7 +308,7 @@ server <- function(input, output) {
             leaflet(data = Hospitales_reducido) %>% 
                 setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
                 addProviderTiles(providers$CartoDB.Positron) %>%
-                addAwesomeMarkers(~long.x, ~lat.x, icon = icons, label = ~as.character(TIPO)) %>%
+                addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO)) %>%
                 addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
                 })
     output$Recorrido_Bondis<-renderLeaflet({
