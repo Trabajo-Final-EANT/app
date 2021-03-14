@@ -35,8 +35,18 @@ Piramide <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplica
 ##Desarrollo Humano(Educacion; Salud)
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
 Muestra_escuelas <- st_read("MuestraEsc.shp")
+
 Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
 Hospitales_reducido <- st_read("HospitalesR.shp")
+
+Mapa_Cul<-st_read("Cultura/MapaCul.shp")
+Cul_x_C<-st_read("Cultura/Cul_X_Comu.shp")
+pal<- colorFactor(c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", 
+                    "#752957"), domain = c("Bibliotecas", "Centro Cultural", 
+                                           "Comercios","Esp. P?blicos","Esp. de Formacion",
+                                           "Exhibicion"))
+coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
+
 Comunas <- st_read("Comunas.shp")
 ##Transporte
 Red_Bondis<-st_read("Colectivos/Colectivos.shp")
@@ -46,7 +56,7 @@ Red_Tren<-st_read("Trenes/Trenes.shp")
 Red_CicloV<-st_read("Bicis/Ciclovias.shp")
 EcoBici<-st_read("Bicis/EcoBici.shp")
 Transp_x_C<-st_read("TranspXC/TranspxC.shp")
-###Paletas e Iconos
+
 SillaDeRuedas <- makeIcon(
     iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
     iconWidth = 20, iconHeight = 20,
@@ -136,7 +146,7 @@ ui <- fluidPage(
                                           selected = NULL))
                      )
                      ),
-        tabPanel("Servicios Públicos",
+        tabPanel("Desarrollo Humano",
                  navlistPanel(
                      tabPanel("Escuelas",
                               highchartOutput(outputId = "G_Esc"),
@@ -148,7 +158,14 @@ ui <- fluidPage(
                      tabPanel("Hospitales",
                               highchartOutput(outputId = "G_Hosp"),
                               br(),
-                              leafletOutput(outputId = "M_Hospitales"))
+                              leafletOutput(outputId = "M_Hospitales")),
+                     tabPanel("Cultura",
+                              plotlyOutput((outputId= "BarrasCul")),
+                              br(),
+                              leafletOutput(outputId = "MapaCul"),
+                              br(),
+                              leafletOutput(outputId = "CoroCul"))
+                     
                  )
                  )
         tabPanel("Transporte",
@@ -311,6 +328,81 @@ server <- function(input, output) {
                 addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO)) %>%
                 addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
                 })
+    
+    output$BarrasCul<-renderPlotly({
+      BarrasCul<-ggplot(Cul_x_C)+
+        geom_col(aes(x=reorder(Comuna,Cantidad), y=Cantidad, fill=Tipo), width = 0.7)+
+        scale_fill_manual(values=c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", "#752957"))+
+        guides(fill=FALSE)+
+        labs(title="Distribucion de Espacios Culturales por comuna segun tipo de espacio",
+             subtitle = "CABA.2021",
+             x="Comuna",
+             y= "Cantidad",
+             caption=
+               "Fuente= https://data.buenosaires.gob.ar/dataset/espacios-culturales")+
+        theme_bw()
+      ggplotly(BarrasCul)
+    })
+    
+    output$MapaCul<-renderLeaflet({
+      MapaCultura<-leaflet() %>%
+        setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+        addProviderTiles(providers$CartoDB.Positron) %>%  
+        addCircleMarkers(data = Mapa_Cul,
+                         color = ~pal(Tipo),
+                         stroke = FALSE,
+                         fillOpacity = 0.5)%>%
+        addLegend(data = Mapa_Cul,
+                  "bottomright", 
+                  pal = pal, 
+                  values = ~Tipo,
+                  title = "Tipo de Espacio",
+                  opacity = 1)%>%
+        addPolygons(data=Comunas,
+                    color = "#444444",
+                    weight = 1,
+                    smoothFactor = 0.5,
+                    opacity = 1,
+                    fillOpacity = 0.3,
+                    highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                        bringToFront = TRUE))%>%
+        addLabelOnlyMarkers(data = Comunas,
+                            ~lat,~long,
+                            label =  ~as.character(Comuna), 
+                            labelOptions = labelOptions(noHide = T, size=1,
+                                                        direction='top',textOnly = F))
+      MapaCultura
+    })
+    
+    output$CoroCul<-renderLeaflet({
+      CoropCul<-leaflet(Cul_x_C) %>% 
+        setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+        addProviderTiles(providers$CartoDB.Positron)%>%
+        addPolygons(
+          fillColor = ~coroPal(relativo),
+          weight = 1,
+          opacity = 1,
+          color = "black",
+          dashArray = "3",
+          fillOpacity = 0.7,
+          highlight = highlightOptions(
+            weight = 5,
+            color = "#666",
+            dashArray = "",
+            fillOpacity = 0.7,
+            bringToFront = TRUE))%>%
+        addLegend(pal=coroPal, 
+                  values = ~relativo,
+                  opacity = 0.7, 
+                  title = "Porcentaje del total de Espacios",
+                  position = "bottomleft")%>%
+        addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
+                              labelOptions = labelOptions(noHide = T, size=1,
+                                                          direction='top',textOnly = F))
+      CoropCul
+    })
+    
+    
     output$Recorrido_Bondis<-renderLeaflet({
         MapaBondis<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
