@@ -42,7 +42,7 @@ hacinamiento <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/A
 Viviendas <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Viviendas.csv")
 Viv_Com2 <- st_read("Viv_com.shp")
 
-Mapa_Cul<-st_read("Cultura/MapaCul.geojson")
+Mapa_Cul<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/MapaCul.geojson?token=AST4NRR6XW2CCSUYC6MPX7LAJ6MXU")
 Cul_x_C<-st_read("Cultura/Espacios_x_Comuna.geojson")
 pal<- colorFactor(c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", 
                     "#752957"), domain = c("Bibliotecas", "Centro Cultural", 
@@ -52,12 +52,12 @@ coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
 Comunas <- st_read("Comunas/Comunas.shp")
 ##Transporte
 Red_Bondis<-st_read("Transporte/Colectivos.geojson")
-Red_Subte<-st_read("Transporte/Subte.geojson")
+Red_Subte<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Subte.geojson?token=AST4NRQRQ7S2YLNN4HNO5ZLAJ6M4S")
 Acce_Subte<-fread("Transporte/Accesubte.csv",encoding = "UTF-8")
 Red_Tren<-st_read("Transporte/Trenes.geojson")
-Red_CicloV<-st_read("Transporte/Ciclovias.geojson")
-EcoBici<-st_read("Transporte/EcoBici.geojson")
-Transp_x_C<-st_read("Transporte/TranspxC.geojson")
+Red_CicloV<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Ciclovias.geojson?token=AST4NRRPKTYT4GSGG7QZATTAJ6M2E")
+EcoBici<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/EcoBici.geojson?token=AST4NRWAPJO37B5ZT5DC7YTAJ6M3U")
+Transp_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/TranspxC.geojson?token=AST4NRRKNTF6LWQW5CEZOA3AJ6M6I")
 SillaDeRuedas <- makeIcon(
     iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
     iconWidth = 20, iconHeight = 20,
