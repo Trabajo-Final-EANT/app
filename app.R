@@ -41,6 +41,9 @@ Comunas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicaci
 hacinamiento <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/hacinamiento.csv")
 Viviendas <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Viviendas.csv")
 Viv_Com2 <- st_read("Viv_com.shp")
+Regimen<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen.csv",encoding = "UTF-8")
+Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18.geojson")
+VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
 
 Mapa_Cul<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/MapaCul.geojson?token=AST4NRR6XW2CCSUYC6MPX7LAJ6MXU")
 Cul_x_C<-st_read("Cultura/Espacios_x_Comuna.geojson")
@@ -180,8 +183,22 @@ ui <- fluidPage(
                    tabPanel("Condición de ocupación",
                             highchartOutput(outputId = "G_Vivienda"),
                             br(),
-                            leafletOutput(outputId = "M_Vivienda"))
-                 )),
+                            leafletOutput(outputId = "M_Vivienda")),
+                    tabPanel("Regimen de Tenencia",
+                        selectInput(inputId = "input_AÑO",
+                                    choices = Regimen$año,
+                                    label = "Seleccione año",
+                                    selected = TRUE),
+                        plotOutput(outputId= "BarrasRegimen"),
+                        br(),
+                        selectInput(inputId = "input_Regimen",
+                                    choices = Regimen18$Regimen_Tenencia,
+                                    label = "Seleccion Régimen",
+                                    selected = TRUE),
+                        leafletOutput(outputId = "CoroRegimen")
+                        ))
+             ),
+                 
          tabPanel("Transporte",
                  navlistPanel(
                      tabPanel("Colectivo",
@@ -219,7 +236,7 @@ ui <- fluidPage(
 
 #Server
 server <- function(input, output) {
-    
+    #############################################################REACTIVE###################################333
                 pir_filt <- reactive({
                     pir_filt = Piramide[Piramide$Año == input$input_fecha,]
                     pir_filt
@@ -229,12 +246,21 @@ server <- function(input, output) {
                     esc_filt = Esc_Com[Esc_Com$Comuna == input$input_comuEscuela,]
                     esc_filt
                 })
-                
-                
+  
+                Reg_filt<-reactive({
+                    Regimen%>%filter(año %in% input$input_AÑO)
+      
+    })
+                Reg_filt2<-reactive({
+                    Regimen18%>%filter(Regimen_Tenencia %in% input$input_Regimen)
+      
+    })
+  ###############3###################################################INTRODUCCION###################################################################333          
         output$Prueba <- renderText({
                     "esto es la prueba"
                 })
 
+  ###############3###################################################POBLACION###################################################################333 
         output$G_Pob <- renderHighchart({
             Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% 
                 hc_add_theme(hc_theme_gridlight()) %>%
@@ -299,7 +325,7 @@ server <- function(input, output) {
                 theme_classic()
                 ggplotly(Pir)
                 })
-        
+        ###############3###################################################DESARROLLO HUMANO###################################################################333 
         output$G_Esc <- renderHighchart({
             Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
                 hc_add_theme(hc_theme_gridlight()) %>%
@@ -367,58 +393,8 @@ server <- function(input, output) {
             hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
             hc_add_theme(hc_theme_ffx())
             })
-        
-        output$G_Vivienda <- renderHighchart({
-          Grafico_viv2 <- highchart() %>%
-            hc_add_series(Viviendas, "column", 
-                          hcaes(x = Comuna, y = Todos_presentes, color = Todos_presentes), 
-                          name = "Viviendas ocupadas") %>%
-            hc_add_series(Viviendas, "column", 
-                          hcaes(x = Comuna, y = Todos_ausentes, color = Todos_ausentes), 
-                          name = "Viviendas desocupadas") %>%
-            hc_plotOptions(column = list(dataLabels = list(enabled = T))) %>%
-            hc_xAxis(title = list(text = "Comunas")) %>%
-            hc_yAxis(labels = list(format = "{value}%")) %>%
-            hc_title(text = "Distribución porcentual de viviendas según condición de ocupación, por comuna.") %>%
-            hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2010)") %>%
-            hc_yAxis(title = list(text = "Distribución porcentual de viviendas (en %)"),
-                     labels = list(format = "{value}%")) %>%
-            hc_credits(enabled = TRUE, 
-                       text = "Fuente: Censo 2010 (INDEC)", 
-                       style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_economist())
-            })
-        
-        output$M_Vivienda <- renderLeaflet({
-          Geo_viv2 <- leaflet(Viv_Com2$geometry) %>% 
-            setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            addPolylines(data = Comunas, color="#FC750F", opacity = 1, weight = 2)%>%
-            addPolygons(data = Comunas$geometry, weight = 2, opacity = 1,
-                        color = "#F5F1BA", dashArray = "3",
-                        fillOpacity = 0.5,
-                        highlight = highlightOptions(weight = 5, color = "#F5C9BA",
-                                                     dashArray = "3",
-                                                     fillOpacity = 0.7,
-                                                     bringToFront = F),
-                        label = labels_Viv2) %>%  
-            addCircleMarkers(data = Viv_Com2,
-                             color = ~pal_Viv2(Cmrc_f_),
-                             stroke = FALSE,
-                             fillOpacity = 1) %>%
-            addLegend(data = Viv_Com2,
-                      "bottomright", 
-                      pal = pal_Viv2, 
-                      values = ~Cmrc_f_,
-                      title = "Comercios, oficinas y consultorios",
-                      opacity = 1) %>%
-            addLabelOnlyMarkers(data = Comunas,
-                                ~lat,~long,
-                                label =  ~as.character(Comuna), 
-                                labelOptions = labelOptions(noHide = T, size=1,
-                                                            direction='top',textOnly = F))
-            })
-    output$BarrasCul<-renderPlotly({
+  
+      output$BarrasCul<-renderPlotly({
       BarrasCul<-ggplot(Cul_x_C)+
         geom_col(aes(x=reorder(Comuna,Cantidad), y=Cantidad, fill=Tipo), width = 0.7)+
         scale_fill_manual(values=c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", "#752957"))+
@@ -491,6 +467,105 @@ server <- function(input, output) {
       CoropCul
     })
 
+        ###############3###################################################VIVIENDA###################################################################333 
+        output$G_Vivienda <- renderHighchart({
+          Grafico_viv2 <- highchart() %>%
+            hc_add_series(Viviendas, "column", 
+                          hcaes(x = Comuna, y = Todos_presentes, color = Todos_presentes), 
+                          name = "Viviendas ocupadas") %>%
+            hc_add_series(Viviendas, "column", 
+                          hcaes(x = Comuna, y = Todos_ausentes, color = Todos_ausentes), 
+                          name = "Viviendas desocupadas") %>%
+            hc_plotOptions(column = list(dataLabels = list(enabled = T))) %>%
+            hc_xAxis(title = list(text = "Comunas")) %>%
+            hc_yAxis(labels = list(format = "{value}%")) %>%
+            hc_title(text = "Distribución porcentual de viviendas según condición de ocupación, por comuna.") %>%
+            hc_subtitle(text = "Ciudad Autónoma de Buenos Aires (2010)") %>%
+            hc_yAxis(title = list(text = "Distribución porcentual de viviendas (en %)"),
+                     labels = list(format = "{value}%")) %>%
+            hc_credits(enabled = TRUE, 
+                       text = "Fuente: Censo 2010 (INDEC)", 
+                       style = list(fontSize = "12px"))%>%
+            hc_add_theme(hc_theme_economist())
+            })
+        
+        output$M_Vivienda <- renderLeaflet({
+          Geo_viv2 <- leaflet(Viv_Com2$geometry) %>% 
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
+            addProviderTiles(providers$CartoDB.Positron) %>%
+            addPolylines(data = Comunas, color="#FC750F", opacity = 1, weight = 2)%>%
+            addPolygons(data = Comunas$geometry, weight = 2, opacity = 1,
+                        color = "#F5F1BA", dashArray = "3",
+                        fillOpacity = 0.5,
+                        highlight = highlightOptions(weight = 5, color = "#F5C9BA",
+                                                     dashArray = "3",
+                                                     fillOpacity = 0.7,
+                                                     bringToFront = F),
+                        label = labels_Viv2) %>%  
+            addCircleMarkers(data = Viv_Com2,
+                             color = ~pal_Viv2(Cmrc_f_),
+                             stroke = FALSE,
+                             fillOpacity = 1) %>%
+            addLegend(data = Viv_Com2,
+                      "bottomright", 
+                      pal = pal_Viv2, 
+                      values = ~Cmrc_f_,
+                      title = "Comercios, oficinas y consultorios",
+                      opacity = 1) %>%
+            addLabelOnlyMarkers(data = Comunas,
+                                ~lat,~long,
+                                label =  ~as.character(Comuna), 
+                                labelOptions = labelOptions(noHide = T, size=1,
+                                                            direction='top',textOnly = F))
+            })
+        output$BarrasRegimen<-renderPlot({
+           RegimenA<-ggplot(data=Reg_filt(), 
+                       aes(x=comunas,
+                           y=porcentaje, 
+                           fill= Regimen_Tenencia))+
+                     scale_fill_manual(values = 
+                            c("#34eb6b","#d334eb","#eaf51b"))+
+                     geom_col(width = .3)
+                     labs(title = "Regimen de Tenencia segun Comuna",
+                          subtitle = "CABA")+
+                     theme_bw()+
+                     coord_flip()
+      RegimenA  
+    })
+    
+    output$CoroRegimen<-renderLeaflet({
+      CoroRegimen<-leaflet(Reg_filt2())%>%
+        setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+        addProviderTiles(providers$CartoDB.Positron)%>%
+        addLabelOnlyMarkers(~lat,~long, label =  ~as.character(Comuna), 
+                              labelOptions = labelOptions(noHide = T, size=1,
+                                                          direction='top',textOnly = F))%>%
+        addLegend(pal=VivPal, 
+                  values = ~porcentaje,
+                  opacity = 0.7, 
+                  title = "Porcentaje sobre el total de Hogares",
+                  position = "bottomleft")
+    })
+      
+
+    observe({leafletProxy("CoroRegimen", data =
+        Reg_filt2())%>%
+        addPolygons(fillColor =
+                      ~VivPal(porcentaje),
+                    weight = 1,
+                    opacity = 1,
+                    color = "black",
+                    dashArray = "3",
+                    fillOpacity = 0.7,
+                    highlight = highlightOptions(
+                      weight = 5,
+                      color = "#666",
+                      dashArray = "",
+                      fillOpacity = 0.7,
+                      bringToFront = TRUE))
+        })
+
+    ##################################################################TRANSPORTE#####################################################################33
 
     output$Recorrido_Bondis<-renderLeaflet({
         MapaBondis<-leaflet() %>%
