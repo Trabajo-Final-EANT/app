@@ -40,7 +40,8 @@ Hospitales_reducido <- st_read("https://raw.githubusercontent.com/melinaschamber
 Comunas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Comunas.geojson")
 hacinamiento <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/hacinamiento.csv")
 Viviendas <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Viviendas.csv")
-Viv_Com2 <- st_read("Viv_com.shp")
+#Viv_Com2 <- st_read("Viv_com.shp")
+Viv_Com2<-st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/VIVCOM.geojson")
 Regimen<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen.csv",encoding = "UTF-8")
 Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18.geojson")
 VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
@@ -231,7 +232,7 @@ ui <- fluidPage(
                              ))
                )
     )
-                 
+  )                 
 
 
 #Server
@@ -849,7 +850,8 @@ server <- function(input, output) {
                     coord_flip()
                 BarrasBici        
           
-}
+})
+  }
             
             
 # Run the application 
