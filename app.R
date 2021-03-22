@@ -328,7 +328,7 @@ server <- function(input, output) {
                 })
         ###############3###################################################DESARROLLO HUMANO###################################################################333 
         output$G_Esc <- renderHighchart({
-            Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
+            Grafico_esc <- hchart(esc_filt(), "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
                 hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Cantidad de escuelas por comuna.")%>%
                 hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2020)")%>%
