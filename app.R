@@ -145,6 +145,7 @@ ui <- fluidPage(
                               br(),
                               highchartOutput(outputId = "G_Pob2")),
                      tabPanel("NBI",
+                              h4(strong("Porcentaje de hogares con NBI por Comuna (2010).")),
                               plotOutput(outputId = "G_NBI")),
                      tabPanel("Datos demograficos",
                               highchartOutput(outputId = "G_demo"),
@@ -159,14 +160,13 @@ ui <- fluidPage(
                  navlistPanel(
                      tabPanel("Escuelas",
                               highchartOutput(outputId = "G_Esc"),
-                              selectInput(inputId = "input_comuEscuela",
-                                          choices = Esc_Com$Comuna,
-                                          label = "Seleccione comuna"),
-                              br(),
+                              p("Esto es una prueba para incluir texto.", 
+                                style = "font-family: 'times'; font-si28pt"),
+                              br(h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos."))),
                               leafletOutput(outputId = "M_Escuelas")),
                      tabPanel("Hospitales",
                               highchartOutput(outputId = "G_Hosp"),
-                              br(),
+                              br(h4(strong("Mapa de hospitales de la Ciudad, según su especialización."))),
                               leafletOutput(outputId = "M_Hospitales")),
                      tabPanel("Cultura",
                               plotlyOutput((outputId= "BarrasCul")),
@@ -178,8 +178,10 @@ ui <- fluidPage(
         tabPanel("Vivienda",
                  navlistPanel(
                    tabPanel("Hacinamiento",
+                            h3(strong("Distribución porcentual de hacinamiento por comuna.")),
+                            h6("La situacion de hacinamiento expresa la importancia relativa de los hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados)."),
                             highchartOutput(outputId = "G_HNC"),
-                            br(),
+                            br(h6("Por su parte, los hogares con hacinamiento crítico expresan la importancia relativa de los hogares en los que hay más de tres personas por cuarto de la vivienda.")),
                             highchartOutput(outputId = "G_HC")),
                    tabPanel("Condicion de ocupacion",
                             highchartOutput(outputId = "G_Vivienda"),
@@ -289,7 +291,7 @@ server <- function(input, output) {
                 geom_text(aes(label = NBI),vjust = 2, size = 3.5)+
                 theme_bw()+
                 theme(legend.position = "none")+
-                labs(title="Porcentaje de hogares con NBI por Comuna. 2010",
+                labs(title="",
                      x="Comunas",
                      caption = "Fuente: Censo Nacional de Poblacion, hogares y viviendas (INDEC) 2010.")
                 BarrasNBI
