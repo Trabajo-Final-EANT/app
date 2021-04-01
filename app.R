@@ -31,6 +31,7 @@ NBI <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/
 Pobreza_anual <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Pobreza_anual.csv")
 Poblacion_Edad <- read_csv("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Poblacion%20por%20Edad.csv")
 Piramide <- read_csv("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/PiramidePoblacion.csv")
+Piramide$grupo_edad <- cut(x = Piramide$grupo_edad, breaks = seq(0, 100, 5))
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
 #Muestra_escuelas <- st_read("MuestraEsc.shp")
 Muestra_escuelas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/MuestraEsc.geojson")
