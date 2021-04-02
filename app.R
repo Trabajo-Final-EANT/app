@@ -54,7 +54,7 @@ Cul_x_C<-st_read("Espacios_x_Comuna.geojson")
 #Cul_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Espacios_x_Comuna.geojson")
 pal<- colorFactor(c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", "#752957"), 
                   domain = c("Bibliotecas", "Centro Cultural", "Comercios",
-                             "Esp. P\xfablicos","Esp. de Formacion", "Exhibicion"))
+                             "Esp. Publicos","Esp. de Formacion", "Exhibicion"))
 coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
 
 ##Transporte
