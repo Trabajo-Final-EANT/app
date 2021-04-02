@@ -21,7 +21,7 @@ library(gifski)
 library(htmlwidgets)
 library(reactlog)
 library(dplyr)
-
+options(scipen=10)
 
 rm(list = ls())
 
