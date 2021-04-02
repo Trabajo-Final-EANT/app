@@ -23,6 +23,7 @@ library(reactlog)
 library(dplyr)
 options(scipen=10)
 
+
 rm(list = ls())
 
 #Archivos
@@ -33,11 +34,9 @@ Poblacion_Edad <- read_csv("https://raw.githubusercontent.com/Trabajo-Final-EANT
 Piramide <- read_csv("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/PiramidePoblacion.csv")
 Piramide$grupo_edad <- cut(x = Piramide$grupo_edad, breaks = seq(0, 100, 5))
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
-Muestra_escuelas <- st_read("MuestraEsc.shp")
-#Muestra_escuelas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/MuestraEsc.geojson")
+Muestra_escuelas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/MuestraEsc.geojson")
 Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
-Hospitales_reducido <- st_read("HospitalesR.shp")
-#Hospitales_reducido <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospitalesR.geojson")
+Hospitales_reducido <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospitalesR.geojson")
 Comunas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Comunas.geojson")
 hacinamiento <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/hacinamiento.csv")
 Viviendas <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Viviendas.csv")
@@ -48,13 +47,11 @@ Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivo
 VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
 
 #Mapa cultura
-
 Mapa_Cul<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/MapaCul.geojson")
 Cul_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Espacios_x_Comuna.geojson")
-pal<- colorFactor(c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", 
-                    "#752957"), domain = c("Bibliotecas", "Centro Cultural", 
-                                           "Comercios","Esp. Publicos","Esp. de Formacion",
-                                           "Exhibicion"))
+pal<- colorFactor(c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", "#752957"), 
+                  domain = c("Bibliotecas", "Centro Cultural", "Comercios",
+                             "Esp. Publicos","Esp. de Formacion", "Exhibicion"))
 coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
 
 ##Transporte
@@ -97,7 +94,7 @@ icons_Escuela <- awesomeIcons(
 
 labels_esc <- sprintf("<strong>%s</strong><br/>%s  <sup></sup>",
                       Muestra_escuelas$COMUNA,
-                      Muestra_escuelas$NIVELMODAL)%>%
+                      Muestra_escuelas$NIVOF)%>%
     lapply(htmltools::HTML)
 bins <- c(0,1,2,3,4)
 pal_EEE<- colorBin(c("#6d9d37", "red", "#35aee6", "#fb8e33"), 
@@ -132,7 +129,7 @@ ui <- fluidPage(
     theme = shinytheme("united"),
     
     
-    titlePanel("Merecer la ciudad: el derecho al uso y disposicion del espacio urbano en la Ciudad Autonoma de Buenos Aires"),
+    titlePanel(strong("Merecer la ciudad: el derecho al uso y disposicion del espacio urbano en la Ciudad Autonoma de Buenos Aires")),
     
     tabsetPanel(
         tabPanel("Introduccion",
@@ -182,7 +179,7 @@ ui <- fluidPage(
         tabPanel("Indagando la poblacion",
                  navlistPanel(
                      tabPanel("Pobreza e indigencia",
-                              h4(strong("Distribución porcentual anual de Pobreza e Indigencia en la Ciudad.")),
+                              h3(strong("Distribución porcentual anual de Pobreza e Indigencia en la Ciudad.")),
                               helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
                                        Se denomina pobres a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
                               helpText("Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
@@ -193,7 +190,7 @@ ui <- fluidPage(
                               helpText("Según..."),
                               highchartOutput(outputId = "G_Pob2")),
                      tabPanel("NBI",
-                              h4(strong("Porcentaje de hogares con NBI por Comuna (2010).")),
+                              h3(strong("Porcentaje de hogares con NBI por Comuna (2010).")),
                               helpText("Los hogares y la población que poseen Necesidades Básicas Insatisfechas (NBI) presentan, al menos, uno de los siguiente indicadores de privacion:",
                               br(),
                               "Hacinamiento critico;",
@@ -204,18 +201,19 @@ ui <- fluidPage(
                               br(),
                               "Asistencia escolar (hogares con menores en edad escolar (6-12) que no asisten a la escuela);",
                               br(),
-                              "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria."),
+                              "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria.)"),
                               plotOutput(outputId = "G_NBI"),
                               helpText("En este grafico se observa que la Comuna 1 concentra la mayor cantidad de poblacion con NBI. 
                               Sin embargo, las Comunas 4, 3, y 8 poseen valores que superan la media por 5 puntos porcentuales, mostrando que es el sur de la ciudad el que se ve mayormente afectado en lo que a la satisfaccion de sus necesidades basicas respecta.",
                               br(),
                               br(),
                               "Por otra parte, cabe destacar la amplitud de los valores en un rango de 14.2 puntos porcentuales. 
-                               Las Comunas 12, 13 y 11 son las que muestran menores valores de NBI, respectivamente, evidenciando un fuerte contraste entre el norte y el sur de la ciudad. ")),
+                               Las Comunas 12, 13 y 11 son las que muestran menores valores de NBI, respectivamente, evidenciando un fuerte contraste entre el norte y el sur de la ciudad. "),
+                              br()),
                      tabPanel("Datos demograficos",
-                              h4(strong("Distribucion etaria de la poblacion de la Ciudad.")),
+                              h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
                               highchartOutput(outputId = "G_demo"),
-                              br(h5(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
+                              br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
                               plotlyOutput(outputId = "G_Pir"),
                               selectInput(inputId = "input_fecha",
                                           choices = Piramide$Año,
@@ -225,33 +223,76 @@ ui <- fluidPage(
         tabPanel("Desarrollo humano",
                  navlistPanel(
                      tabPanel("Escuelas",
-                              h4(strong("Distribucion de escuelas de la Ciudad.")),
+                              h3(strong("Distribucion de escuelas de la Ciudad.")),
                               highchartOutput(outputId = "G_Esc"),
                               helpText("Se observa que.."),
                               br(h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos."))),
                               leafletOutput(outputId = "M_Escuelas")),
                      tabPanel("Hospitales",
-                              h4(strong("Distribucion de hospitales de la Ciudad.")),
-                              highchartOutput(outputId = "G_Hosp"),
-                              helpText("Se observa que.."),
-                              br(h4(strong("Mapa de hospitales de la Ciudad, según su especialización."))),
-                              helpText("En el siguiente mapa, es posible explorar la distribucion de hospitales "),
-                              leafletOutput(outputId = "M_Hospitales")),
-                     tabPanel("Cultura",
-                              plotlyOutput((outputId= "BarrasCul")),
+                              h3(strong("Distribucion de hospitales de la Ciudad.")),
+                              helpText("El presente apartado indaga en los hospitales de la ciudad. 
+                                       Específicamente, distingue tres tipos de hospitales: de agudos, de niños y especializados.",
                               br(),
+                              br(),
+                              "Los", em("hospitales de agudos"), "brindan asistencia a la salud en clinica medica, pediatria, traumatologia, 
+                              cardiologia, dermatologia, ginecologia, obstetricia, cirugia y otras especialidades. Ademas realizan estudios complementarios 
+                              (radiologia, mamografias, tomografia, laboratorio, ecografias y otros estudios de diagnostico y prevencion de enfermedades).",
+                              br(),
+                              br(),
+                              "Por su parte, los", em("hospitales especializados"), "monovalentes brindan asistencia a la salud en diferentes especialidades: gastroenterologia; 
+                              infectologia; maternidad; odontologia; oncologia; oftalmologia; quemados; rehabilitacion psicofísica; rehabilitacion respiratoria; salud mental; y zoonosis.",
+                              br(),
+                              br(),
+                              "Finalmente, los", em("hospitales de niños"), "cuentan con atencion ambulatoria, internacion, diagnostico y tratamiento; 
+                              asi como tambien, diferentes especialidades medicas pediatricas. "),
+                              highchartOutput(outputId = "G_Hosp"),
+                              br(),
+                              helpText("El analisis de la distribucion de hospitales, muestra que la comuna 8 es la que mayor cantidad de instituciones posee. Aunque la comuna 6 cuenta con 4 hospitales, 
+                              y es seguida por la comuna 2 con 3 hospitales, llama la atención que las restantes comunas no cuenten con mas de 2 hospitales. Ademas, cabe destacar el caso de la comuna 1 
+                              que carece de este tipo de servicios."),
+                              br(h4(strong("Mapa de hospitales de la Ciudad, según su especialización."))),
+                              leafletOutput(outputId = "M_Hospitales"),
+                              helpText("En el mapa es posible explorar la distribucion de tipo de hospitales por comuna. Se encuentra que entre aquellas comunas 
+                              que poseen un unico hospital, la mayoria cuenta con hospitales de agudos, salvo las comunas 5 y 13 que tienen entre su geografía hospitales especializados.",
+                              br(),
+                              br(),
+                              "Respecto a los 3 hospitales de niños, 2 de ellos se localizan en la comuna 8 y el tercero en la comuna 2."),
+                              br()),
+                     tabPanel("Cultura",
+                              h3(strong("Distribucion de espacios culturales de la Ciudad.")),
+                              plotlyOutput((outputId= "BarrasCul")),
+                              helpText("La distribucion de espacios culturales en la ciudad muestra que la mayor concentracion se radica, marcadamente, en la comuna 1. 
+                              Seguidamente se encuentran las comunas 2, 14 y 3, sin embargo, estas poseen una cantidad notoriamente menor de comercios, 
+                              espacios de exhibicion, bibliotecas y espacios de formacion.",
+                              br()),
+                              br(h4(strong("Distribucion geografica de los espacios culturales."))),
                               leafletOutput(outputId = "MapaCul"),
                               br(),
+                              helpText("En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en el suroeste de la ciudad: 
+                              8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor minimo, teniendo en cuenta que en el marco de su territorio hay menos de 100 espacios culturales."),
+                              br(),
+                              h4(strong("Distribucion porcentual de los espacios culturales.")),
                               leafletOutput(outputId = "CoroCul"))
                  )),
         tabPanel("Vivienda",
                  navlistPanel(
                    tabPanel("Hacinamiento",
                             h3(strong("Distribución porcentual de hacinamiento por comuna.")),
-                            h5("La situacion de hacinamiento expresa la importancia relativa de los hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados)."),
+                            helpText("La situacion de", em("hacinamiento"), "expresa la importancia relativa de los hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados)."),
+                            br(),
                             highchartOutput(outputId = "G_HNC"),
-                            br(h5("Por su parte, los hogares con hacinamiento crítico expresan la importancia relativa de los hogares en los que hay más de tres personas por cuarto de la vivienda.")),
-                            highchartOutput(outputId = "G_HC")),
+                            br(),
+                            helpText("Si bien los valores mas actuales muestran que es la comuna 8 la que posee mayor porcentaje de hacinamiento, en el periodo comprendido en los ultimos diez años se observan 
+                                     altos valores en las comunas 4, 1 y 7.",
+                            br(),
+                            br(),
+                            "Asimismo, del analisis del periodo bajo estudio se desprende que las comunas 2, 13, 5, 6 y 12 presentan valores que no superan el 10% de la poblacion en condicion de hacinamiento. Estas unidades se corresponden con el 
+                            norte y el centro de la ciudad. "),
+                            hr(),
+                            helpText("Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de los hogares en los que hay más de tres personas por cuarto de la vivienda."),
+                            highchartOutput(outputId = "G_HC"),
+                            helpText("aca va lo de hacinamiento critico"),
+                            br()),
                    tabPanel("Condicion de ocupacion",
                             h3(strong("Distribución porcentual de viviendas, según condicion de ocupacion.")),
                             highchartOutput(outputId = "G_Vivienda"),
@@ -435,7 +476,7 @@ server <- function(input, output) {
             leaflet(data = Hospitales_reducido) %>% 
                 setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
                 addProviderTiles(providers$CartoDB.Positron) %>%
-                addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO)) %>%
+                addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO2)) %>%
                 addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
                 })
         
