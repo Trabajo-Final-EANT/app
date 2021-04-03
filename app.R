@@ -35,6 +35,8 @@ Piramide <- read_csv("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archi
 Piramide$grupo_edad <- cut(x = Piramide$grupo_edad, breaks = seq(0, 100, 5))
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
 Muestra_escuelas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/MuestraEsc.geojson")
+EdadEsc_x_Esc<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/EdEscxEscuelas.geojson")
+EscPal<-colorQuantile("OrRd", domain= EdadEsc_x_Esc$Prop, n=4)
 Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
 Hospitales_reducido <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospitalesR.geojson")
 Comunas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Comunas.geojson")
@@ -45,7 +47,8 @@ Regimen<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/ma
 #Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18.geojson",options = "ENCODING=WINDOWS-1252")
 Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18.geojson",options = "ENCODING=UTF-8")
 VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
-
+Precm2<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Precm2xC.geojson")
+palm2<-colorNumeric(palette="Greens", domain=Precm2$US_x_m2)
 #Mapa cultura
 Mapa_Cul<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/MapaCul.geojson")
 Cul_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Espacios_x_Comuna.geojson")
@@ -214,11 +217,12 @@ ui <- fluidPage(
                               h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
                               highchartOutput(outputId = "G_demo"),
                               br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
-                              plotlyOutput(outputId = "G_Pir"),
                               selectInput(inputId = "input_fecha",
                                           choices = Piramide$Año,
                                           label = "Seleccione año del censo",
-                                          selected = NULL))
+                                          selected = NULL)),
+                              plotlyOutput(outputId = "G_Pir")
+                              
                      )),
         tabPanel("Desarrollo humano",
                  navlistPanel(
@@ -227,7 +231,10 @@ ui <- fluidPage(
                               highchartOutput(outputId = "G_Esc"),
                               helpText("Se observa que.."),
                               br(h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos."))),
-                              leafletOutput(outputId = "M_Escuelas")),
+                              leafletOutput(outputId = "M_Escuelas"),
+                              br(h4(strong("Poblacion en edad escolar(5-19) por cantidad de escuelas"))),
+                              leafletOutput(outputId = "EdEsc_x_Esc")),
+                   
                      tabPanel("Hospitales",
                               h3(strong("Distribucion de hospitales de la Ciudad.")),
                               helpText("El presente apartado indaga en los hospitales de la ciudad. 
@@ -309,9 +316,10 @@ ui <- fluidPage(
                                         choices = Regimen18$Regimen_Tenencia,
                                         label = "Seleccion Régimen",
                                         selected = TRUE),
-                            leafletOutput(outputId = "CoroRegimen")
-                   ))
-        ),
+                            leafletOutput(outputId = "CoroRegimen")),
+                   tabPanel("Precio del metro cuadrado",
+                          leafletOutput(outputId = "P_x_m2"))
+        )),
         tabPanel("Transporte",
                  navlistPanel(
                    tabPanel("Colectivo",
@@ -461,7 +469,31 @@ server <- function(input, output) {
                           position = "bottomleft")
             Geo_esc
                 })
-        
+  
+        output$EdEsc_x_Esc<-renderLeaflet({
+          CoroEscuelas<-leaflet(EdadEsc_x_Esc)%>% 
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron)%>%
+            addPolygons(
+               fillColor = ~EscPal(Prop),
+                weight = 1,
+                opacity = 1,
+                color = "black",
+                dashArray = "3",
+                fillOpacity = 0.7,
+                highlight = highlightOptions(
+                    weight = 5,
+                    color = "#666",
+                    dashArray = "",
+                    fillOpacity = 0.7,
+                    bringToFront = TRUE))%>%
+            addLegend(pal=EscPal,
+              values = ~Prop,
+              opacity = 0.7, 
+              title = "Poblacion en edad escolar por escuela",
+              position = "bottomleft")
+CoroEscuelas
+        })
         output$G_Hosp <- renderHighchart({
             Grafico_hosp <- hchart(Hosp_Com, "bar", hcaes(x = Comuna, y = Hospitales, group = Hospitales))  %>% hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Cantidad de hospitales por comuna.")%>%
@@ -679,6 +711,33 @@ server <- function(input, output) {
                           fillOpacity = 0.7,
                           bringToFront = TRUE))
                           })
+  
+        output$P_x_m2<-renderLeaflet({
+          CoroPreciom2<-leaflet(Precm2) %>% 
+            setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
+            addProviderTiles(providers$CartoDB.Positron)%>%
+            addPolygons( 
+              fillColor = ~palm2(US_x_m2),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                  weight = 5,
+                  color = "#666",
+                  dashArray = "",
+                  fillOpacity = 0.7,
+                  bringToFront = TRUE))%>%
+            addLegend(pal=palm2, 
+              values = ~US_x_m2,
+              opacity = 0.7, 
+              title = "Precio promedio por m2",
+              labFormat = labelFormat(suffix="$"),
+              position = "bottomleft")
+
+CoroPreciom2
+         })
     
 ###############################################TRANSPORTE########################################
         output$Recorrido_Bondis<-renderLeaflet({
