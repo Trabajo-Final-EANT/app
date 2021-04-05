@@ -49,6 +49,7 @@ Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivo
 VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
 Precm2<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Precm2xC.geojson")
 palm2<-colorNumeric(palette="Greens", domain=Precm2$US_x_m2)
+
 #Mapa cultura
 Mapa_Cul<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/MapaCul.geojson")
 Cul_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Espacios_x_Comuna.geojson")
@@ -181,49 +182,94 @@ ui <- fluidPage(
                                    "-Comuna 15: Chacarita, Villa Crespo, Paternal, Villa Ortuzar, Agronomia y Parque Chas."))),
         tabPanel("Indagando la poblacion",
                  navlistPanel(
-                     tabPanel("Pobreza e indigencia",
+                   tabPanel("Datos demograficos",
+                            h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
+                            helpText("Caracterizar el grado y el tipo de acceso a la ciudad del que gozan los habitantes de la Ciudad
+                            Autonoma de Buenos Aires, vuelve ineludible una previa caracterizacion de su poblacion. Para hacerlo resulta
+                            pertinente atenerse, en un primer momento, a la descripcion de la estructura demografica de la ciudad, indagando
+                            la distribucion de la poblacion segun su edad y sexo."),
+                            highchartOutput(outputId = "G_demo"),
+                            br(),
+                            helpText("En este grafico se observan varios aspectos interesantes de destacar: el primero es que el
+                            volumen de la poblacion se ha mantenido practicamente constante desde 1947, ubicandose en valores que
+                            varian alrededor de los 2.9 millones de habitantes. Sin embargo, como segunda observacion, cabe notar
+                            que sí ha cambiado la composicion etaria de la poblacion. En este sentido, vemos que desde 1960 el rango
+                            de edad “+60” va en ascenso, mientras que los rangos de 15 a 44 años decrecen marcadamente. Manteniendose
+                            constante el tamaño absoluto de la poblacion, parece licito hablar de un envejecimiento sostenido de la poblacion de la CABA.",
+                            br(),
+                            br(),
+                            "Si bien, estas tendencias parecen revertirse segun los datos del ultimo censo, sería apresurado sacar conclusiones 
+                            al respecto. En la actualidad, o al menos de acuerdo con los datos censales de 2010, el rango etario con menor 
+                            representación es el de los menores de 15 años, mientras que en los valores más altos se observa al doble rango 15-45 
+                            y, seguido, al rango +60. "),
+                            br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
+                            plotlyOutput(outputId = "G_Pir"),
+                            selectInput(inputId = "input_fecha",
+                                        choices = Piramide$Año,
+                                        label = "Seleccione año del censo",
+                                        selected = NULL),
+                            helpText("El ejercicio de observar las piramides censo a censo, revela la dinamica de
+                            la distribucion de sexo y género en la Ciudad de Buenos Aires. Por ejemplo, la piramide de 1869
+                            muestra una poblacion altamente masculinizada producto de los flujos migratorios provenientes de Europa. 
+                            En la piramide de 2010, se encuentra una poblacion levemente feminizada, tendencia que se especifica a 
+                            mayor edad. Por otro lado, ya desde 1980 estamos en condiciones de hablar de una poblacion “muy envejecida” 
+                            puesto que el grupo mayor de 65 años, alcanza el 15% del total de la poblacion. En la actualidad este porcentaje
+                            supera el 16% del conjunto, comprobandose la tendencia al envejecimiento que fue observada en el grafico anterior.")),
+                   tabPanel("Pobreza e indigencia",
                               h3(strong("Distribución porcentual anual de Pobreza e Indigencia en la Ciudad.")),
-                              helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
-                                       Se denomina pobres a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
-                              helpText("Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
-                                       Se considera indigentes a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
+                              helpText("Para introducir el analisis propuesto, tambien es preciso contemplar el contexto socio-histórico en que se desarrollaron
+                              muchos de los indicadores estudiados. En principio, cabe considerar los procesos políticos, sociales y económicos que tuvieron
+                              lugar en las últimas décadas de la historia argentina, los cuales atravesaron la sociedad y propiciaron profundos cambios en 
+                              su estructura.",
+                              br(),
+                              br(),
+                              "Entre otras consecuencias, el proceso de reestructuracion neoliberal de la década del 90, traducido en una desregulación
+                              económica y descentralización del Estado, devino en un incremento de los índices de pobreza y marginalidad de la población
+                              (Svampa, 2005). Aunque los mecanismos de exclusión fueron diversos, es sustancial tener en cuenta el fuerte incremento de
+                              la pobreza reciente (predominante en el universo pobre desde 1995), seguida por la pobreza crónica y acompañada por los ya
+                              valores importantes de la pobreza estructural (Arakaki, 2011).",
+                              br(),
                               highchartOutput(outputId = "G_Pob"),
-                              helpText("De los valores comprendidos entre el primer trimestre del 2015 y el primero del 2019, se desprende que los mayores índices de pobreza se obtuvieron a inicios del año 2016, llegando a superar el 18%. 
-                                    Asimismo, si bien se observa una baja en los porcentajes del año 2017, es posible distinguir un aumento sostenido desde esa fecha en adelante."),
-                              helpText("Según..."),
-                              highchartOutput(outputId = "G_Pob2")),
+                              helpText("Si bien en los años siguientes existió una mejora en los indicadores de pobreza por ingreso, en ningún caso se
+                              retorno a los pisos preexistentes. En el caso de la Ciudad de Buenos Aires, en el año 2006, contaba con un 12.7% de personas
+                              pobres (EPH- INDEC, 2007). Del análisis de los datos, surge que 10 años después se registran los mayores índices de pobreza en
+                              el período comprendido entre el primer trimestre del 2015 y el primero del 2019 (llegando a superar el 18%).  Asimismo, si bien
+                              se observa una baja en los porcentajes del año 2017, es posible distinguir un aumento sostenido desde esa fecha en adelante."),
+                              highchartOutput(outputId = "G_Pob2"))),
                      tabPanel("NBI",
                               h3(strong("Porcentaje de hogares con NBI por Comuna (2010).")),
-                              helpText("Los hogares y la población que poseen Necesidades Básicas Insatisfechas (NBI) presentan, al menos, uno de los siguiente indicadores de privacion:",
-                              br(),
-                              "Hacinamiento critico;",
-                              br(),
-                              "Vivienda, siendo hogares que tienen lugar en una vivienda de tipo inconveniente (pieza de inquilinato, vivienda precaria u otro tipo);",
-                              br(),
-                              "Condiciones sanitarias (hogares que no tienen ningun tipo de retrete);",
-                              br(),
-                              "Asistencia escolar (hogares con menores en edad escolar (6-12) que no asisten a la escuela);",
-                              br(),
-                              "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria.)"),
                               plotOutput(outputId = "G_NBI"),
                               helpText("En este grafico se observa que la Comuna 1 concentra la mayor cantidad de poblacion con NBI. 
                               Sin embargo, las Comunas 4, 3, y 8 poseen valores que superan la media por 5 puntos porcentuales, mostrando que es el sur de la ciudad el que se ve mayormente afectado en lo que a la satisfaccion de sus necesidades basicas respecta.",
                               br(),
                               br(),
                               "Por otra parte, cabe destacar la amplitud de los valores en un rango de 14.2 puntos porcentuales. 
-                               Las Comunas 12, 13 y 11 son las que muestran menores valores de NBI, respectivamente, evidenciando un fuerte contraste entre el norte y el sur de la ciudad. "),
-                              br()),
-                     tabPanel("Datos demograficos",
-                              h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
-                              highchartOutput(outputId = "G_demo"),
-                              br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
-                              selectInput(inputId = "input_fecha",
-                                          choices = Piramide$Año,
-                                          label = "Seleccione año del censo",
-                                          selected = NULL)),
-                              plotlyOutput(outputId = "G_Pir")
-                              
-                     )),
+                               Las Comunas 12, 13 y 11 son las que muestran menores valores de NBI, respectivamente, evidenciando un fuerte contraste entre el norte y el sur de la ciudad."),
+                              ),
+                   tabPanel("Ficha tecnica",
+                            textOutput(outputId = "TecnicaPob"),
+                            h4(strong("Linea de pobreza e indigencia")),
+                            helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
+                            Se denomina pobres a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos.",
+                            br(),
+                            br(),
+                            "Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
+                            Se considera indigentes a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
+                            hr(),
+                            h4(strong("Necesidades Basicas Insatisfechas (NBI)")),
+                            helpText("Los hogares y la población que poseen Necesidades Básicas Insatisfechas presentan, al menos, uno de los siguiente indicadores de privacion:",
+                            br(),
+                            "Hacinamiento critico;",
+                            br(),
+                            "Vivienda, siendo hogares que tienen lugar en una vivienda de tipo inconveniente (pieza de inquilinato, vivienda precaria u otro tipo);",
+                            br(),
+                            "Condiciones sanitarias (hogares que no tienen ningun tipo de retrete);",
+                            br(),
+                            "Asistencia escolar (hogares con menores en edad escolar (6-12) que no asisten a la escuela);",
+                            br(),
+                            "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria.)")),
+                            hr()
+                   )),
         tabPanel("Desarrollo humano",
                  navlistPanel(
                      tabPanel("Escuelas",
@@ -234,7 +280,6 @@ ui <- fluidPage(
                               leafletOutput(outputId = "M_Escuelas"),
                               br(h4(strong("Poblacion en edad escolar(5-19) por cantidad de escuelas"))),
                               leafletOutput(outputId = "EdEsc_x_Esc")),
-                   
                      tabPanel("Hospitales",
                               h3(strong("Distribucion de hospitales de la Ciudad.")),
                               helpText("El presente apartado indaga en los hospitales de la ciudad. 
@@ -303,7 +348,7 @@ ui <- fluidPage(
                    tabPanel("Condicion de ocupacion",
                             h3(strong("Distribución porcentual de viviendas, según condicion de ocupacion.")),
                             highchartOutput(outputId = "G_Vivienda"),
-                            br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines mercantiles."))),
+                            br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales."))),
                             leafletOutput(outputId = "M_Vivienda")),
                    tabPanel("Regimen de Tenencia",
                             selectInput(inputId = "input_AÑO",
@@ -318,8 +363,8 @@ ui <- fluidPage(
                                         selected = TRUE),
                             leafletOutput(outputId = "CoroRegimen")),
                    tabPanel("Precio del metro cuadrado",
-                          leafletOutput(outputId = "P_x_m2"))
-        )),
+                            leafletOutput(outputId = "P_x_m2"))
+                   )),
         tabPanel("Transporte",
                  navlistPanel(
                    tabPanel("Colectivo",
@@ -356,7 +401,7 @@ ui <- fluidPage(
 
 #Server
 server <- function(input, output) {
-  #############################################################REACTIVE###################################
+#####################REACTIVE###################################
                 pir_filt <- reactive({
                     pir_filt = Piramide[Piramide$Año == input$input_fecha,]
                     pir_filt
@@ -371,14 +416,42 @@ server <- function(input, output) {
                 })
                 
 
-###################################################INTRODUCCION##############################                
+#############################INTRODUCCION##############################                
         output$Prueba <- renderText({
-                    "esto es la prueba"
+                    "prueba"
                 })
 
                 
-##################################################POBLACION##################################
-        output$G_Pob <- renderHighchart({
+##################################POBLACION##################################
+          output$G_demo <- renderHighchart({
+              G_Pob_Edad=  hchart(Poblacion_Edad, "line",
+                                      hcaes(x = Año, y= Poblacion,
+                                            group = Edad)) %>%
+                    hc_title(text = "Cantidad de Poblacion por grupo etario(1960-2010)")%>%
+                    hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (1960-2010)")%>%
+                    hc_yAxis(title = list(text = "Poblacion"),
+                             labels = list(format = "{value}")) %>%
+                    hc_credits(enabled = TRUE, text = "Fuente: Instituto Nacional de Estadisticas y Censos", style = list(fontSize = "12px"))%>%
+                    hc_add_theme(hc_theme_ffx())
+                })
+                
+          output$G_Pir <- renderPlotly({
+            Pir <- ggplot(pir_filt(), mapping=aes(x= grupo_edad, y= Poblacion, fill=sexo))+
+                    geom_col(alpha=.7)+
+                    labs(title="",
+                         x="",
+                         y="Cantidad de Poblacion",
+                         caption="Fuente: Instituto Nacional de Estadisticas y Censos")+
+                    scale_fill_manual(values=c("#561759","#099CDB"))+
+                    theme(legend.position = "right",
+                          strip.text = element_text(size = 14, face = "bold"))+
+                    coord_flip()+
+                    theme_classic()
+                  ggplotly(Pir)
+                })
+                
+                
+         output$G_Pob <- renderHighchart({
             Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% 
                 hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Personas en situacion de Pobreza e Indigencia, por año y trimestre.")%>%
@@ -415,33 +488,10 @@ server <- function(input, output) {
                      caption = "Fuente: Censo Nacional de Poblacion, hogares y viviendas (INDEC) 2010.")
                 BarrasNBI
                 })
-        
-        output$G_demo <- renderHighchart({
-            G_Pob_Edad=  hchart(Poblacion_Edad, "line",
-                                hcaes(x = Año, y= Poblacion,
-                                      group = Edad)) %>%
-                hc_title(text = "Cantidad de Poblacion por grupo etario(1960-2010)")%>%
-                hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (1960-2010)")%>%
-                hc_yAxis(title = list(text = "Poblacion"),
-                         labels = list(format = "{value}")) %>%
-                hc_credits(enabled = TRUE, text = "Fuente: Instituto Nacional de Estadisticas y Censos", style = list(fontSize = "12px"))%>%
-                hc_add_theme(hc_theme_ffx())
-                })
-        
-        output$G_Pir <- renderPlotly({
-            Pir <- ggplot(pir_filt(), mapping=aes(x= grupo_edad, y= Poblacion, fill=sexo))+
-                geom_col(alpha=.7)+
-                labs(title="",
-                     x="",
-                     y="Cantidad de Poblacion",
-                     caption="Fuente: Instituto Nacional de Estadisticas y Censos")+
-                scale_fill_manual(values=c("#561759","#099CDB"))+
-                theme(legend.position = "right",
-                      strip.text = element_text(size = 14, face = "bold"))+
-                coord_flip()+
-                theme_classic()
-                ggplotly(Pir)
-                })
+        output$TecnicaPob <- renderText({
+          ""
+           })
+
 
 #######################################DESARROLLO HUMANO###########################################
         output$G_Esc <- renderHighchart({
@@ -469,31 +519,32 @@ server <- function(input, output) {
                           position = "bottomleft")
             Geo_esc
                 })
-  
+
         output$EdEsc_x_Esc<-renderLeaflet({
           CoroEscuelas<-leaflet(EdadEsc_x_Esc)%>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-               fillColor = ~EscPal(Prop),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~EscPal(Prop),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal=EscPal,
-              values = ~Prop,
-              opacity = 0.7, 
-              title = "Poblacion en edad escolar por escuela",
-              position = "bottomleft")
-CoroEscuelas
-        })
+                      values = ~Prop,
+                      opacity = 0.7, 
+                      title = "Poblacion en edad escolar por escuela",
+                      position = "bottomleft")
+          CoroEscuelas
+          })                
+        
         output$G_Hosp <- renderHighchart({
             Grafico_hosp <- hchart(Hosp_Com, "bar", hcaes(x = Comuna, y = Hospitales, group = Hospitales))  %>% hc_add_theme(hc_theme_gridlight()) %>%
                 hc_title(text = "Cantidad de hospitales por comuna.")%>%
@@ -609,7 +660,7 @@ CoroEscuelas
             CoropCul
             })
         
-########################################VIVIENDA###################################################
+#############VIVIENDA###################################################
         
         output$G_Vivienda <- renderHighchart({
           Grafico_viv2 <- highchart() %>%
@@ -711,7 +762,6 @@ CoroEscuelas
                           fillOpacity = 0.7,
                           bringToFront = TRUE))
                           })
-  
         output$P_x_m2<-renderLeaflet({
           CoroPreciom2<-leaflet(Precm2) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
@@ -724,22 +774,22 @@ CoroEscuelas
               dashArray = "3",
               fillOpacity = 0.7,
               highlight = highlightOptions(
-                  weight = 5,
-                  color = "#666",
-                  dashArray = "",
-                  fillOpacity = 0.7,
-                  bringToFront = TRUE))%>%
+                weight = 5,
+                color = "#666",
+                dashArray = "",
+                fillOpacity = 0.7,
+                bringToFront = TRUE))%>%
             addLegend(pal=palm2, 
-              values = ~US_x_m2,
-              opacity = 0.7, 
-              title = "Precio promedio por m2",
-              labFormat = labelFormat(suffix="$"),
-              position = "bottomleft")
-
-CoroPreciom2
-         })
+                      values = ~US_x_m2,
+                      opacity = 0.7, 
+                      title = "Precio promedio por m2",
+                      labFormat = labelFormat(suffix="$"),
+                      position = "bottomleft")
+          
+          CoroPreciom2
+          })
     
-###############################################TRANSPORTE########################################
+#####################TRANSPORTE########################################
         output$Recorrido_Bondis<-renderLeaflet({
           MapaBondis<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
