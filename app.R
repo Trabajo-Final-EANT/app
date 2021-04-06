@@ -185,9 +185,9 @@ ui <- fluidPage(
                  navlistPanel(
                    tabPanel("Datos demograficos",
                             h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
-                            helpText("Caracterizar el grado y el tipo de acceso a la ciudad del que gozan los habitantes de la Ciudad
+                            helpText("Indagar el grado y el tipo de acceso a la ciudad del que gozan los habitantes de la Ciudad
                             Autonoma de Buenos Aires, vuelve ineludible una previa caracterizacion de su poblacion. Para hacerlo resulta
-                            pertinente atenerse, en un primer momento, a la descripcion de la estructura demografica de la ciudad, indagando
+                            pertinente atenerse, en un primer momento, a la descripcion de la estructura demografica de la ciudad, explorando
                             la distribucion de la poblacion segun su edad y sexo."),
                             highchartOutput(outputId = "G_demo"),
                             br(),
@@ -213,7 +213,7 @@ ui <- fluidPage(
                             la distribucion de sexo y género en la Ciudad de Buenos Aires. Por ejemplo, la piramide de 1869
                             muestra una poblacion altamente masculinizada producto de los flujos migratorios provenientes de Europa. 
                             En la piramide de 2010, se encuentra una poblacion levemente feminizada, tendencia que se especifica a 
-                            mayor edad. Por otro lado, ya desde 1980 estamos en condiciones de hablar de una poblacion “muy envejecida” 
+                            mayor edad. Por otro lado, ya desde 1980 es posible hablar de una poblacion “muy envejecida” 
                             puesto que el grupo mayor de 65 años, alcanza el 15% del total de la poblacion. En la actualidad este porcentaje
                             supera el 16% del conjunto, comprobandose la tendencia al envejecimiento que fue observada en el grafico anterior.")),
                    tabPanel("Pobreza e indigencia",
@@ -232,7 +232,7 @@ ui <- fluidPage(
                               br(),
                               highchartOutput(outputId = "G_Pob"),
                               helpText("Si bien en los años siguientes existió una mejora en los indicadores de pobreza por ingreso, en ningún caso se
-                              retorno a los pisos preexistentes. En el caso de la Ciudad de Buenos Aires, en el año 2006, contaba con un 12.7% de personas
+                              retorno a los pisos preexistentes. La Ciudad de Buenos Aires, en el año 2006, contaba con un 12.7% de personas
                               pobres (EPH- INDEC, 2007). Del análisis de los datos, surge que 10 años después se registran los mayores índices de pobreza en
                               el período comprendido entre el primer trimestre del 2015 y el primero del 2019 (llegando a superar el 18%).  Asimismo, si bien
                               se observa una baja en los porcentajes del año 2017, es posible distinguir un aumento sostenido desde esa fecha en adelante."),
@@ -368,7 +368,7 @@ ui <- fluidPage(
                               es una forma social dentro de la cual se expresa lo diverso, lo divergente. La importancia de relevar la oferta cultural de una
                               ciudad cobra sentido en esta doble definicion puesto que la cultura se ubica entre estas dos dimensiones: aquello que 
                               llamamos", em("oferta"), "implica un conjunto de bienes, servicios, establecimientos e instituciones localizados a lo ancho de la ciudad; 
-                              lo cultural, por su parte expresa los rasgos distintivos de la comunidad que la produce.",
+                              lo cultural, por su parte, expresa los rasgos distintivos de la comunidad que la produce.",
                               br(),
                               br(),
                               "En este sentido, la concentracion de la oferta en pocos espacios homogeniza la cultura, a la par que dificulta el acceso a los ciudadanos
@@ -382,7 +382,7 @@ ui <- fluidPage(
                               br(),
                               br(),
                               "En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en la periferia
-                              sudoeste de la ciudad: 8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor mínimo, teniendo en cuenta que en el marco
+                              sudoeste de la ciudad: 8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor mínimo, dado que en el marco
                               de su territorio hay menos de 20 espacios culturales."),
                               br(),
                               h4(strong("Distribucion geografica de los espacios culturales.")),
@@ -420,7 +420,7 @@ ui <- fluidPage(
                  navlistPanel(
                    tabPanel("Hacinamiento",
                             h3(strong("Distribución porcentual de hacinamiento por comuna.")),
-                            helpText("La situacion de", em("hacinamiento"), "expresa la importancia relativa de los hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados)."),
+                            helpText(""),
                             br(),
                             highchartOutput(outputId = "G_HNC"),
                             br(),
@@ -431,7 +431,6 @@ ui <- fluidPage(
                             "Asimismo, del analisis del periodo bajo estudio se desprende que las comunas 2, 13, 5, 6 y 12 presentan valores que no superan el 10% de la poblacion en condicion de hacinamiento. Estas unidades se corresponden con el 
                             norte y el centro de la ciudad. "),
                             hr(),
-                            helpText("Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de los hogares en los que hay más de tres personas por cuarto de la vivienda."),
                             highchartOutput(outputId = "G_HC"),
                             helpText("aca va lo de hacinamiento critico"),
                             br()),
@@ -441,33 +440,56 @@ ui <- fluidPage(
                             br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales."))),
                             leafletOutput(outputId = "M_Vivienda")),
                    tabPanel("Regimen de Tenencia",
+                            h3(strong("Distribución porcentual de hogares, segun regimen de tenencia de la vivienda.")),
+                            br(h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia."))),
                             selectInput(inputId = "input_AÑO",
                                         choices = Regimen$año,
                                         label = "Seleccione año",
                                         selected = TRUE),
                             plotOutput(outputId= "BarrasRegimen"),
                             br(),
+                            br(h4(strong("Distribucion porcentual de hogares, segun tipo de regimen de tenencia."))),
                             selectInput(inputId = "input_Regimen",
                                         choices = Regimen18$Regimen_Tenencia,
-                                        label = "Seleccion Régimen",
+                                        label = "Seleccione Régimen",
                                         selected = TRUE),
                             leafletOutput(outputId = "CoroRegimen")),
                    tabPanel("Precio del metro cuadrado",
-                            leafletOutput(outputId = "P_x_m2"))
+                            h3(strong("Valor del Metro Cuadrado en la Ciudad")),
+                            helpText("aca desarrollar"),
+                            leafletOutput(outputId = "P_x_m2")),
+                   tabPanel("Ficha tecnica",
+                            textOutput(outputId = "TecnicaViv"),
+                            h4(strong("Hacinamiento")),
+                            helpText("La situacion de", em("hacinamiento"), "expresa la importancia relativa de los 
+                            hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados).",
+                            br(),
+                            br(),
+                            "Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de 
+                            los hogares en los que hay más de tres personas por cuarto de la vivienda."),
+                            hr(),
+                            h4(strong("Regimen de tenencia")),
+                            helpText("explicar"))
                    )),
         tabPanel("Transporte",
                  navlistPanel(
                    tabPanel("Colectivo",
+                            h3(strong("Distribución de redes de colectivos en la ciudad.")),
                             leafletOutput(outputId = "Recorrido_Bondis"),
                             br(),
+                            br(h4(strong("Distribucion porcentual de paradas, ponderada por area de las comunas."))),
                             leafletOutput(outputId= "Coro_Bondis"),
                             br(),
+                            br(h4(strong("Cantidad de paradas por comuna."))),
                             plotOutput(outputId = "Distr_Bondis")),
                    
                    tabPanel("Subterraneo/Metro",
+                            h3(strong("Distribución de redes de subtes en la ciudad.")),
                             leafletOutput(outputId = "Recorrido_Subte"),
                             br(),
+                            br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
                             leafletOutput(outputId = "Coro_Subte"),
+                            br(h4(strong("Cantidad de estaciones por comuna."))),
                             plotOutput(outputId = "Distr_Subte")),
                    
                    tabPanel("Tren/Ferrocarril",
@@ -882,6 +904,11 @@ server <- function(input, output) {
           
           CoroPreciom2
           })
+        
+        output$TecnicaViv <- renderText({
+          ""
+        })
+        
     
 #####################TRANSPORTE########################################
         output$Recorrido_Bondis<-renderLeaflet({
@@ -921,7 +948,7 @@ server <- function(input, output) {
             addLegend(pal=palColec, 
                       values = ~Colecx100,
                       opacity = 0.7, 
-                      title = "Porcentaje del total de Paradas ponderado por Area de la comuna",
+                      title = "Porcentaje del total de Paradas",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
@@ -938,7 +965,7 @@ server <- function(input, output) {
                      color="black")+
             geom_text(aes(label = Colectivo), 
                       vjust = 2, size = 3.5)+
-            labs(title ="Paradas de Colectivo por Comuna",
+            labs(title ="",
                  x="Comuna",
                  y="Cantidad de Paradas",
                  caption = "Fuente: https://data.buenosaires.gob.ar")+
@@ -986,7 +1013,7 @@ server <- function(input, output) {
                       values = ~Subtex100,
                       opacity = 0.7, 
                       title = "Porcentaje del total de 
-            Estaciones de Subte ponderado por Area de la comuna",
+            Estaciones",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers( ~lat,~long, label =  ~as.character(Comuna), 
@@ -997,14 +1024,14 @@ server <- function(input, output) {
           })
         
         output$Distr_Subte<-renderPlot({
-          BarrasSubte<-ggplot(TranspBarras,mapping = aes(
+          BarrasSubte<-ggplot(Transp_x_C,mapping = aes(
             reorder(Comuna, Subte),
             Subte)) +
             geom_col(fill="#eb34d5",
                      color="black")+
             geom_text(aes(label = Subte), 
                       vjust = 2.1, size = 3.5)+
-            labs(title = "Estaciones de Subte por Comuna",
+            labs(title = "",
                  x="Comuna",
                  y="Cantidad de Estaciones",
                  caption = "Fuente: https://data.buenosaires.gob.ar")+
@@ -1060,7 +1087,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Trenes<-renderPlot({
-          BarrasTrenes<-ggplot(TranspBarras,mapping = aes(
+          BarrasTrenes<-ggplot(Transp_x_C,mapping = aes(
             reorder(Comuna, Tren),
             Tren)) +
             geom_col(fill="#30c9fc",
@@ -1151,7 +1178,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Bicicletas<-renderPlot({
-          BarrasBici<-ggplot(TranspBarras)+
+          BarrasBici<-ggplot(Transp_x_C)+
             geom_col(mapping = aes(
               x=reorder(Comuna,Ciclovias),
               y=Ciclovias),
