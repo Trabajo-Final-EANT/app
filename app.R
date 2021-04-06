@@ -60,7 +60,9 @@ coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
 
 ##Transporte
 Red_Bondis<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/colectivos.geojson")
-Red_Subte<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Subte.geojson?token=AST4NRQRQ7S2YLNN4HNO5ZLAJ6M4S")
+Red_SbtPrem<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Subte.geojson?token=AST4NRQRQ7S2YLNN4HNO5ZLAJ6M4S")
+PaleSubt<-c("#18cccc","#eb0909","#233aa8","#02db2e","#c618cc","#f6ff00","#ffdd00")
+SubtePal<-colorFactor(PaleSubt,Subte_Prem$linea)
 Acce_Subte<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Accesubte.csv",encoding = "UTF-8")
 Red_Tren<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Trenes.geojson")
 Red_CicloV<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Ciclovias.geojson")
@@ -483,9 +485,9 @@ ui <- fluidPage(
                             br(h4(strong("Cantidad de paradas por comuna."))),
                             plotOutput(outputId = "Distr_Bondis")),
                    
-                   tabPanel("Subterraneo/Metro",
-                            h3(strong("Distribución de redes de subtes en la ciudad.")),
-                            leafletOutput(outputId = "Recorrido_Subte"),
+                   tabPanel("Subterraneo y Premetro",
+                            h3(strong("Redes de subte y premetro en la ciudad.")),
+                            leafletOutput(outputId = "Recorrido_Subte_Prem"),
                             br(),
                             br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
                             leafletOutput(outputId = "Coro_Subte"),
@@ -974,13 +976,12 @@ server <- function(input, output) {
           })
         
 #SUBTE
-        output$Recorrido_Subte<-renderLeaflet({
+        output$Recorrido_Subte_Prem<-renderLeaflet({
           MapaSubte<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%
-            addPolylines(data = Red_Subte , color ="#eb34d5",  opacity = 2, weight = 3)%>%
+            addPolylines(data = Red_SbtPrem , color =~SubtePal(linea),  opacity = 2, weight = 3)%>%
             addMarkers(data= Acce_Subte, ~long, ~lat, icon = SillaDeRuedas)%>%
-            addLegend(position = "topright", colors = c("#eb34d5"), labels = c("Subte"))%>%
             addPolygons(data=Comunas,
                         color = "#444444",
                         weight = 1,
