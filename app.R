@@ -60,7 +60,7 @@ coroPal<-colorNumeric(palette = "PuRd", domain= Cul_x_C$relativo)
 
 ##Transporte
 Red_Bondis<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/colectivos.geojson")
-Red_SbtPrem<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Subte.geojson?token=AST4NRQRQ7S2YLNN4HNO5ZLAJ6M4S")
+Red_SbtPrem<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Subte_Prem.geojson")
 PaleSubt<-c("#18cccc","#eb0909","#233aa8","#02db2e","#c618cc","#f6ff00","#ffdd00")
 SubtePal<-colorFactor(PaleSubt,Subte_Prem$linea)
 Acce_Subte<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Accesubte.csv",encoding = "UTF-8")
