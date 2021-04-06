@@ -36,7 +36,7 @@ Piramide$grupo_edad <- cut(x = Piramide$grupo_edad, breaks = seq(0, 100, 5))
 Esc_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/EscCom.csv")
 Muestra_escuelas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/MuestraEsc.geojson")
 EdadEsc_x_Esc<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/EdEscxEscuelas.geojson")
-EscPal<-colorNumeric("OrRd", domain= PEE_X_Esc$Prop)
+EscPal<-colorQuantile("OrRd", domain= EdadEsc_x_Esc$Prop, n=4)
 Hosp_Com <- read_csv("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospCom.csv")
 Hospitales_reducido <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/HospitalesR.geojson")
 Comunas <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Comunas.geojson")
@@ -238,22 +238,32 @@ ui <- fluidPage(
                               highchartOutput(outputId = "G_Pob2"))),
                      tabPanel("NBI",
                               h3(strong("Porcentaje de hogares con NBI por Comuna (2010).")),
+                              helpText("En lo que respecta a la pobreza medida por NBI, presento oscilaciones a nivel nacional que respondieron a los 
+                              cambios estructurales propiciados por las políticas neoliberales. En el período comprendido entre 1998-2003, la población
+                              bajo esta condición superó el 10%; sin embargo, el 90% de estos hogares lo hicieron por el incumplimiento de sólo un 
+                              indicador (generalmente, el de hacinamiento o la capacidad de subsistencia) (Arikaki, 2011).",
+                              br(),
+                              br(),
+                              "En el ámbito de la ciudad de Buenos Aires, en el año 2001, la población que mayormente se vió afectada por esta condición 
+                              se ubicaba en la zona sur, donde se registraron comunas con más del 15% afectado por NBI, llegando incluso -en un sector de
+                              la comuna 8- a superar el 20% (DGEyC, 2001). Esta relación asimétrica entre lo que sucede en el sur de la ciudad y aquello que
+                              sucede en el norte (donde el registro de NBI no superó el 10%); se modifica en los datos del 2010."),
                               plotOutput(outputId = "G_NBI"),
-                              helpText("En este grafico se observa que la Comuna 1 concentra la mayor cantidad de poblacion con NBI. 
-                              Sin embargo, las Comunas 4, 3, y 8 poseen valores que superan la media por 5 puntos porcentuales, mostrando que es el sur de la ciudad el que se ve mayormente afectado en lo que a la satisfaccion de sus necesidades basicas respecta.",
-                              br(),
-                              br(),
-                              "Por otra parte, cabe destacar la amplitud de los valores en un rango de 14.2 puntos porcentuales. 
-                               Las Comunas 12, 13 y 11 son las que muestran menores valores de NBI, respectivamente, evidenciando un fuerte contraste entre el norte y el sur de la ciudad."),
-                              ),
+                              helpText("En el gráfico se observa que aunque las comunas 4, 3  y 8 tuvieron valores que superaron la media por 5 
+                              puntos porcentuales, fue la comuna 1 la que concentró mayor cantidad de población con NBI. Aun así, se sostuvo el rasgo distinguido 
+                              entre la heterogeneidad de oportunidades de vida a las que acceden los dos extremos de la ciudad, comprobandose en la amplitud del 
+                              rango de valores que fue de 14.2 puntos porcentuales. En este orden de ideas, se observa que fueron las comunas 12, 13 y 11 las que 
+                              registraron menor cantidad de población con NBI, respectivamente. "),
+                              hr()),
                    tabPanel("Ficha tecnica",
                             textOutput(outputId = "TecnicaPob"),
-                            h4(strong("Linea de pobreza e indigencia")),
+                            h4(strong("Linea de pobreza.")),
                             helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
                             Se denomina pobres a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos.",
-                            br(),
-                            br(),
-                            "Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
+                            br()),
+                            hr(),
+                            h4(strong("Linea de indigencia.")),
+                            helpText("Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
                             Se considera indigentes a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
                             hr(),
                             h4(strong("Necesidades Basicas Insatisfechas (NBI)")),
@@ -274,16 +284,122 @@ ui <- fluidPage(
                  navlistPanel(
                      tabPanel("Escuelas",
                               h3(strong("Distribucion de escuelas de la Ciudad.")),
+                              helpText("El orden impuesto en los 90 se relacionó con una", em("modernización excluyente"), "gestando sus bases en la dualización de la 
+                              sociedad y la economía. En dicho marco, se puso en marcha una reducción del gasto público que conllevó la descentralización administrativa 
+                              y el traslado de competencias nacionales a los niveles provinciales y municipales (Svampa, 2005). Tal es el caso de la educación y 
+                              los servicios de salud.",
+                              br(),
+                              br(),
+                              "En este sentido, si bien el proceso de privatización de la educación registraba valores en alza desde 1940, estos se vieron reforzados a 
+                              partir de la citada reestructuración y, específicamente, el caso de la ciudad de Buenos Aires fue un epicentro de la cuestión (Judzik, 
+                              Moschetti, 2016). A modo de ejemplo, basta considerar que en el año 2014 el 52% de la población de alumnos asistía a escuelas de gestión 
+                              privada (DiNIECE, 2014).",
+                              br(),
+                              br(),
+                              "El siguiente gráfico muestra la distribución de escuelas por comuna en el año 2020 e incluye establecimientos públicos y privados. 
+                              La comuna 4 es la que mayor cantidad de escuelas posee, seguida por la comuna 1. En paralelo, son las comunas 2,6 y 9, respectivamente, 
+                              las que registran los valores más bajos en cantidad de centros educativos. El resto de las comunas posee una cantidad poco heterogénea, 
+                              que varía entre los 170 y 220 establecimientos."),
                               highchartOutput(outputId = "G_Esc"),
-                              helpText("Se observa que.."),
-                              br(h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos."))),
+                              br(),
+                              h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos.")),
+                              helpText("Por su parte, el mapa expone la distribución geográfica de un subconjunto de escuelas y la cantidad de niveles que cada una de 
+                              ellas ofrece. A simple vista, se puede observar que la mayor parte de los establecimientos cuenta con sólo un nivel educativo, 
+                              seguido por centros que poseen 2 o 3 niveles. Los establecimientos que ofrecen los 4 niveles (inicial, primario, secundario y 
+                              superior) son minoría, teniendo una presencia marcadamente escasa en la zona sur de la ciudad. "),
                               leafletOutput(outputId = "M_Escuelas"),
-                              br(h4(strong("Poblacion en edad escolar(5-19) por cantidad de escuelas"))),
-                              leafletOutput(outputId = "EdEsc_x_Esc")),
+                              br(),
+                              helpText("Aunque los datos recabados son un punto de partida interesante para explorar las condiciones de acceso a la educación en 
+                              la ciudad, considerando los procesos de polarización creciente y la heterogeneidad de las características socioeconómicas de la población
+                              que integran las comunas, sería pertinente indagar -al interior de cada unidad territorial-  la matrícula registrada en las escuelas de 
+                              gestión pública y de gestión privada (a modo de ejemplo, cabe tener en cuenta el caso de la comuna 1 que integra a los asentamientos 
+                              informales ‘Villa 31’, ‘Villa 31bis’, ‘Barrio General San Martín’ y ‘Villa Rodrigo Bueno’, y a los barrios de Puerto Madero y Retiro). 
+                              Si bien este análisis excede los límites del presente trabajo, no deja de ser una arista necesaria de contemplar para ampliar el 
+                              conocimiento de la estructura social, económica y educativa de la ciudad."),
+                              h4(strong("Poblacion en edad escolar (5-19) por cantidad de escuelas")),
+                              leafletOutput(outputId = "EdEsc_x_Esc"),
+                              br(),
+                              hr()),
                      tabPanel("Hospitales",
                               h3(strong("Distribucion de hospitales de la Ciudad.")),
-                              helpText("El presente apartado indaga en los hospitales de la ciudad. 
-                                       Específicamente, distingue tres tipos de hospitales: de agudos, de niños y especializados.",
+                              helpText("A diferencia de los procesos mencionados con antelación, la descentralización de los servicios de salud logró que 11 
+                              establecimientos nacionales -muchos de ellos planeados a escala nacional- fueran transferidos a la Ciudad de Buenos Aires 
+                              (Stolkiner, 2003). De tal modo, en 2002, el sector estatal de la ciudad contaba con 2,91 camas cada mil habitantes (DGEyC, 2002). 
+                              Sin embargo, según la investigación realizada por Stolkiner en el año 2003, muchas de las personas que hacían uso de los servicios 
+                              de salud de la ciudad al momento del estudio provenían del primer y del segundo cordón del conurbano y, en términos porcentuales, 
+                              más del 45% eran indigentes y más del 25% eran pobres. Es decir, la descentralización propició un traslado de la población más 
+                              vulnerada a los hospitales de la ciudad, dificultando su acceso y agregando el costo del traslado.",
+                              br(),
+                              br(),
+                              "Siguiendo esta línea, del análisis de los datos de hospitales de la ciudad al año 2019, surge que la mayoría se encuentran situados 
+                              en la comuna 4 que posee 13 unidades. Si bien esta es una de las que registra mayores valores de NBI, es preciso destacar que las 
+                              restantes comunas con un gran porcentaje de población bajo esta condición cuentan con una notable cantidad inferior de hospitales: 
+                              la comuna 3 posee 2 hospitales, la comuna 8 posee uno y la comuna 1 -valor máximo de NBI- no posee ninguno."),
+                              highchartOutput(outputId = "G_Hosp"),
+                              helpText("El analisis de la distribucion de hospitales, muestra que la comuna 8 es la que mayor cantidad de instituciones posee. 
+                              Aunque la comuna 6 cuenta con 4 hospitales, y es seguida por la comuna 2 con 3 hospitales, llama la atención que las restantes 
+                              comunas no cuenten con mas de 2 hospitales. Ademas, cabe destacar el caso de la comuna 1 que directamente carece de servicios 
+                              de este tipo. "),
+                              br(),
+                              h4(strong("Mapa de hospitales de la Ciudad, según su especialización.")),
+                              leafletOutput(outputId = "M_Hospitales"),
+                              helpText("En el  mapa se evidencia la distribución de hospitales públicos de la ciudad, según su tipo: de agudos, de niños
+                              y especializados. Se encuentra que entre aquellas comunas que poseen un único hospital, la mayoría cuenta con hospitales de 
+                              agudos, salvo las comunas 5 y 13 que tienen entre su geografía hospitales especializados.  
+                              Respecto a los 3 hospitales de niños, 2 de ellos se localizan en la comuna 8 y el tercero en la comuna 2.",
+                              br(),
+                              br(),
+                              "Llama la atención la heterogeneidad en la distribución y concentración geográfica de las unidades hospitalarias, puesto que ello
+                              impacta en las condiciones de acceso a los servicios de salud y las vuelve poco equitativas. Es decir, en tanto la localización de
+                              la oferta urbana de servicios se vincula con la posibilidad de ejercer derechos sobre la ciudad, la falta de integración de los servicios
+                              de salud en distintas zonas del tejido urbano no deja de constituir un factor de desigualdad para quienes viven y habitan la ciudad.",
+                              br(),
+                              br(),
+                              "Asimismo, la distribución de los hospitales muestra cómo la configuración territorial de la ciudad constituye en sí misma un 
+                              mecanismo de desigualdad, en la medida en que la localización del servicio configura su nivel de accesibilidad. Nuevamente, el 
+                              análisis incipiente de esta cuestión, da cuenta de la importancia de indagar en otras variables de pertinencia en futuras 
+                              investigaciones: población que asiste a los hospitales, capacidad de atención, infraestructura disponible, entre otras. "),
+                              hr()),
+                     tabPanel("Cultura",
+                              h3(strong("Distribucion de espacios culturales de la Ciudad.")),
+                              helpText("Como se dijo en la introduccion, este trabajo entiende a la ciudad como una entidad doble: por un lado, la ciudad
+                              es una realidad practico-sensible, un conjunto amplio de objetos dispuestos en un espacio reducido. Por el otro, la ciudad
+                              es una forma social dentro de la cual se expresa lo diverso, lo divergente. La importancia de relevar la oferta cultural de una
+                              ciudad cobra sentido en esta doble definicion puesto que la cultura se ubica entre estas dos dimensiones: aquello que 
+                              llamamos", em("oferta"), "implica un conjunto de bienes, servicios, establecimientos e instituciones localizados a lo ancho de la ciudad; 
+                              lo cultural, por su parte expresa los rasgos distintivos de la comunidad que la produce.",
+                              br(),
+                              br(),
+                              "En este sentido, la concentracion de la oferta en pocos espacios homogeniza la cultura, a la par que dificulta el acceso a los ciudadanos
+                              más alejados de esos espacios. Es por esto que el presente apartado releva la distribucion geografica de la oferta cultural. 
+                              Por ultimo, y teniendo en cuenta que el acceso a un bien urbano cualquiera, no solo tiene condicionantes geograficos sino tambien 
+                              monetarios o institucionales, se ofrece una clasificación de estos espacios segun su criterio de acceso."),
+                              plotlyOutput((outputId= "BarrasCul")),
+                              helpText("La distribucion de espacios culturales en la ciudad muestra que la mayor concentracion se radica, marcadamente, en la comuna 1. 
+                              Seguidamente se encuentran las comunas 2, 14 y 3, sin embargo, estas poseen una cantidad notoriamente menor de comercios, 
+                              espacios de exhibicion, bibliotecas y espacios de formacion.",
+                              br(),
+                              br(),
+                              "En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en la periferia
+                              sudoeste de la ciudad: 8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor mínimo, teniendo en cuenta que en el marco
+                              de su territorio hay menos de 20 espacios culturales."),
+                              br(),
+                              h4(strong("Distribucion geografica de los espacios culturales.")),
+                              leafletOutput(outputId = "MapaCul"),
+                              br(),
+                              helpText("Se ve entonces que la distribucion cultural presenta una marcada dinamica centro-periferia que deja excluidas del acceso
+                              a la oferta cultural a las comunas 7, 8, 9, 10, 11 y 12. Por otro lado, en casi todas la comunas el tipo de espacio cultural 
+                              “Comercio” (que engloba ferias, librerias, bares y disquerías) predomina. Mientras tanto, escasean los Espacios Públicos 
+                              (monumentos, calesitas, sitios historicos) -con la notable excepción de la comuna 2-, donde son mayoria. Finalmente, el tipo de 
+                              espacio más subrepresentado son los Espacios de Formacion (que incluyen escuelas tecnicas y artisticas, talleres e institutos de 
+                              arte, universidades publicas, etc.)."),
+                              br(),
+                              h4(strong("Distribucion porcentual de los espacios culturales.")),
+                              leafletOutput(outputId = "CoroCul")),
+                     tabPanel("Ficha tecnica",
+                              h4(strong("Tipos de hospitales.")),
+                              textOutput(outputId = "TecnicaDes"),
+                              helpText("Los hospitales de la Ciudad Autonoma de Buenos Aires comprenden tres tipos de hospitales: de agudos, de niños y especializados.",
                               br(),
                               br(),
                               "Los", em("hospitales de agudos"), "brindan asistencia a la salud en clinica medica, pediatria, traumatologia, 
@@ -297,34 +413,7 @@ ui <- fluidPage(
                               br(),
                               "Finalmente, los", em("hospitales de niños"), "cuentan con atencion ambulatoria, internacion, diagnostico y tratamiento; 
                               asi como tambien, diferentes especialidades medicas pediatricas. "),
-                              highchartOutput(outputId = "G_Hosp"),
-                              br(),
-                              helpText("El analisis de la distribucion de hospitales, muestra que la comuna 8 es la que mayor cantidad de instituciones posee. Aunque la comuna 6 cuenta con 4 hospitales, 
-                              y es seguida por la comuna 2 con 3 hospitales, llama la atención que las restantes comunas no cuenten con mas de 2 hospitales. Ademas, cabe destacar el caso de la comuna 1 
-                              que carece de este tipo de servicios."),
-                              br(h4(strong("Mapa de hospitales de la Ciudad, según su especialización."))),
-                              leafletOutput(outputId = "M_Hospitales"),
-                              helpText("En el mapa es posible explorar la distribucion de tipo de hospitales por comuna. Se encuentra que entre aquellas comunas 
-                              que poseen un unico hospital, la mayoria cuenta con hospitales de agudos, salvo las comunas 5 y 13 que tienen entre su geografía hospitales especializados.",
-                              br(),
-                              br(),
-                              "Respecto a los 3 hospitales de niños, 2 de ellos se localizan en la comuna 8 y el tercero en la comuna 2."),
-                              br()),
-                     tabPanel("Cultura",
-                              h3(strong("Distribucion de espacios culturales de la Ciudad.")),
-                              plotlyOutput((outputId= "BarrasCul")),
-                              helpText("La distribucion de espacios culturales en la ciudad muestra que la mayor concentracion se radica, marcadamente, en la comuna 1. 
-                              Seguidamente se encuentran las comunas 2, 14 y 3, sin embargo, estas poseen una cantidad notoriamente menor de comercios, 
-                              espacios de exhibicion, bibliotecas y espacios de formacion.",
-                              br()),
-                              br(h4(strong("Distribucion geografica de los espacios culturales."))),
-                              leafletOutput(outputId = "MapaCul"),
-                              br(),
-                              helpText("En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en el suroeste de la ciudad: 
-                              8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor minimo, teniendo en cuenta que en el marco de su territorio hay menos de 100 espacios culturales."),
-                              br(),
-                              h4(strong("Distribucion porcentual de los espacios culturales.")),
-                              leafletOutput(outputId = "CoroCul"))
+                              hr())
                  )),
         tabPanel("Vivienda",
                  navlistPanel(
@@ -659,6 +748,10 @@ server <- function(input, output) {
                                                               direction='top',textOnly = F))
             CoropCul
             })
+        
+        output$TecnicaDes <- renderText({
+          ""
+        })
         
 #############VIVIENDA###################################################
         
