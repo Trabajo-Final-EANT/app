@@ -921,7 +921,7 @@ server <- function(input, output) {
             addLegend(pal=palColec, 
                       values = ~Colecx100,
                       opacity = 0.7, 
-                      title = "Porcentaje del total de Paradas",
+                      title = "Porcentaje del total de Paradas ponderado por Area de la comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
@@ -986,7 +986,7 @@ server <- function(input, output) {
                       values = ~Subtex100,
                       opacity = 0.7, 
                       title = "Porcentaje del total de 
-            Estaciones de Subte",
+            Estaciones de Subte ponderado por Area de la comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers( ~lat,~long, label =  ~as.character(Comuna), 
@@ -1050,7 +1050,7 @@ server <- function(input, output) {
             addLegend(pal = palTren, 
                       values = ~Trenx100,
                       opacity = 0.7, 
-                      title = "Porcentaje del total de Estaciones de Tren",
+                      title = "Porcentaje del total de Estaciones de Tren ponderado por Area de la comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
@@ -1112,7 +1112,7 @@ server <- function(input, output) {
             addLegend(pal = palCicloV, 
                       values = ~CicloVx100,
                       opacity = 0.7, 
-                      title = "Porcentaje del total de Ciclovias",
+                      title = "Porcentaje del total de Ciclovias ponderado por Area de la comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
@@ -1141,7 +1141,7 @@ server <- function(input, output) {
             addLegend(pal = palEcoB, 
                       values = ~EcoBx100,
                       opacity = 0.7, 
-                      title = "Porcentaje del total de Ecobicis",
+                      title = "Porcentaje del total de Ecobicis ponderado por Area de la comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")%>%
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
