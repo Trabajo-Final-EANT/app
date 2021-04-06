@@ -66,6 +66,7 @@ Red_Tren<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos
 Red_CicloV<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Ciclovias.geojson")
 EcoBici<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/EcoBici.geojson")
 Transp_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/TranspxC.geojson")
+TranspBarras<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/T_X_c_Barras.geojson")
 SillaDeRuedas <- makeIcon(
   iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
   iconWidth = 20, iconHeight = 20,
@@ -930,7 +931,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Bondis<-renderPlot({
-          BarrasBondis<-ggplot(Transp_x_C,mapping = aes(
+          BarrasBondis<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Colectivo),
             Colectivo))+
             geom_col(fill="#09ed46",
@@ -996,7 +997,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Subte<-renderPlot({
-          BarrasSubte<-ggplot(Transp_x_C,mapping = aes(
+          BarrasSubte<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Subte),
             Subte)) +
             geom_col(fill="#eb34d5",
@@ -1059,7 +1060,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Trenes<-renderPlot({
-          BarrasTrenes<-ggplot(Transp_x_C,mapping = aes(
+          BarrasTrenes<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Tren),
             Tren)) +
             geom_col(fill="#30c9fc",
@@ -1150,7 +1151,7 @@ server <- function(input, output) {
           })
         
         output$Distr_Bicicletas<-renderPlot({
-          BarrasBici<-ggplot(Transp_x_C)+
+          BarrasBici<-ggplot(TranspBarras)+
             geom_col(mapping = aes(
               x=reorder(Comuna,Ciclovias),
               y=Ciclovias),
