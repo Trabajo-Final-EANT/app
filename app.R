@@ -516,13 +516,41 @@ ui <- fluidPage(
                                      de los casos, no se poseen valores posteriores al 2016 respecto a este indicador. Sin embargo, 
                                      es posible advertir que la tendencia a una menor problemática habitacional se registra en el 
                                      norte y centro de la ciudad. "),
-                            br(),
-                            hr()),
+                            hr())),
                    tabPanel("Condicion de ocupacion",
                             h3(strong("Distribución porcentual de viviendas, según condicion de ocupacion.")),
+                            helpText("La identificación de la condición de ocupación permite clasificar a las viviendas en 
+                                     habitadas y deshabitadas, segun el uso residencial habitual. La cantidad de viviendas 
+                                     desocupadas en cada comuna, muestra como se distribuye la ocupacion del espacio, mediante 
+                                     un bien que esta mercantilizado y resulta escaso. De tal modo, la jerarquizacion del espacio, 
+                                     impuesta por los sectores de mayores ingresos durante las ultimas decadas, evidencia que ciertos 
+                                     sectores fueron destinados a fines comerciales, de turismo y recreacion, dejando a otros en el 
+                                     abandono. En este sentido, la reduccion de viviendas disponibles constituye un elemento 
+                                     desplazador de las zonas “centrales” de la ciudad, obligando a quienes poseen pocos recursos a 
+                                     ocupar otros espacios y restringiendo el acceso a dichas zonas a quienes “merecen” habitarlas 
+                                     (Ozlack, 2017). ",
+                            br(),
+                            br(),
+                            "El analisis de los datos volcados en el siguiente grafico muestra que son las comunas 2 y 14 las 
+                            que mayor porcentaje de viviendas desocupadas poseen. Si bien ninguna cuenta con mas de 2% de 
+                            hacinamiento, es evidente que los barrios de Palermo y Recoleta concentran las zonas menos destinadas 
+                            a la vivienda. "),
                             highchartOutput(outputId = "G_Vivienda"),
-                            br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales."))),
-                            leafletOutput(outputId = "M_Vivienda")),
+                            helpText("Las comunas con mayor porcentaje de ocupación de viviendas, son las mismas que 
+                                     poseen los valores mas altos en lo que al nivel hacinamiento respecta. "),
+                            h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales.")),
+                            leafletOutput(outputId = "M_Vivienda"),
+                            helpText("La distribucion geografica de los espacios destinados a fines 
+                                     mercantiles, refuerza la perspectiva indagada en los parrafos precedentes. 
+                                     Aquellas zonas que se jerarquizan, no solo lo hacen mediante la restriccion 
+                                     en la disponibilidad de viviendas, sino tambien a traves de la concentracion 
+                                     de servicios de los que dichos habitantes pueden gozar con mayor facilidad.",
+                            br(),
+                            br(),
+                            "Claramente, la comuna 2 es en la que mayor porcentaje de viviendas se destinan a fines 
+                            comerciales (distanciandose en 9 puntos porcentuales de la comuna 5, el valor maximo siguiente del 
+                            indicador). "),
+                            hr()),
                    tabPanel("Regimen de Tenencia",
                             br(h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia."))),
                             selectInput(inputId = "input_AÑO",
