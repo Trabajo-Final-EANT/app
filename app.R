@@ -69,9 +69,9 @@ EcoBici<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/
 Transp_x_C<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/TranspxC.geojson")
 TranspBarras<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/T_X_c_Barras.geojson")
 SillaDeRuedas <- makeIcon(
-    iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
-    iconWidth = 20, iconHeight = 20,
-    iconAnchorX = 5, iconAnchorY = 30)
+  iconUrl = "https://images.vexels.com/media/users/3/129039/isolated/preview/9b90dadb8432f24bd49b439e8438f071-icono-plano-de-silla-de-ruedas-by-vexels.png",
+  iconWidth = 20, iconHeight = 20,
+  iconAnchorX = 5, iconAnchorY = 30)
 palColec <- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Colecx100)
 palSubte<- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Subtex100)
 palTren <- colorNumeric(palette = "YlOrRd", domain= Transp_x_C$Trenx100)
@@ -139,7 +139,7 @@ ui <- fluidPage(
     
     tabsetPanel(
         tabPanel("Introduccion",
-                 tabPanel("Introducción",
+                 tabPanel("Introduccion",
                           h3("Marco Conceptual"),
                           helpText("Cuando nos referimos a una ciudad, podemos decir que estamos tanto ante una forma de vivir en comun, como ante una forma de producir, caracterizada por concentrar en un espacio mas bien reducido una gran diversidad de personas, actividades y culturas. Sin embargo, esta forma de organizacion social no es posible sin vastos conjuntos de bienes colectivos en los que las ciudades se materializan. Es decir que, por un lado, se trata de una forma social que se distingue por concentrar lo distinto, por poner en relacion los componentes mas diversos del espacio social con la finalidad de reproducirse (Lefevbre, 1978). Mientras que, por otro, comprende el conjunto de bienes y servicios producidos que fungen de sustento material de la vida urbana. Entonces, si ademas de ser un espacio de vida, las ciudades son también un conjunto de elementos materiales dispuestos sobre este espacio, queda claro que lo urbano en conjunto se distribuye por un territorio determinado no de manera continua y plena, sino más bien discreta, desigual (Pirez, 2013).
 "),
@@ -151,7 +151,8 @@ De este modo, con el fin de alcanzar los mencionados propositos, el trabajo part
 
 Si bien se contemplan los límites propios de los datos disponibles (fundamentalmente en lo que respecta a su dimension temporal y sus variables de analisis), y aquellos vinculados a la extension y propuesta de esta instancia del Curso, el presente trabajo sugiere un punto de partida para avanzar en el análisis de lo urbano en la Ciudad, considerando no sólo la cuestión habitacional, sino también la distribución de bienes y servicios que resulta constitutiva de la calidad de vida de quienes habitan el mencionado territorio. Desde este lugar, ofrece algunos cuestionamientos e interrogantes que buscan expandir los objetivos del proyecto. Por ultimo, tenemos el deseo de que este trabajo sirva para motivar futuras y diversas investigaciones que utilicen de insumo el análisis y relevamiento de datos aquí expuesto. 
 "),
-                          hr("Sobre las unidades de analisis"),
+                          hr(),
+                          h4("Sobre las unidades de analisis"),
                           helpText("A los fines de precisar el análisis, cabe aclarar que, por la ley orgánica nº 1777 de 2005, la Ciudad Autonoma de Buenos Aires se divide territorialmente y administrativamente en 15 comunas. 
                               Entre otras atribuciones, estas unidades elaboran sus propios planes de acción para el mantenimiento de los espacios verdes y de las vías de tránsito secundarias; 
                               desarrollan acciones para la administración de su patrimonio y ejecución de su presupuesto anual; 
@@ -163,7 +164,7 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               sumado a que su accionar no puede contradecir el interés general de la ciudad."),
                           helpText("Las comunas estan integradas por distintos barrios, a saber:",
                                    br(),
-                                   "-Comuna 1: Retiro, San Nicolas, Puerto Madero, San Telmo, Monserrat y Constitucion.",
+                                     "-Comuna 1: Retiro, San Nicolas, Puerto Madero, San Telmo, Monserrat y Constitucion.",
                                    br(),
                                    "-Comuna 2: Recoleta.",
                                    br(),
@@ -194,67 +195,69 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                                    "-Comuna 15: Chacarita, Villa Crespo, Paternal, Villa Ortuzar, Agronomia y Parque Chas."))),
         tabPanel("Estructura socio-demografica",
                  navlistPanel(
-                     tabPanel("Datos demograficos",
-                              h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
-                              helpText("Caracterizar el grado y el tipo de acceso a la ciudad del que gozan los habitantes de la Ciudad Autonoma de Buenos Aires, vuelve ineludible una previa caracterizacion de su poblacion. Para hacerlo resulta pertinente atenerse, en un primer momento, a la descripcion de la estructura demografica de la ciudad, indagando la distribucion de la poblacion segun su edad y sexo. 
-"),
-                              highchartOutput(outputId = "G_demo"),
-                              br(),
-                              helpText("En este grafico se observan varios aspectos interesantes de destacar: el primero es que el
+                   tabPanel("Datos demograficos",
+                            h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
+                            helpText("Indagar el grado y el tipo de acceso a la ciudad del que gozan los habitantes de la Ciudad
+                            Autonoma de Buenos Aires, vuelve ineludible una previa caracterizacion de su poblacion. Para hacerlo resulta
+                            pertinente atenerse, en un primer momento, a la descripcion de la estructura demografica de la ciudad, explorando
+                            la distribucion de la poblacion segun su edad y sexo."),
+                            highchartOutput(outputId = "G_demo"),
+                            br(),
+                            helpText("En este grafico se observan varios aspectos interesantes de destacar: el primero es que el
                             volumen de la poblacion se ha mantenido practicamente constante desde 1947, ubicandose en valores que
                             varian alrededor de los 2.9 millones de habitantes. Sin embargo, como segunda observacion, cabe notar
                             que sí ha cambiado la composicion etaria de la poblacion. En este sentido, vemos que desde 1960 el rango
                             de edad “+60” va en ascenso, mientras que los rangos de 15 a 44 años decrecen marcadamente. Manteniendose
                             constante el tamaño absoluto de la poblacion, parece licito hablar de un envejecimiento sostenido de la poblacion de la CABA.",
-                                       br(),
-                                       br(),
-                                       "Si bien, estas tendencias parecen revertirse segun los datos del ultimo censo, sería apresurado sacar conclusiones 
+                            br(),
+                            br(),
+                            "Si bien, estas tendencias parecen revertirse segun los datos del ultimo censo, sería apresurado sacar conclusiones 
                             al respecto. En la actualidad, o al menos de acuerdo con los datos censales de 2010, el rango etario con menor 
                             representación es el de los menores de 15 años, mientras que en los valores más altos se observa al doble rango 15-45 
                             y, seguido, al rango +60. "),
-                              br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
-                              plotlyOutput(outputId = "G_Pir"),
-                              selectInput(inputId = "input_fecha",
-                                          choices = Piramide$Año,
-                                          label = "Seleccione año del censo",
-                                          selected = NULL),
-                              helpText("El ejercicio de observar las piramides censo a censo, revela la dinamica de
+                            br(h4(strong("Pirámide poblacional de la Ciudad Autonoma de Buenos Aires (1855-2010)."))),
+                            plotlyOutput(outputId = "G_Pir"),
+                            selectInput(inputId = "input_fecha",
+                                        choices = Piramide$Año,
+                                        label = "Seleccione año del censo",
+                                        selected = NULL),
+                            helpText("El ejercicio de observar las piramides censo a censo, revela la dinamica de
                             la distribucion de sexo y género en la Ciudad de Buenos Aires. Por ejemplo, la piramide de 1869
                             muestra una poblacion altamente masculinizada producto de los flujos migratorios provenientes de Europa. 
                             En la piramide de 2010, se encuentra una poblacion levemente feminizada, tendencia que se especifica a 
                             mayor edad. Por otro lado, ya desde 1980 es posible hablar de una poblacion “muy envejecida” 
                             puesto que el grupo mayor de 65 años, alcanza el 15% del total de la poblacion. En la actualidad este porcentaje
                             supera el 16% del conjunto, comprobandose la tendencia al envejecimiento que fue observada en el grafico anterior.")),
-                     tabPanel("Pobreza e indigencia",
+                   tabPanel("Pobreza e indigencia",
                               h3(strong("Distribución porcentual anual de Pobreza e Indigencia en la Ciudad.")),
                               helpText("Para introducir el analisis propuesto, tambien es preciso contemplar el contexto socio-histórico en que se desarrollaron
                               muchos de los indicadores estudiados. En principio, cabe considerar los procesos políticos, sociales y económicos que tuvieron
                               lugar en las últimas décadas de la historia argentina, los cuales atravesaron la sociedad y propiciaron profundos cambios en 
                               su estructura.",
-                                       br(),
-                                       br(),
-                                       "Entre otras consecuencias, el proceso de reestructuracion neoliberal de la década del 90, traducido en una desregulación
+                              br(),
+                              br(),
+                              "Entre otras consecuencias, el proceso de reestructuracion neoliberal de la década del 90, traducido en una desregulación
                               económica y descentralización del Estado, devino en un incremento de los índices de pobreza y marginalidad de la población
                               (Svampa, 2005). Aunque los mecanismos de exclusión fueron diversos, es sustancial tener en cuenta el fuerte incremento de
                               la pobreza reciente (predominante en el universo pobre desde 1995), seguida por la pobreza crónica y acompañada por los ya
                               valores importantes de la pobreza estructural (Arakaki, 2011).",
-                                       br(),
-                                       highchartOutput(outputId = "G_Pob"),
-                                       helpText("Si bien en los años siguientes existió una mejora en los indicadores de pobreza por ingreso, en ningún caso se
+                              br(),
+                              highchartOutput(outputId = "G_Pob"),
+                              helpText("Si bien en los años siguientes existió una mejora en los indicadores de pobreza por ingreso, en ningún caso se
                               retorno a los pisos preexistentes. La Ciudad de Buenos Aires, en el año 2006, contaba con un 12.7% de personas
                               pobres (EPH- INDEC, 2007). Del análisis de los datos, surge que 10 años después se registran los mayores índices de pobreza en
                               el período comprendido entre el primer trimestre del 2015 y el primero del 2019 (llegando a superar el 18%).  Asimismo, si bien
                               se observa una baja en los porcentajes del año 2017, es posible distinguir un aumento sostenido desde esa fecha en adelante."),
-                                       highchartOutput(outputId = "G_Pob2"))),
+                              highchartOutput(outputId = "G_Pob2"))),
                      tabPanel("NBI",
                               h3(strong("Necesidades Básicas Insatisfechas.")),
                               helpText("En lo que respecta a la pobreza medida por NBI, presento oscilaciones a nivel nacional que respondieron a los 
                               cambios estructurales propiciados por las políticas neoliberales. En el período comprendido entre 1998-2003, la población
                               bajo esta condición superó el 10%; sin embargo, el 90% de estos hogares lo hicieron por el incumplimiento de sólo un 
                               indicador (generalmente, el de hacinamiento o la capacidad de subsistencia) (Arikaki, 2011).",
-                                       br(),
-                                       br(),
-                                       "En el ámbito de la ciudad de Buenos Aires, en el año 2001, la población que mayormente se vió afectada por esta condición 
+                              br(),
+                              br(),
+                              "En el ámbito de la ciudad de Buenos Aires, en el año 2001, la población que mayormente se vió afectada por esta condición 
                               se ubicaba en la zona sur, donde se registraron comunas con más del 15% afectado por NBI, llegando incluso -en un sector de
                               la comuna 8- a superar el 20% (DGEyC, 2001). Esta relación asimétrica entre lo que sucede en el sur de la ciudad y aquello que
                               sucede en el norte (donde el registro de NBI no superó el 10%); se modifica en los datos del 2010."),
@@ -265,31 +268,31 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               rango de valores que fue de 14.2 puntos porcentuales. En este orden de ideas, se observa que fueron las comunas 12, 13 y 11 las que 
                               registraron menor cantidad de población con NBI, respectivamente. "),
                               hr()),
-                     tabPanel("Ficha tecnica",
-                              textOutput(outputId = "TecnicaPob"),
-                              h4(strong("Linea de pobreza.")),
-                              helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
+                   tabPanel("Ficha tecnica",
+                            textOutput(outputId = "TecnicaPob"),
+                            h4(strong("Linea de pobreza.")),
+                            helpText("La linea de pobreza es el valor monetario de una Canasta Basica Total de bienes y servicios capaz de satisfacer un conjunto de necesidades alimentarias y no alimentarias consideradas esenciales. 
                             Se denomina pobres a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos.",
-                                       br()),
-                              hr(),
-                              h4(strong("Linea de indigencia.")),
-                              helpText("Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
+                            br()),
+                            hr(),
+                            h4(strong("Linea de indigencia.")),
+                            helpText("Por su parte, la linea de indigencia es el valor monetario de una Canasta Basica de Alimentos, de costo minimo, capaz de satisfacer un umbral elemental de necesidades energeticas y proteicas. 
                             Se considera indigentes a los hogares cuyos ingresos no alcanzan dicha linea o valor, y a la poblacion incluida en ellos."),
-                              hr(),
-                              h4(strong("Necesidades Basicas Insatisfechas (NBI)")),
-                              helpText("Los hogares y la población que poseen Necesidades Básicas Insatisfechas presentan, al menos, uno de los siguiente indicadores de privacion:",
-                                       br(),
-                                       "Hacinamiento critico;",
-                                       br(),
-                                       "Vivienda, siendo hogares que tienen lugar en una vivienda de tipo inconveniente (pieza de inquilinato, vivienda precaria u otro tipo);",
-                                       br(),
-                                       "Condiciones sanitarias (hogares que no tienen ningun tipo de retrete);",
-                                       br(),
-                                       "Asistencia escolar (hogares con menores en edad escolar (6-12) que no asisten a la escuela);",
-                                       br(),
-                                       "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria.)")),
-                     hr()
-                 )),
+                            hr(),
+                            h4(strong("Necesidades Basicas Insatisfechas (NBI)")),
+                            helpText("Los hogares y la población que poseen Necesidades Básicas Insatisfechas presentan, al menos, uno de los siguiente indicadores de privacion:",
+                            br(),
+                            "Hacinamiento critico;",
+                            br(),
+                            "Vivienda, siendo hogares que tienen lugar en una vivienda de tipo inconveniente (pieza de inquilinato, vivienda precaria u otro tipo);",
+                            br(),
+                            "Condiciones sanitarias (hogares que no tienen ningun tipo de retrete);",
+                            br(),
+                            "Asistencia escolar (hogares con menores en edad escolar (6-12) que no asisten a la escuela);",
+                            br(),
+                            "Capacidad de subsistencia (hogares que tienen 4 o mas personas por miembro ocupado y ademas, cuyo jefe no haya completado tercer grado de escolaridad primaria.)")),
+                            hr()
+                   )),
         tabPanel("Desarrollo humano",
                  navlistPanel(
                      tabPanel("Escuelas",
@@ -298,15 +301,15 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               sociedad y la economía. En dicho marco, se puso en marcha una reducción del gasto público que conllevó la descentralización administrativa 
                               y el traslado de competencias nacionales a los niveles provinciales y municipales (Svampa, 2005). Tal es el caso de la educación y 
                               los servicios de salud.",
-                                       br(),
-                                       br(),
-                                       "En este sentido, si bien el proceso de privatización de la educación registraba valores en alza desde 1940, estos se vieron reforzados a 
+                              br(),
+                              br(),
+                              "En este sentido, si bien el proceso de privatización de la educación registraba valores en alza desde 1940, estos se vieron reforzados a 
                               partir de la citada reestructuración y, específicamente, el caso de la ciudad de Buenos Aires fue un epicentro de la cuestión (Judzik, 
                               Moschetti, 2016). A modo de ejemplo, basta considerar que en el año 2014 el 52% de la población de alumnos asistía a escuelas de gestión 
                               privada (DiNIECE, 2014).",
-                                       br(),
-                                       br(),
-                                       "El siguiente gráfico muestra la distribución de escuelas por comuna en el año 2020 e incluye establecimientos públicos y privados. 
+                              br(),
+                              br(),
+                              "El siguiente gráfico muestra la distribución de escuelas por comuna en el año 2020 e incluye establecimientos públicos y privados. 
                               La comuna 4 es la que mayor cantidad de escuelas posee, seguida por la comuna 1. En paralelo, son las comunas 2,6 y 9, respectivamente, 
                               las que registran los valores más bajos en cantidad de centros educativos. El resto de las comunas posee una cantidad poco heterogénea, 
                               que varía entre los 170 y 220 establecimientos."),
@@ -326,7 +329,7 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               informales ‘Villa 31’, ‘Villa 31bis’, ‘Barrio General San Martín’ y ‘Villa Rodrigo Bueno’, y a los barrios de Puerto Madero y Retiro). 
                               Si bien este análisis excede los límites del presente trabajo, no deja de ser una arista necesaria de contemplar para ampliar el 
                               conocimiento de la estructura social, económica y educativa de la ciudad."),
-                              h4(strong("Poblacion en edad escolar (5-19) por escuela")),
+                              h4(strong("Poblacion en edad escolar (5-19) por escuela.")),
                               leafletOutput(outputId = "EdEsc_x_Esc"),
                               br(),
                               hr()),
@@ -339,9 +342,9 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               de salud de la ciudad al momento del estudio provenían del primer y del segundo cordón del conurbano y, en términos porcentuales, 
                               más del 45% eran indigentes y más del 25% eran pobres. Es decir, la descentralización propició un traslado de la población más 
                               vulnerada a los hospitales de la ciudad, dificultando su acceso y agregando el costo del traslado.",
-                                       br(),
-                                       br(),
-                                       "Siguiendo esta línea, del análisis de los datos de hospitales de la ciudad al año 2019, surge que la mayoría se encuentran situados 
+                              br(),
+                              br(),
+                              "Siguiendo esta línea, del análisis de los datos de hospitales de la ciudad al año 2019, surge que la mayoría se encuentran situados 
                               en la comuna 4 que posee 13 unidades. Si bien esta es una de las que registra mayores valores de NBI, es preciso destacar que las 
                               restantes comunas con un gran porcentaje de población bajo esta condición cuentan con una notable cantidad inferior de hospitales: 
                               la comuna 3 posee 2 hospitales, la comuna 8 posee uno y la comuna 1 -valor máximo de NBI- no posee ninguno."),
@@ -357,15 +360,15 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               y especializados. Se encuentra que entre aquellas comunas que poseen un único hospital, la mayoría cuenta con hospitales de 
                               agudos, salvo las comunas 5 y 13 que tienen entre su geografía hospitales especializados.  
                               Respecto a los 3 hospitales de niños, 2 de ellos se localizan en la comuna 8 y el tercero en la comuna 2.",
-                                       br(),
-                                       br(),
-                                       "Llama la atención la heterogeneidad en la distribución y concentración geográfica de las unidades hospitalarias, puesto que ello
+                              br(),
+                              br(),
+                              "Llama la atención la heterogeneidad en la distribución y concentración geográfica de las unidades hospitalarias, puesto que ello
                               impacta en las condiciones de acceso a los servicios de salud y las vuelve poco equitativas. Es decir, en tanto la localización de
                               la oferta urbana de servicios se vincula con la posibilidad de ejercer derechos sobre la ciudad, la falta de integración de los servicios
                               de salud en distintas zonas del tejido urbano no deja de constituir un factor de desigualdad para quienes viven y habitan la ciudad.",
-                                       br(),
-                                       br(),
-                                       "Asimismo, la distribución de los hospitales muestra cómo la configuración territorial de la ciudad constituye en sí misma un 
+                              br(),
+                              br(),
+                              "Asimismo, la distribución de los hospitales muestra cómo la configuración territorial de la ciudad constituye en sí misma un 
                               mecanismo de desigualdad, en la medida en que la localización del servicio configura su nivel de accesibilidad. Nuevamente, el 
                               análisis incipiente de esta cuestión, da cuenta de la importancia de indagar en otras variables de pertinencia en futuras 
                               investigaciones: población que asiste a los hospitales, capacidad de atención, infraestructura disponible, entre otras. "),
@@ -378,9 +381,9 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               ciudad cobra sentido en esta doble definicion puesto que la cultura se ubica entre estas dos dimensiones: aquello que 
                               llamamos", em("oferta"), "implica un conjunto de bienes, servicios, establecimientos e instituciones localizados a lo ancho de la ciudad; 
                               lo cultural, por su parte, expresa los rasgos distintivos de la comunidad que la produce.",
-                                       br(),
-                                       br(),
-                                       "En este sentido, la concentracion de la oferta en pocos espacios homogeniza la cultura, a la par que dificulta el acceso a los ciudadanos
+                              br(),
+                              br(),
+                              "En este sentido, la concentracion de la oferta en pocos espacios homogeniza la cultura, a la par que dificulta el acceso a los ciudadanos
                               más alejados de esos espacios. Es por esto que el presente apartado releva la distribucion geografica de la oferta cultural. 
                               Por ultimo, y teniendo en cuenta que el acceso a un bien urbano cualquiera, no solo tiene condicionantes geograficos sino tambien 
                               monetarios o institucionales, se ofrece una clasificación de estos espacios segun su criterio de acceso."),
@@ -388,9 +391,9 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               helpText("La distribucion de espacios culturales en la ciudad muestra que la mayor concentracion se radica, marcadamente, en la comuna 1. 
                               Seguidamente se encuentran las comunas 2, 14 y 3, sin embargo, estas poseen una cantidad notoriamente menor de comercios, 
                               espacios de exhibicion, bibliotecas y espacios de formacion.",
-                                       br(),
-                                       br(),
-                                       "En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en la periferia
+                              br(),
+                              br(),
+                              "En cuanto a las comunas que cuentan con menor presencia de estos espacios, se trata de aquellas que se localizan en la periferia
                               sudoeste de la ciudad: 8, 10, 9 y 11. Especificamente, la comuna 8 es la que posee el valor mínimo, dado que en el marco
                               de su territorio hay menos de 20 espacios culturales."),
                               br(),
@@ -410,314 +413,299 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                               h4(strong("Tipos de hospitales.")),
                               textOutput(outputId = "TecnicaDes"),
                               helpText("Los hospitales de la Ciudad Autonoma de Buenos Aires comprenden tres tipos de hospitales: de agudos, de niños y especializados.",
-                                       br(),
-                                       br(),
-                                       "Los", em("hospitales de agudos"), "brindan asistencia a la salud en clinica medica, pediatria, traumatologia, 
+                              br(),
+                              br(),
+                              "Los", em("hospitales de agudos"), "brindan asistencia a la salud en clinica medica, pediatria, traumatologia, 
                               cardiologia, dermatologia, ginecologia, obstetricia, cirugia y otras especialidades. Ademas realizan estudios complementarios 
                               (radiologia, mamografias, tomografia, laboratorio, ecografias y otros estudios de diagnostico y prevencion de enfermedades).",
-                                       br(),
-                                       br(),
-                                       "Por su parte, los", em("hospitales especializados"), "monovalentes brindan asistencia a la salud en diferentes especialidades: gastroenterologia; 
+                              br(),
+                              br(),
+                              "Por su parte, los", em("hospitales especializados"), "monovalentes brindan asistencia a la salud en diferentes especialidades: gastroenterologia; 
                               infectologia; maternidad; odontologia; oncologia; oftalmologia; quemados; rehabilitacion psicofísica; rehabilitacion respiratoria; salud mental; y zoonosis.",
-                                       br(),
-                                       br(),
-                                       "Finalmente, los", em("hospitales de niños"), "cuentan con atencion ambulatoria, internacion, diagnostico y tratamiento; 
+                              br(),
+                              br(),
+                              "Finalmente, los", em("hospitales de niños"), "cuentan con atencion ambulatoria, internacion, diagnostico y tratamiento; 
                               asi como tambien, diferentes especialidades medicas pediatricas. "),
                               hr())
                  )),
         tabPanel("Vivienda",
                  navlistPanel(
-                     tabPanel("Hacinamiento",
-                              h3(strong("Distribución porcentual de hacinamiento por comuna.")),
-                              helpText(""),
-                              br(),
-                              highchartOutput(outputId = "G_HNC"),
-                              br(),
-                              helpText("Si bien los valores mas actuales muestran que es la comuna 8 la que posee mayor porcentaje de hacinamiento, en el periodo comprendido en los ultimos diez años se observan 
+                   tabPanel("Hacinamiento",
+                            h3(strong("Distribución porcentual de hacinamiento por comuna.")),
+                            helpText(""),
+                            br(),
+                            highchartOutput(outputId = "G_HNC"),
+                            br(),
+                            helpText("Si bien los valores mas actuales muestran que es la comuna 8 la que posee mayor porcentaje de hacinamiento, en el periodo comprendido en los ultimos diez años se observan 
                                      altos valores en las comunas 4, 1 y 7.",
-                                       br(),
-                                       br(),
-                                       "Asimismo, del analisis del periodo bajo estudio se desprende que las comunas 2, 13, 5, 6 y 12 presentan valores que no superan el 10% de la poblacion en condicion de hacinamiento. Estas unidades se corresponden con el 
+                            br(),
+                            br(),
+                            "Asimismo, del analisis del periodo bajo estudio se desprende que las comunas 2, 13, 5, 6 y 12 presentan valores que no superan el 10% de la poblacion en condicion de hacinamiento. Estas unidades se corresponden con el 
                             norte y el centro de la ciudad. "),
-                              hr(),
-                              highchartOutput(outputId = "G_HC"),
-                              helpText("aca va lo de hacinamiento critico"),
-                              br()),
-                     tabPanel("Condicion de ocupacion",
-                              h3(strong("Condición de Ocupacion")),
-                              highchartOutput(outputId = "G_Vivienda"),
-                              br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales."))),
-                              leafletOutput(outputId = "M_Vivienda")),
-                     tabPanel("Regimen de Tenencia",
-                              br(h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia."))),
-                              selectInput(inputId = "input_AÑO",
-                                          choices = Regimen$año,
-                                          label = "Seleccione año",
-                                          selected = TRUE),
-                              selectInput(inputId = "input_Regimen1",
-                                          choices = Regimen$Regimen_Tenencia,
-                                          label = "Seleccione Regimen",
-                                          selected = TRUE),
-                              plotOutput(outputId= "BarrasRegimen"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de hogares, segun tipo de regimen de tenencia."))),
-                              selectInput(inputId = "input_Regimen2",
-                                          choices = Regimen18$Regimen_Tenencia,
-                                          label = "Seleccione Régimen",
-                                          selected = TRUE),
-                              leafletOutput(outputId = "CoroRegimen")),
-                     tabPanel("Precio del metro cuadrado",
-                              h3(strong("Valor del Metro Cuadrado en la Ciudad")),
-                              helpText("aca desarrollar"),
-                              leafletOutput(outputId = "P_x_m2")),
-                     tabPanel("Ficha tecnica",
-                              textOutput(outputId = "TecnicaViv"),
-                              h4(strong("Hacinamiento")),
-                              helpText("La situacion de", em("hacinamiento"), "expresa la importancia relativa de los 
+                            hr(),
+                            highchartOutput(outputId = "G_HC"),
+                            helpText("aca va lo de hacinamiento critico"),
+                            br()),
+                   tabPanel("Condicion de ocupacion",
+                            h3(strong("Distribución porcentual de viviendas, según condicion de ocupacion.")),
+                            highchartOutput(outputId = "G_Vivienda"),
+                            br(h4(strong("Mapa de viviendas de la Ciudad, ocupadas con fines comerciales."))),
+                            leafletOutput(outputId = "M_Vivienda")),
+                   tabPanel("Regimen de Tenencia",
+                            br(h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia."))),
+                            selectInput(inputId = "input_AÑO",
+                                        choices = Regimen$año,
+                                        label = "Seleccione año",
+                                        selected = TRUE),
+                            selectInput(inputId = "input_Regimen1",
+                                        choices = Regimen$Regimen_Tenencia,
+                                        label = "Seleccione Regimen",
+                                        selected = TRUE),
+                            plotOutput(outputId= "BarrasRegimen"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de hogares, segun tipo de regimen de tenencia."))),
+                            selectInput(inputId = "input_Regimen2",
+                                        choices = Regimen18$Regimen_Tenencia,
+                                        label = "Seleccione Régimen",
+                                        selected = TRUE),
+                            leafletOutput(outputId = "CoroRegimen")),
+                   tabPanel("Precio del metro cuadrado",
+                            h3(strong("Valor del Metro Cuadrado en la Ciudad")),
+                            helpText("aca desarrollar"),
+                            leafletOutput(outputId = "P_x_m2")),
+                   tabPanel("Ficha tecnica",
+                            textOutput(outputId = "TecnicaViv"),
+                            h4(strong("Hacinamiento")),
+                            helpText("La situacion de", em("hacinamiento"), "expresa la importancia relativa de los 
                             hogares, o de la poblacion en ellos, en los que hay dos o mas personas por cuarto en la vivienda (hacinados).",
-                                       br(),
-                                       br(),
-                                       "Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de 
+                            br(),
+                            br(),
+                            "Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de 
                             los hogares en los que hay más de tres personas por cuarto de la vivienda."),
-                              hr(),
-                              h4(strong("Regimen de tenencia")),
-                              helpText("explicar"))
-                 )),
+                            hr(),
+                            h4(strong("Regimen de tenencia")),
+                            helpText("explicar"))
+                   )),
         tabPanel("Transporte",
                  navlistPanel(
-                     tabPanel("Colectivo",
-                              h3(strong("Distribución de redes de colectivos en la ciudad.")),
-                              leafletOutput(outputId = "Recorrido_Bondis"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de paradas, ponderada por area de las comunas."))),
-                              leafletOutput(outputId= "Coro_Bondis"),
-                              br(),
-                              br(h4(strong("Cantidad de paradas por comuna."))),
-                              plotOutput(outputId = "Distr_Bondis")),
-                     
-                     tabPanel("Subterraneo y Premetro",
-                              h3(strong("Redes de subte y premetro en la ciudad.")),
-                              leafletOutput(outputId = "Recorrido_Subte_Prem"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
-                              leafletOutput(outputId = "Coro_Subte"),
-                              br(h4(strong("Cantidad de estaciones por comuna."))),
-                              plotOutput(outputId = "Distr_Subte")),
-                     
-                     tabPanel("Tren/Ferrocarril",
-                              leafletOutput(outputId = "Recorrido_Trenes"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
-                              leafletOutput(outputId= "Coro_Trenes"),
-                              br(),
-                              plotOutput(outputId = "Distr_Trenes")),
-                     
-                     tabPanel("Bicicletas",
-                              leafletOutput(outputId = "Recorrido_Bicicletas"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de ciclovias, ponderada por area de las comunas."))),
-                              leafletOutput(outputId= "Coro_CicloV"),
-                              br(),
-                              br(h4(strong("Distribucion porcentual de ecobicis, ponderada por area de las comunas."))),
-                              leafletOutput(outputId="Coro_EcoB"),
-                              plotOutput(outputId = "Distr_Bicicletas")
-                     ))
+                   tabPanel("Colectivo",
+                            h3(strong("Distribución de redes de colectivos en la ciudad.")),
+                            leafletOutput(outputId = "Recorrido_Bondis"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de paradas, ponderada por area de las comunas."))),
+                            leafletOutput(outputId= "Coro_Bondis"),
+                            br(),
+                            br(h4(strong("Cantidad de paradas por comuna."))),
+                            plotOutput(outputId = "Distr_Bondis")),
+                   
+                   tabPanel("Subterraneo/Metro",
+                            h3(strong("Distribución de redes de subtes en la ciudad.")),
+                            leafletOutput(outputId = "Recorrido_Subte"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
+                            leafletOutput(outputId = "Coro_Subte"),
+                            br(h4(strong("Cantidad de estaciones por comuna."))),
+                            plotOutput(outputId = "Distr_Subte")),
+                   
+                   tabPanel("Tren/Ferrocarril",
+                            h3(strong("Distribución de redes de trenes en la ciudad.")),
+                            leafletOutput(outputId = "Recorrido_Trenes"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de estaciones, ponderada por area de las comunas."))),
+                            leafletOutput(outputId= "Coro_Trenes"),
+                            br(),
+                            br(h4(strong("Cantidad de estaciones por comuna."))),
+                            plotOutput(outputId = "Distr_Trenes")),
+                   
+                   tabPanel("Bicicletas",
+                            h3(strong("Distribución de ciclovias en la ciudad.")),
+                            leafletOutput(outputId = "Recorrido_Bicicletas"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de ciclovias, ponderada por area de las comunas."))),
+                            leafletOutput(outputId= "Coro_CicloV"),
+                            br(),
+                            br(h4(strong("Distribucion porcentual de Ecobicis, ponderada por area de las comunas."))),
+                            leafletOutput(outputId="Coro_EcoB"),
+                            br(h4(strong("Servicios de bicicletas por comuna."))),
+                            plotOutput(outputId = "Distr_Bicicletas")))),
+        tabPanel("Cierre",
+              navlistPanel(
+                  tabPanel("Algunas conclusiones",
+                                     textOutput(outputId = "Cierre"))))
+                   
+                   )
         )
-    )
-)
 
 #Server
 server <- function(input, output) {
-    #####################REACTIVE###################################
-    pir_filt <- reactive({
-        pir_filt = Piramide[Piramide$Año == input$input_fecha,]
-        pir_filt
-    })
-    
-    Reg_filt<-reactive({
-        Regimen%>%filter(año %in% input$input_AÑO)%>%
-            filter(Regimen_Tenencia %in% input$input_Regimen1)
-    })
-    Reg_filt2<-reactive({
-        Regimen18%>%filter(Regimen_Tenencia %in% input$input_Regimen2)
-    })
-    
-    
-    
-    #############################INTRODUCCION##############################                
-    #output$Marco <- renderText({
-     #   "Marco conceptual"
-    #})
-    
-    
-    ##################################POBLACION##################################
-    output$G_demo <- renderHighchart({
-        G_Pob_Edad=  hchart(Poblacion_Edad, "line",
-                            hcaes(x = Año, y= Poblacion,
-                                  group = Edad)) %>%
-            hc_title(text = "Cantidad de Poblacion por grupo etario")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (1855-2010)")%>%
-            hc_yAxis(title = list(text = "Poblacion"),
-                     labels = list(format = "{value}")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente: Instituto Nacional de Estadisticas y Censos", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_ffx())
-    })
-    
-    output$G_Pir <- renderPlotly({
-        Pir <- ggplot(pir_filt(), mapping=aes(x= grupo_edad, y= Poblacion, fill=sexo))+
-            geom_col(alpha=.7)+
-            labs(title="",
-                 x="",
-                 y="Cantidad de Poblacion",
-                 caption="Fuente: Instituto Nacional de Estadisticas y Censos")+
-            scale_fill_manual(values=c("#561759","#099CDB"))+
-            theme(legend.position = "right",
-                  strip.text = element_text(size = 14, face = "bold"))+
-            coord_flip()+
-            theme_classic()
-        ggplotly(Pir)
-    })
-    
-    
-    output$G_Pob <- renderHighchart({
-        Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% 
-            hc_add_theme(hc_theme_gridlight()) %>%
-            hc_title(text = "Personas en situacion de Pobreza e Indigencia, por año y trimestre.")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2015-2019)")%>%
-            hc_yAxis(title = list(text = "Situacion de pobreza (en %)"),
-                     labels = list(format = "{value}%")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_google())
-    })
-    
-    output$G_Pob2 <- renderHighchart({
-        losdos <- highchart() %>%
-            hc_add_series(Pobreza_anual, "line", hcaes(x = Año, y = mean_pob), name = "Pobreza") %>%
-            hc_add_series(Pobreza_anual, "line", hcaes(x = Año, y = mean_ind), name = "Indigencia") %>% 
-            hc_add_theme(hc_theme_google()) %>%
-            hc_title(text = "Evolucion de Pobreza e Indigencia.")%>%
-            hc_subtitle(text = "Promedio anual. Ciudad Autonoma de Buenos Aires (2015-2019)")%>%
-            hc_yAxis(title = list(text = "Situacion de pobreza e indigencia"),
-                     labels = list(format = "{value}%")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))
-    })
-    
-    output$G_NBI <- renderPlot({
-        BarrasNBI<- ggplot(NBI,mapping = aes(
-            x=reorder(Comuna, NBI),
-            y=NBI,fill=Comuna))+
-            geom_col()+
-            scale_fill_manual(values = c("grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","limegreen"))+
-            geom_text(aes(label = NBI),vjust = 2, size = 3.5)+
-            theme_bw()+
-            theme(legend.position = "none")+
-            labs(title="Proporcion de hogares con NBI sobre total de hogares",
-                 subtitle = "Ciudad Autonoma de Buenos Aires (2010)",
-                 x="Comunas",
-                 caption = "Fuente: Censo Nacional de Poblacion, hogares y viviendas (INDEC) 2010.")
-        BarrasNBI
-    })
-    output$TecnicaPob <- renderText({
-        ""
-    })
-    
-    
-    #######################################DESARROLLO HUMANO###########################################
-    output$G_Esc <- renderHighchart({
-        Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
-            hc_add_theme(hc_theme_gridlight()) %>%
-            hc_title(text = "Cantidad de escuelas por comuna.")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2020)")%>%
-            hc_yAxis(title = list(text = "Cantidad de escuelas"),
-                     labels = list(format = "{value}")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_flat())
-    })
-    
-    output$M_Escuelas <- renderLeaflet({
-        Geo_esc <- leaflet(data = Muestra_escuelas) %>% 
-            setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            addAwesomeMarkers(~long, ~lat, icon = icons_Escuela, label = labels_esc, labelOptions = labelOptions(textsize = "15px"))%>%
-            addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2) %>%
-            addLegend(pal=pal_EEE, 
-                      values = ~num_niv,
-                      opacity = 1, 
-                      title = "Cantidad de niveles ofrecidos por escuela.",
-                      labFormat = labelFormat(suffix=""),
-                      position = "bottomleft")
-        Geo_esc
-    })
-    
-    output$EdEsc_x_Esc<-renderLeaflet({
-        CoroEscuelas<-leaflet(EdadEsc_x_Esc)%>% 
+#####################REACTIVE###################################
+                pir_filt <- reactive({
+                    pir_filt = Piramide[Piramide$Año == input$input_fecha,]
+                    pir_filt
+                })
+                
+                Reg_filt<-reactive({
+                  Regimen%>%filter(año %in% input$input_AÑO)%>%
+                    filter(Regimen_Tenencia %in% input$input_Regimen1)
+                })
+                Reg_filt2<-reactive({
+                  Regimen18%>%filter(Regimen_Tenencia %in% input$input_Regimen2)
+                })
+                
+
+#############################INTRODUCCION##############################                
+            output$Marco <- renderText({
+                ""
+                })
+                
+
+                
+##################################POBLACION##################################
+          output$G_demo <- renderHighchart({
+              G_Pob_Edad=  hchart(Poblacion_Edad, "line",
+                                      hcaes(x = Año, y= Poblacion,
+                                            group = Edad)) %>%
+                    hc_title(text = "Cantidad de Poblacion por grupo etario(1960-2010)")%>%
+                    hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (1960-2010)")%>%
+                    hc_yAxis(title = list(text = "Poblacion"),
+                             labels = list(format = "{value}")) %>%
+                    hc_credits(enabled = TRUE, text = "Fuente: Instituto Nacional de Estadisticas y Censos", style = list(fontSize = "12px"))%>%
+                    hc_add_theme(hc_theme_ffx())
+                })
+                
+          output$G_Pir <- renderPlotly({
+            Pir <- ggplot(pir_filt(), mapping=aes(x= grupo_edad, y= Poblacion, fill=sexo))+
+                    geom_col(alpha=.7)+
+                    labs(title="",
+                         x="",
+                         y="Cantidad de Poblacion",
+                         caption="Fuente: Instituto Nacional de Estadisticas y Censos")+
+                    scale_fill_manual(values=c("#561759","#099CDB"))+
+                    theme(legend.position = "right",
+                          strip.text = element_text(size = 14, face = "bold"))+
+                    coord_flip()+
+                    theme_classic()
+                  ggplotly(Pir)
+                })
+                
+                
+         output$G_Pob <- renderHighchart({
+            Evolucion_POB2 <- hchart(Pobreza, "bar", hcaes(x = Año, y = Pobreza_total, group = TRIM))  %>% 
+                hc_add_theme(hc_theme_gridlight()) %>%
+                hc_title(text = "Personas en situacion de Pobreza e Indigencia, por año y trimestre.")%>%
+                hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2015-2019)")%>%
+                hc_yAxis(title = list(text = "Situacion de pobreza (en %)"),
+                         labels = list(format = "{value}%")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
+                hc_add_theme(hc_theme_google())
+                })
+        
+        output$G_Pob2 <- renderHighchart({
+            losdos <- highchart() %>%
+                hc_add_series(Pobreza_anual, "line", hcaes(x = Año, y = mean_pob), name = "Pobreza") %>%
+                hc_add_series(Pobreza_anual, "line", hcaes(x = Año, y = mean_ind), name = "Indigencia") %>% 
+                hc_add_theme(hc_theme_google()) %>%
+                hc_title(text = "Evolucion de Pobreza e Indigencia.")%>%
+                hc_subtitle(text = "Promedio anual. Ciudad Autonoma de Buenos Aires (2015-2019)")%>%
+                hc_yAxis(title = list(text = "Situacion de pobreza e indigencia"),
+                         labels = list(format = "{value}%")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))
+                })
+        
+        output$G_NBI <- renderPlot({
+            BarrasNBI<- ggplot(NBI,mapping = aes(
+                x=reorder(Comuna, NBI),
+                y=NBI,fill=Comuna))+
+                geom_col()+
+                scale_fill_manual(values = c("grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","grey33","limegreen"))+
+                geom_text(aes(label = NBI),vjust = 2, size = 3.5)+
+                theme_bw()+
+                theme(legend.position = "none")+
+                labs(title="",
+                     x="Comunas",
+                     caption = "Fuente: Censo Nacional de Poblacion, hogares y viviendas (INDEC) 2010.")
+                BarrasNBI
+                })
+        output$TecnicaPob <- renderText({
+          ""
+           })
+
+
+#######################################DESARROLLO HUMANO###########################################
+#Escuelas
+           output$G_Esc <- renderHighchart({
+            Grafico_esc <- hchart(Esc_Com, "bar", hcaes(x = Comuna, y = Escuelas, group = Comuna))  %>%
+                hc_add_theme(hc_theme_gridlight()) %>%
+                hc_title(text = "Cantidad de escuelas por comuna.")%>%
+                hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2020)")%>%
+                hc_yAxis(title = list(text = "Cantidad de escuelas"),
+                         labels = list(format = "{value}")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
+                hc_add_theme(hc_theme_flat())
+                })
+        
+        output$M_Escuelas <- renderLeaflet({
+            Geo_esc <- leaflet(data = Muestra_escuelas) %>% 
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
+                addProviderTiles(providers$CartoDB.Positron) %>%
+                addAwesomeMarkers(~long, ~lat, icon = icons_Escuela, label = labels_esc, labelOptions = labelOptions(textsize = "15px"))%>%
+                addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2) %>%
+                addLegend(pal=pal_EEE, 
+                          values = ~num_niv,
+                          opacity = 1, 
+                          title = "Cantidad de niveles ofrecidos por escuela.",
+                          labFormat = labelFormat(suffix=""),
+                          position = "bottomleft")
+            Geo_esc
+                })
+
+        output$EdEsc_x_Esc<-renderLeaflet({
+          CoroEscuelas<-leaflet(EdadEsc_x_Esc)%>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~EscPal(Prop),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~EscPal(Prop),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal=EscPal,
                       values = ~Prop,
                       opacity = 0.7, 
-                      title = "",
+                      title = "Poblacion en edad escolar por escuela",
                       position = "bottomleft")
-        CoroEscuelas
-    })                
-    
-    output$G_Hosp <- renderHighchart({
-        Grafico_hosp <- hchart(Hosp_Com, "bar", hcaes(x = Comuna, y = Hospitales, group = Hospitales))  %>% hc_add_theme(hc_theme_gridlight()) %>%
-            hc_title(text = "Cantidad de hospitales por comuna.")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2020)")%>%
-            hc_yAxis(title = list(text = "Cantidad de hospitales"),
-                     labels = list(format = "{value}")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_flat())
-    })
-    
-    output$M_Hospitales <- renderLeaflet({
-        leaflet(data = Hospitales_reducido) %>% 
-            setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO2)) %>%
-            addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
-    })
-    
-    output$G_HNC <- renderHighchart({
-        Evolucion_HNC <- hchart(hacinamiento, "line", 
-                                hcaes(x = Año, y= Hacinamiento_no_critico, 
-                                      group = Comunas)) %>%
-            hc_title(text = "Hacinamiento no critico por comuna")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2010-2018)")%>%
-            hc_yAxis(title = list(text = "Hacinamiento no critico (en %)"),
-                     labels = list(format = "{value}%")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_ffx())
-    })
-    
-    output$G_HC <- renderHighchart({
-        Evolucion_HC <- hchart(hacinamiento, "line", 
-                               hcaes(x = Año, y= Hacinamiento_critico, 
-                                     group = Comunas)) %>%
-            hc_title(text = "Hacinamiento critico por comuna")%>%
-            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2010-2018)")%>%
-            hc_yAxis(title = list(text = "Hacinamiento critico (en %)"),
-                     labels = list(format = "{value}%")) %>%
-            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
-            hc_add_theme(hc_theme_ffx())
-    })
-    
-    output$BarrasCul<-renderPlotly({
-        BarrasCul <- ggplot(Cul_x_C)+
+          CoroEscuelas
+          })     
+
+#Hospitales        
+        output$G_Hosp <- renderHighchart({
+            Grafico_hosp <- hchart(Hosp_Com, "bar", hcaes(x = Comuna, y = Hospitales, group = Hospitales))  %>% hc_add_theme(hc_theme_gridlight()) %>%
+                hc_title(text = "Cantidad de hospitales por comuna.")%>%
+                hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2020)")%>%
+                hc_yAxis(title = list(text = "Cantidad de hospitales"),
+                         labels = list(format = "{value}")) %>%
+                hc_credits(enabled = TRUE, text = "Fuente Data Buenos Aires- GCBA", style = list(fontSize = "12px"))%>%
+                hc_add_theme(hc_theme_flat())
+                })
+        
+        output$M_Hospitales <- renderLeaflet({
+            leaflet(data = Hospitales_reducido) %>% 
+                setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
+                addProviderTiles(providers$CartoDB.Positron) %>%
+                addAwesomeMarkers(~long, ~lat, icon = icons, label = ~as.character(TIPO2)) %>%
+                addPolylines(data = Comunas, color="#2F4AFF", opacity = 1, weight = 2)
+                })
+        
+#Cultura       
+        output$BarrasCul<-renderPlotly({
+          BarrasCul <- ggplot(Cul_x_C)+
             geom_col(aes(x=reorder(Comuna,Cantidad), y=Cantidad, fill=Tipo), width = 0.7)+
             scale_fill_manual(values=c("#c23c3c","#e08d07", "#c7fa39", "#02d606", "#00dfe3", "#752957"))+
             guides(fill=FALSE)+
@@ -726,13 +714,13 @@ server <- function(input, output) {
                  x="Comuna",
                  y= "Cantidad",
                  caption=
-                     "Fuente= https://data.buenosaires.gob.ar/dataset/espacios-culturales")+
+                   "Fuente= https://data.buenosaires.gob.ar/dataset/espacios-culturales")+
             theme_bw()
-        ggplotly(BarrasCul)
-    })
-    
-    output$MapaCul<-renderLeaflet({
-        MapaCultura<-leaflet() %>%
+            ggplotly(BarrasCul)
+            })
+        
+        output$MapaCul<-renderLeaflet({
+          MapaCultura<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%  
             addCircleMarkers(data = Mapa_Cul,
@@ -758,26 +746,26 @@ server <- function(input, output) {
                                 label =  ~as.character(Comuna), 
                                 labelOptions = labelOptions(noHide = T, size=1,
                                                             direction='top',textOnly = F))
-        MapaCultura
-    })
-    
-    output$CoroCul<-renderLeaflet({
-        CoropCul<-leaflet(Cul_x_C) %>% 
+              MapaCultura
+              })
+        
+        output$CoroCul<-renderLeaflet({
+          CoropCul<-leaflet(Cul_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~coroPal(relativo),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~coroPal(relativo),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal=coroPal, 
                       values = ~relativo,
                       opacity = 0.7, 
@@ -786,17 +774,43 @@ server <- function(input, output) {
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
                                   labelOptions = labelOptions(noHide = T, size=1,
                                                               direction='top',textOnly = F))
-        CoropCul
-    })
-    
-    output$TecnicaDes <- renderText({
-        ""
-    })
-    
-    #############VIVIENDA###################################################
-    
-    output$G_Vivienda <- renderHighchart({
-        Grafico_viv2 <- highchart() %>%
+            CoropCul
+            })
+        
+        output$TecnicaDes <- renderText({
+          ""
+        })
+        
+#############VIVIENDA###################################################
+#Hacinamiento      
+        output$G_HNC <- renderHighchart({
+          Evolucion_HNC <- hchart(hacinamiento, "line", 
+                                  hcaes(x = Año, y= Hacinamiento_no_critico, 
+                                        group = Comunas)) %>%
+            hc_title(text = "Hacinamiento no critico por comuna")%>%
+            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2010-2018)")%>%
+            hc_yAxis(title = list(text = "Hacinamiento no critico (en %)"),
+                     labels = list(format = "{value}%")) %>%
+            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
+            hc_add_theme(hc_theme_ffx())
+        })
+        
+        output$G_HC <- renderHighchart({
+          Evolucion_HC <- hchart(hacinamiento, "line", 
+                                 hcaes(x = Año, y= Hacinamiento_critico, 
+                                       group = Comunas)) %>%
+            hc_title(text = "Hacinamiento critico por comuna")%>%
+            hc_subtitle(text = "Ciudad Autonoma de Buenos Aires (2010-2018)")%>%
+            hc_yAxis(title = list(text = "Hacinamiento critico (en %)"),
+                     labels = list(format = "{value}%")) %>%
+            hc_credits(enabled = TRUE, text = "Fuente EAH (DGEyC-GCBA)", style = list(fontSize = "12px"))%>%
+            hc_add_theme(hc_theme_ffx())
+        })
+        
+#condicion de ocupacion
+        
+        output$G_Vivienda <- renderHighchart({
+          Grafico_viv2 <- highchart() %>%
             hc_add_series(Viviendas, "column", 
                           hcaes(x = Comuna, y = Todos_presentes, color = Todos_presentes), 
                           name = "Viviendas ocupadas") %>%
@@ -814,10 +828,10 @@ server <- function(input, output) {
                        text = "Fuente: Censo 2010 (INDEC)", 
                        style = list(fontSize = "12px"))%>%
             hc_add_theme(hc_theme_economist())
-    })
-    
-    output$M_Vivienda <- renderLeaflet({
-        Geo_comercios <- leaflet(Viv_Com_Geo) %>%
+            })
+        
+        output$M_Vivienda <- renderLeaflet({
+          Geo_comercios <- leaflet(Viv_Com_Geo) %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11) %>%
             addProviderTiles(providers$CartoDB.Positron, 
                              options = providerTileOptions(id = "mapbox.light",
@@ -849,26 +863,27 @@ server <- function(input, output) {
                                 label =  ~as.character(Comuna), 
                                 labelOptions = labelOptions(noHide = T, size=1,
                                                             direction='top',textOnly = F))
-    })
-    
-    output$BarrasRegimen<-renderPlot({
-        RegimenA<-ggplot(data=Reg_filt(), 
-                         aes(x=comunas,
-                             y=porcentaje, 
-                             fill= Regimen_Tenencia))+
+            })
+
+#Regimen       
+        output$BarrasRegimen<-renderPlot({
+          RegimenA<-ggplot(data=Reg_filt(), 
+                           aes(x=comunas,
+                               y=porcentaje, 
+                               fill= Regimen_Tenencia))+
             scale_fill_manual(values = 
-                                  c("#34eb6b","#d334eb","#eaf51b"))+
+                                c("#34eb6b","#d334eb","#eaf51b"))+
             geom_col(width = .3)+
             geom_text(aes(label = porcentaje), 
                       vjust = 2.1, size = 3.5)+
-            labs(title = "% de hogares por Regimen por año",
-             subtitle = "CABA")+
+            labs(title = "",
+                 subtitle = "CABA")+
             theme_bw()
-        RegimenA  
-    })
-    
-    output$CoroRegimen<-renderLeaflet({
-        CoroRegimen<-leaflet(Reg_filt2())%>%
+          RegimenA  
+          })
+        
+        output$CoroRegimen<-renderLeaflet({
+          CoroRegimen<-leaflet(Reg_filt2())%>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addLabelOnlyMarkers(~lat,~long, label =  ~as.character(Comuna), 
@@ -881,58 +896,60 @@ server <- function(input, output) {
                       hogares de la Comuna",
                       labFormat = labelFormat(suffix="%"),
                       position = "bottomleft")
-    })
-    
-    observe({leafletProxy("CoroRegimen", data = Reg_filt2())%>%
+            })
+        
+        observe({leafletProxy("CoroRegimen", data = Reg_filt2())%>%
             addPolygons(fillColor =
-                            ~VivPal(porcentaje),
+                          ~VivPal(porcentaje),
                         weight = 1,
                         opacity = 1,
                         color = "black",
                         dashArray = "3",
                         fillOpacity = 0.7,
                         highlight = highlightOptions(
-                            weight = 5,
-                            color = "#666",
-                            dashArray = "",
-                            fillOpacity = 0.7,
-                            bringToFront = TRUE))
-    })
-    output$P_x_m2<-renderLeaflet({
-        CoroPreciom2<-leaflet(Precm2) %>% 
+                          weight = 5,
+                          color = "#666",
+                          dashArray = "",
+                          fillOpacity = 0.7,
+                          bringToFront = TRUE))
+            })
+#Metro cuadrado        
+        
+        output$P_x_m2<-renderLeaflet({
+          CoroPreciom2<-leaflet(Precm2) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons( 
-                fillColor = ~palm2(US_x_m2),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palm2(US_x_m2),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal=palm2, 
                       values = ~US_x_m2,
                       opacity = 0.7, 
                       title = "Precio promedio por m2",
-                      labFormat = labelFormat(suffix="US$"),
+                      labFormat = labelFormat(suffix="$"),
                       position = "bottomleft")
+          
+          CoroPreciom2
+          })
         
-        CoroPreciom2
-    })
+        output$TecnicaViv <- renderText({
+          ""
+        })
+        
     
-    output$TecnicaViv <- renderText({
-        ""
-    })
-    
-    
-    #####################TRANSPORTE########################################
-    output$Recorrido_Bondis<-renderLeaflet({
-        MapaBondis<-leaflet() %>%
+#####################TRANSPORTE########################################
+        output$Recorrido_Bondis<-renderLeaflet({
+          MapaBondis<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%
             addPolylines(data = Red_Bondis, color="#09ed46", opacity = .3, weight = .5)%>%
@@ -945,26 +962,26 @@ server <- function(input, output) {
                         fillOpacity = 0.25,
                         highlightOptions = highlightOptions(color = "white", weight = 2,
                                                             bringToFront = TRUE))
-        MapaBondis
-    })
-    
-    output$Coro_Bondis<-renderLeaflet({
-        CoroBondis<-leaflet(Transp_x_C) %>% 
+          MapaBondis
+          })
+        
+        output$Coro_Bondis<-renderLeaflet({
+          CoroBondis<-leaflet(Transp_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~palColec(Colecx100),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palColec(Colecx100),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal=palColec, 
                       values = ~Colecx100,
                       opacity = 0.7, 
@@ -974,11 +991,11 @@ server <- function(input, output) {
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
                                   labelOptions = labelOptions(noHide = T, size=1,
                                                               direction='top',textOnly = F))
-        CoroBondis
-    })
-    
-    output$Distr_Bondis<-renderPlot({
-        BarrasBondis<-ggplot(TranspBarras,mapping = aes(
+          CoroBondis
+          })
+        
+        output$Distr_Bondis<-renderPlot({
+          BarrasBondis<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Colectivo),
             Colectivo))+
             geom_col(fill="#09ed46",
@@ -990,12 +1007,12 @@ server <- function(input, output) {
                  y="Cantidad de Paradas",
                  caption = "Fuente: https://data.buenosaires.gob.ar")+
             theme_classic()
-        BarrasBondis 
-    })
-    
-    #SUBTE
-    output$Recorrido_Subte_Prem<-renderLeaflet({
-        MapaSubte<-leaflet() %>%
+          BarrasBondis 
+        })
+        
+#SUBTE
+        output$Recorrido_Subte_Prem<-renderLeaflet({
+          MapaSubte<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%
             addPolylines(data = Red_SbtPrem , color =~SubtePal(linea),  opacity = 2, weight = 3)%>%
@@ -1008,26 +1025,26 @@ server <- function(input, output) {
                         fillOpacity = 0.25,
                         highlightOptions = highlightOptions(color = "white", weight = 2,
                                                             bringToFront = TRUE))
-        MapaSubte
-    })
-    
-    output$Coro_Subte<-renderLeaflet({
-        CoroSubte<-leaflet(Transp_x_C) %>% 
+          MapaSubte
+        })
+        
+        output$Coro_Subte<-renderLeaflet({
+          CoroSubte<-leaflet(Transp_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~palSubte(Subtex100),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palSubte(Subtex100),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal = palSubte, 
                       values = ~Subtex100,
                       opacity = 0.7, 
@@ -1036,13 +1053,13 @@ server <- function(input, output) {
                       position = "bottomleft")%>%
             addLabelOnlyMarkers( ~lat,~long, label =  ~as.character(Comuna), 
                                  labelOptions = labelOptions(
-                                     noHide = T, size=1,
-                                     direction='top',textOnly = F))
-        CoroSubte
-    })
-    
-    output$Distr_Subte<-renderPlot({
-        BarrasSubte<-ggplot(TranspBarras,mapping = aes(
+                                   noHide = T, size=1,
+                                   direction='top',textOnly = F))
+          CoroSubte
+        })
+        
+        output$Distr_Subte<-renderPlot({
+          BarrasSubte<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Subte),
             Subte)) +
             geom_col(fill="#eb34d5",
@@ -1054,12 +1071,12 @@ server <- function(input, output) {
                  y="Cantidad de Estaciones",
                  caption = "Fuente: https://data.buenosaires.gob.ar")+
             theme_classic()
-        BarrasSubte
-    })
-    
-    #TREN 
-    output$Recorrido_Trenes<-renderLeaflet({
-        MapaTrenes<-leaflet() %>%
+          BarrasSubte
+        })
+        
+#TREN 
+        output$Recorrido_Trenes<-renderLeaflet({
+          MapaTrenes<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%
             addPolylines(data = Red_Tren, color="#30c9fc", opacity = .4, weight = 3)%>%
@@ -1072,26 +1089,26 @@ server <- function(input, output) {
                         fillOpacity = 0.25,
                         highlightOptions = highlightOptions(color = "white", weight = 2,
                                                             bringToFront = TRUE))
-        MapaTrenes
-    })
-    
-    output$Coro_Trenes<-renderLeaflet({
-        CoroTrenes<-leaflet(Transp_x_C) %>% 
+          MapaTrenes
+        })
+        
+        output$Coro_Trenes<-renderLeaflet({
+          CoroTrenes<-leaflet(Transp_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~palTren(Trenx100),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palTren(Trenx100),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal = palTren, 
                       values = ~Trenx100,
                       opacity = 0.7, 
@@ -1101,11 +1118,11 @@ server <- function(input, output) {
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
                                   labelOptions = labelOptions(noHide = T, size=1,
                                                               direction='top',textOnly = F))
-        CoroTrenes
-    })
-    
-    output$Distr_Trenes<-renderPlot({
-        BarrasTrenes<-ggplot(TranspBarras,mapping = aes(
+          CoroTrenes
+          })
+        
+        output$Distr_Trenes<-renderPlot({
+          BarrasTrenes<-ggplot(TranspBarras,mapping = aes(
             reorder(Comuna, Tren),
             Tren)) +
             geom_col(fill="#30c9fc",
@@ -1116,12 +1133,12 @@ server <- function(input, output) {
                  x="Comuna",
                  y="Cantidad de Estaciones")+
             theme_classic()
-        BarrasTrenes
-    })
-    
-    #BICICLETAS     
-    output$Recorrido_Bicicletas<-renderLeaflet({
-        MapaBicis<-leaflet() %>%
+          BarrasTrenes
+          })
+        
+#BICICLETAS     
+        output$Recorrido_Bicicletas<-renderLeaflet({
+          MapaBicis<-leaflet() %>%
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron) %>%  
             addMarkers(data=EcoBici, clusterOptions = markerClusterOptions())%>%
@@ -1134,26 +1151,26 @@ server <- function(input, output) {
                         fillOpacity = 0.25,
                         highlightOptions = highlightOptions(color = "white", weight = 2,
                                                             bringToFront = TRUE))
-        MapaBicis
-    })
-    
-    output$Coro_CicloV<-renderLeaflet({
-        CoroCicloV<-leaflet(Transp_x_C) %>% 
+          MapaBicis
+          })
+        
+        output$Coro_CicloV<-renderLeaflet({
+          CoroCicloV<-leaflet(Transp_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~palCicloV(CicloVx100),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palCicloV(CicloVx100),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal = palCicloV, 
                       values = ~CicloVx100,
                       opacity = 0.7, 
@@ -1163,26 +1180,26 @@ server <- function(input, output) {
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
                                   labelOptions = labelOptions(noHide = T,
                                                               direction='top',textOnly = F))
-        CoroCicloV
-    })
-    
-    output$Coro_EcoB<-renderLeaflet({
-        CoroEcoB<-leaflet(Transp_x_C) %>% 
+          CoroCicloV
+          })
+        
+        output$Coro_EcoB<-renderLeaflet({
+          CoroEcoB<-leaflet(Transp_x_C) %>% 
             setView(lng = -58.445531, lat = -34.606653, zoom = 11)%>%
             addProviderTiles(providers$CartoDB.Positron)%>%
             addPolygons(
-                fillColor = ~palEcoB(EcoBx100),
-                weight = 1,
-                opacity = 1,
-                color = "black",
-                dashArray = "3",
+              fillColor = ~palEcoB(EcoBx100),
+              weight = 1,
+              opacity = 1,
+              color = "black",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
                 fillOpacity = 0.7,
-                highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE))%>%
+                bringToFront = TRUE))%>%
             addLegend(pal = palEcoB, 
                       values = ~EcoBx100,
                       opacity = 0.7, 
@@ -1192,34 +1209,41 @@ server <- function(input, output) {
             addLabelOnlyMarkers(  ~lat,~long, label =  ~as.character(Comuna), 
                                   labelOptions = labelOptions(noHide = T,
                                                               direction='top',textOnly = F))
-        CoroEcoB  
-    })
-    
-    output$Distr_Bicicletas<-renderPlot({
-        BarrasBici<-ggplot(TranspBarras)+
+          CoroEcoB  
+          })
+        
+        output$Distr_Bicicletas<-renderPlot({
+          BarrasBici<-ggplot(TranspBarras)+
             geom_col(mapping = aes(
-                x=reorder(Comuna,Ciclovias),
-                y=Ciclovias),
-                fill= "tan1",
-                width = .5,
-                position = position_nudge(x = -0.225))+
+              x=reorder(Comuna,Ciclovias),
+              y=Ciclovias),
+              fill= "tan1",
+              width = .5,
+              position = position_nudge(x = -0.225))+
             geom_col(mapping = aes(
-                x=Comuna,
-                y=Ecobicis),
-                fill= "slategray4",
-                width = 0.5,
-                position = position_nudge(x = 0.225))+
+              x=Comuna,
+              y=Ecobicis),
+              fill= "slategray4",
+              width = 0.5,
+              position = position_nudge(x = 0.225))+
             labs(title ="Servicios de Bicicleta segun Comuna.",
                  x="Comuna",
                  y="Cantidad",
                  caption = "Fuente: https://data.buenosaires.gob.ar")+
             theme_classic()+
             coord_flip()
-        BarrasBici        
-    })
-}
+          BarrasBici        
+          })
 
 
+###############CIERRE#############
+
+      output$Cierre <- renderText({
+        "prueba"
+         })
+
+}         
+            
 # Run the application 
 shinyApp(ui = ui, server = server)
 
