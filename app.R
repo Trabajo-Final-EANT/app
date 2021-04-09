@@ -560,8 +560,7 @@ ui <- fluidPage(
                             br(),
                             "La tenencia irregular de la vivienda se vincula, directamente, con un caracter precario de 
                             acceso a la misma. En términos opuestos, acceder de modo regular conlleva condiciones de seguridad y 
-                            estabilidad.",
-                            br()),
+                            estabilidad."),
                             selectInput(inputId = "input_AÑO",
                                         choices = Regimen$año,
                                         label = "Seleccione año",
@@ -588,8 +587,22 @@ ui <- fluidPage(
                             hr()),
                    tabPanel("Precio del metro cuadrado",
                             h3(strong("Valor del Metro Cuadrado en la Ciudad")),
-                            helpText("aca desarrollar"),
-                            leafletOutput(outputId = "P_x_m2")),
+                            helpText("Los procesos de exclusión y desplazamiento urbano, tambien se relacionan con los valores 
+                                     impuestos en cada zona por el mercado inmobiliario. Es decir, una fuerte valorizacion del 
+                                     suelo de un determinado espacio lo jerarquiza respecto al resto y, de manera consecuente, 
+                                     lo restringe para aquella poblacion que no es capaz de acceder por sus condiciones 
+                                     socioeconomicas.",
+                            br(),
+                            br(),
+                            "El valor del metro cuadrado, en su distribucion geografica, refuerza el analisis planteado en apartados 
+                            precedentes: la comuna 2 es la que mayor cantidad de viviendas destinadas a fines mercantiles posee, es 
+                            la que registra mayores viviendas desocupadas y es la que posee el valor mas alto de metro cuadrado. "),
+                            leafletOutput(outputId = "P_x_m2"),
+                            helpText("La polarización enunciada a lo largo del trabajo se evidencia también en el valor de la tierra 
+                                     de la comuna 8, contando -en el 2010- con un promedio menor a $1000. Además, la marcada 
+                                     distincion que existe entre la zona sur y norte de la ciudad queda expuesta en la distribucion 
+                                     de colores a lo largo y ancho del mapa. "),
+                            hr()),
                    tabPanel("Ficha tecnica",
                             textOutput(outputId = "TecnicaViv"),
                             h4(strong("Hacinamiento")),
@@ -600,8 +613,15 @@ ui <- fluidPage(
                             "Por su parte, los hogares con", em("hacinamiento crítico"), "expresan la importancia relativa de 
                             los hogares en los que hay más de tres personas por cuarto de la vivienda."),
                             hr(),
-                            h4(strong("Regimen de tenencia")),
-                            helpText("explicar"))
+                            h4(strong("Condicion de ocupacion")),
+                            helpText("La condicion de ocupacion de las viviendas se releva en los Censos nacionales. 
+                            Las viviendas habitadas incluyen aquellas donde, al menos alguno de sus moradores, estaba presente durante el operativo censal así como, 
+                            aquellos casos donde residía un hogar pero cuyos miembros estaban ausentes ese día (temporalmente ausentes).  
+                            Las deshabitadas están integradas por unidades habitacionales que en la fecha del operativo estaban desocupadas por estar en construcción, 
+                            en alquiler o venta, por tratarse de viviendas construidas originalmente para ser habitadas pero que en 
+                            ese momento tenían un uso no residencial (comercios, oficinas, consultorios, etc.), así como aquellas 
+                            que son utilizadas en forma ocasional o temporal como período de vacaciones, fines de semana, etc."),
+                            hr())
                    )),
         tabPanel("Transporte",
                  navlistPanel(
