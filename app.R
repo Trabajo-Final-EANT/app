@@ -552,7 +552,16 @@ ui <- fluidPage(
                             indicador). "),
                             hr()),
                    tabPanel("Regimen de Tenencia",
-                            br(h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia."))),
+                            h4(strong("Distribucion porcentual anual de hogares, segun regimen de tenencia.")),
+                            helpText("El regimen de tenencia se vincula con el derecho a una seguridad sobre la vivienda, 
+                                     contando así con proteccion legal ante desalojos forzados, hostigamientos y distintas 
+                                     amenazas. El regimen adquiere tres formas: propietario, inquilino o irregular.",
+                            br(),
+                            br(),
+                            "La tenencia irregular de la vivienda se vincula, directamente, con un caracter precario de 
+                            acceso a la misma. En términos opuestos, acceder de modo regular conlleva condiciones de seguridad y 
+                            estabilidad.",
+                            br()),
                             selectInput(inputId = "input_AÑO",
                                         choices = Regimen$año,
                                         label = "Seleccione año",
@@ -562,13 +571,21 @@ ui <- fluidPage(
                                         label = "Seleccione Regimen",
                                         selected = TRUE),
                             plotOutput(outputId= "BarrasRegimen"),
+                            helpText("Nuevamente, se observa que las comunas 8 y 4, respectivamente, son las que mayor porcentaje de 
+                                     tenencia precaria poseen. Si bien estos valores han variado en los ultimos diez años,los valores maximos 
+                                     se advierten sostenidamente en dichas unidades geograficas (tambien acompañadas por la comuna 1)."),
                             br(),
-                            br(h4(strong("Distribucion porcentual de hogares, segun tipo de regimen de tenencia."))),
+                            h4(strong("Distribucion geografica de hogares, segun tipo de regimen de tenencia.")),
                             selectInput(inputId = "input_Regimen2",
                                         choices = Regimen18$Regimen_Tenencia,
                                         label = "Seleccione Régimen",
                                         selected = TRUE),
-                            leafletOutput(outputId = "CoroRegimen")),
+                            leafletOutput(outputId = "CoroRegimen"),
+                            helpText("La distribucion geografica de los tipos de tenencia muestra que el mayor porcentaje de viviendas 
+                                    ocupadas por inquilinos o arrendatarios se registra en la zona norte y centro de la ciudad. Además, 
+                                     cabe destacar el caso de la comuna 1, que posee altos valores de inquilinato y, al mismo tiempo, 
+                                     marcados registros de hacinamiento y de tenencia precaria. "),
+                            hr()),
                    tabPanel("Precio del metro cuadrado",
                             h3(strong("Valor del Metro Cuadrado en la Ciudad")),
                             helpText("aca desarrollar"),
