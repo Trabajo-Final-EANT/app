@@ -502,27 +502,22 @@ ui <- fluidPage(
                             abastecimiento en forma segura de los servicios públicos esenciales” (Defensoría del Pueblo de la Ciudad 
                             Autónoma de Buenos Aires, 2009).",
                             br(),
-                            br(),
-                            "En consecuencia, indagar los niveles de hacinamiento en la ciudad resulta por demás relevante 
+                            highchartOutput(outputId = "G_HNC"),
+                            helpText("En consecuencia, indagar los niveles de hacinamiento en la ciudad resulta por demás relevante 
                             para conocer la distribucion de diversos bienes y servicios urbanos. El siguiente gráfico muestra 
                             que la comuna 8 es la que mayor porcentaje de hacinamiento posee, aunque, considerando el período 
                             comprendido en los últimos 10 años, se advierten altos valores en las comunas 4, 1 y 7 (dos de las 
                             cuales registraron valores de NBI superiores a la media).
                             Por otro lado, se observa que las comunas 2, 13, 5, 6 y 12 presentan valores que 
-                            no superan el 10% de la poblacion en condición de hacinamiento (centro y norte de la ciudad). "),
-                            br(),
-                            highchartOutput(outputId = "G_HNC"),
-                            br(),
-                            helpText("Si bien los valores mas actuales muestran que es la comuna 8 la que posee mayor porcentaje de hacinamiento, en el periodo comprendido en los ultimos diez años se observan 
-                                     altos valores en las comunas 4, 1 y 7.",
-                            br(),
-                            br(),
-                            "Asimismo, del analisis del periodo bajo estudio se desprende que las comunas 2, 13, 5, 6 y 12 presentan valores que no superan el 10% de la poblacion en condicion de hacinamiento. Estas unidades se corresponden con el 
-                            norte y el centro de la ciudad. "),
-                            hr(),
+                            no superan el 10% de la poblacion en condición de hacinamiento (centro y norte de la ciudad)."),
                             highchartOutput(outputId = "G_HC"),
-                            helpText("aca va lo de hacinamiento critico"),
-                            br()),
+                            helpText("El hacinamiento critico, por su parte, tiene mayor presencia en la comuna 8 (6.8%), 
+                                     y se distancia de la comuna 1 en 2 puntos porcentuales (4.3%). Cabe contemplar que, en varios 
+                                     de los casos, no se poseen valores posteriores al 2016 respecto a este indicador. Sin embargo, 
+                                     es posible advertir que la tendencia a una menor problemática habitacional se registra en el 
+                                     norte y centro de la ciudad. "),
+                            br(),
+                            hr()),
                    tabPanel("Condicion de ocupacion",
                             h3(strong("Distribución porcentual de viviendas, según condicion de ocupacion.")),
                             highchartOutput(outputId = "G_Vivienda"),
