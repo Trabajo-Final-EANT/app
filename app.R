@@ -358,12 +358,21 @@ ui <- fluidPage(
                               highchartOutput(outputId = "G_Esc"),
                               br(),
                               h4(strong("Mapa de escuelas de la Ciudad, según cantidad de niveles ofrecidos.")),
-                              helpText("Por su parte, el mapa expone la distribución geográfica de un subconjunto de escuelas y la cantidad de niveles que cada una de 
-                              ellas ofrece. A simple vista, se puede observar que la mayor parte de los establecimientos cuenta con sólo un nivel educativo, 
-                              seguido por centros que poseen 2 o 3 niveles. Los establecimientos que ofrecen los 4 niveles (inicial, primario, secundario y 
-                              superior) son minoría, teniendo una presencia marcadamente escasa en la zona sur de la ciudad. "),
+                              helpText("Por su parte, el siguiente mapa expone la distribución geográfica de una muestra 
+                                       aleatoria de escuelas y la cantidad de niveles que cada una de ellas ofrece. A simple 
+                                       vista, se puede observar que la mayor parte de los establecimientos cuenta con sólo un 
+                                       nivel educativo, seguido por centros que poseen 2 o 3 niveles. Los establecimientos que 
+                                       ofrecen los 4 niveles (inicial, primario, secundario y superior) son minoría, teniendo 
+                                       una presencia marcadamente escasa en la zona sur de la ciudad."),
                               leafletOutput(outputId = "M_Escuelas"),
                               br(),
+                              h4(strong("Distribucion geografica de personas en edad escolar (5-19), segun cantidad de escuelas. ")),
+                              helpText("La relación entre la cantidad de escuelas que existe en cada comuna y el 
+                              número de personas en edad escolar se puede observar en este otro mapa. Si bien el 
+                              indicador no refleja el número de matriculados y matriculadas por escuela, evidencia que las 
+                              comunas 8 y 7 (suroeste de la ciudad) cuentan con un número acotado de instituciones escolares, 
+                              en relación a la población en edad escolar que registran."),
+                              leafletOutput(outputId = "EdEsc_x_Esc"),
                               helpText("Aunque los datos recabados son un punto de partida interesante para explorar las condiciones de acceso a la educación en 
                               la ciudad, considerando los procesos de polarización creciente y la heterogeneidad de las características socioeconómicas de la población
                               que integran las comunas, sería pertinente indagar -al interior de cada unidad territorial-  la matrícula registrada en las escuelas de 
@@ -371,9 +380,6 @@ ui <- fluidPage(
                               informales ‘Villa 31’, ‘Villa 31bis’, ‘Barrio General San Martín’ y ‘Villa Rodrigo Bueno’, y a los barrios de Puerto Madero y Retiro). 
                               Si bien este análisis excede los límites del presente trabajo, no deja de ser una arista necesaria de contemplar para ampliar el 
                               conocimiento de la estructura social, económica y educativa de la ciudad."),
-                              h4(strong("Poblacion en edad escolar (5-19) por escuela.")),
-                              leafletOutput(outputId = "EdEsc_x_Esc"),
-                              br(),
                               hr()),
                      tabPanel("Hospitales",
                               h3(strong("Distribucion de hospitales de la Ciudad.")),
@@ -448,7 +454,6 @@ ui <- fluidPage(
                               (monumentos, calesitas, sitios historicos) -con la notable excepción de la comuna 2-, donde son mayoria. Finalmente, el tipo de 
                               espacio más subrepresentado son los Espacios de Formacion (que incluyen escuelas tecnicas y artisticas, talleres e institutos de 
                               arte, universidades publicas, etc.)."),
-                              br(),
                               h4(strong("Distribucion porcentual de los espacios culturales.")),
                               leafletOutput(outputId = "CoroCul")),
                      tabPanel("Ficha tecnica",
@@ -474,7 +479,37 @@ ui <- fluidPage(
                  navlistPanel(
                    tabPanel("Hacinamiento",
                             h3(strong("Distribución porcentual de hacinamiento por comuna.")),
-                            helpText(""),
+                            helpText("El análisis precedente muestra claros indicios de la fuerte desigualdad que trajeron 
+                            consigo las políticas neoliberales implementadas desde la década del 90’ en Argentina. En dicho 
+                                     marco, el mercado como mecanismo de acceso a bienes y servicios se volvió primacía y muchos 
+                                     de los derechos, vinculados al bienestar económico, a la convivencia social y a la vida digna, 
+                                     quedaron excluidos para una gran parte de la sociedad (Svampa, 2005). ",
+                            br(),
+                            br(),
+                            "El derecho al uso y disposición del espacio urbano fue uno de los tantos vulnerados, entendiendo por ello 
+                            no sólo al goce de la propiedad, sino también al ejercicio de las oportunidades sociales y económicas ligadas 
+                            a la localización de una vivienda o una actividad (Ozlack, 2017).  En este sentido, la vivienda se constituye 
+                            como el bien urbano fundamental, puesto que la capacidad de fijar residencia en la ciudad (o en sus alrededores 
+                            cercanos) habilita a los habitantes -al menos, en teoria- a gozar de otro amplio conjunto de bienes (cultura, 
+                            educacion, salud, etc). A su vez, la forma y ubicacion de los lugares donde se asientan sus habitantes, 
+                            también marca a fuego la manera en que estos satisfacen sus necesidades mediante los bienes urbanos.",
+                            br(),
+                            br(), 
+                            "Además, una vivienda digna debe garantizar y satisfacer a sus habitantes un conjunto de necesidades, 
+                            entre las que se cuentan “el resguardo y la protección ante las inclemencias climáticas, la seguridad 
+                            en la tenencia, el desarrollo personal y familiar, un espacio adecuado, la accesibilidad, la ubicación 
+                            y el transporte, la privacidad, la cultura y la identidad, las condiciones de salubridad mínimas y el 
+                            abastecimiento en forma segura de los servicios públicos esenciales” (Defensoría del Pueblo de la Ciudad 
+                            Autónoma de Buenos Aires, 2009).",
+                            br(),
+                            br(),
+                            "En consecuencia, indagar los niveles de hacinamiento en la ciudad resulta por demás relevante 
+                            para conocer la distribucion de diversos bienes y servicios urbanos. El siguiente gráfico muestra 
+                            que la comuna 8 es la que mayor porcentaje de hacinamiento posee, aunque, considerando el período 
+                            comprendido en los últimos 10 años, se advierten altos valores en las comunas 4, 1 y 7 (dos de las 
+                            cuales registraron valores de NBI superiores a la media).
+                            Por otro lado, se observa que las comunas 2, 13, 5, 6 y 12 presentan valores que 
+                            no superan el 10% de la poblacion en condición de hacinamiento (centro y norte de la ciudad). "),
                             br(),
                             highchartOutput(outputId = "G_HNC"),
                             br(),
