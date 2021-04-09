@@ -141,16 +141,58 @@ ui <- fluidPage(
         tabPanel("Introduccion",
                  tabPanel("Introduccion",
                           h3("Marco Conceptual"),
-                          helpText("Cuando nos referimos a una ciudad, podemos decir que estamos tanto ante una forma de vivir en comun, como ante una forma de producir, caracterizada por concentrar en un espacio mas bien reducido una gran diversidad de personas, actividades y culturas. Sin embargo, esta forma de organizacion social no es posible sin vastos conjuntos de bienes colectivos en los que las ciudades se materializan. Es decir que, por un lado, se trata de una forma social que se distingue por concentrar lo distinto, por poner en relacion los componentes mas diversos del espacio social con la finalidad de reproducirse (Lefevbre, 1978). Mientras que, por otro, comprende el conjunto de bienes y servicios producidos que fungen de sustento material de la vida urbana. Entonces, si ademas de ser un espacio de vida, las ciudades son también un conjunto de elementos materiales dispuestos sobre este espacio, queda claro que lo urbano en conjunto se distribuye por un territorio determinado no de manera continua y plena, sino más bien discreta, desigual (Pirez, 2013).
-"),
+                          helpText("Cuando nos referimos a una ciudad, podemos decir que 
+                          estamos tanto ante una forma de vivir en comun, como ante una forma de producir, 
+                          caracterizada por concentrar en un espacio mas bien reducido una gran diversidad
+                          de personas, actividades y culturas. Sin embargo, esta forma de organizacion social 
+                          no es posible sin vastos conjuntos de bienes colectivos en los que las ciudades 
+                          se materializan. Es decir que, por un lado, se trata de una forma social que se 
+                          distingue por concentrar lo distinto, por poner en relacion los componentes mas 
+                          diversos del espacio social con la finalidad de reproducirse (Lefevbre, 1978). 
+                          Mientras que, por otro, comprende el conjunto de bienes y servicios producidos 
+                          que fungen de sustento material de la vida urbana. Entonces, si ademas de ser 
+                          un espacio de vida, las ciudades son también un conjunto de elementos materiales 
+                          dispuestos sobre este espacio, queda claro que lo urbano en conjunto se distribuye 
+                          por un territorio determinado no de manera continua y plena, sino más bien discreta, 
+                          desigual (Pirez, 2013)."),
                           hr(),
                           h3("Objetivos"),
-                          helpText("El presente trabajo se enmarca en el Curso de Social Data Analytics de EANT y tiene como objetivo indagar, mediante una primera aproximacion, la distribucion de diversos bienes y servicios urbanos a lo largo y a lo ancho de la Ciudad Autónoma de Buenos Aires. El lapso de tiempo comprendido en el análisis varia en funcion de la disponibilidad de datos, centrandose mayormente en el periodo 2010-2020. El interes por la cuestion proviene de una tradicion que define el acceso a la ciudad como resultante de la forma en la que las redes de infraestructuras y servicios se disponen a traves del territorio y del espacio social. En este sentido, el criterio de acceso a la ciudad se configura en un tiempo y espacio determinados -vale decir en una ciudad determinada-, y esta indicado tanto por factores territoriales -de ubicacion-, como institucionales y economicos (Oszlak: 2017). Dicho de otra manera, una correcta descripcion del problema no solo debe preguntarse donde se concentran estos bienes, sino tambien -y especialmente- por aquellos criterios legales y/o mercantiles que han sido definidos para su usufructo.
-
-De este modo, con el fin de alcanzar los mencionados propositos, el trabajo parte de explorar y representar graficamente la distribucion de algunas dimensiones de la materialidad urbana que adquieren relevancia a la luz de los aportes de los autores considerados. Ademas, mediante el relevamiento de algunos indicadores clave, se caracteriza la estructura sociodemografica de la poblacion a efectos de saber si la estructura espacial de la ciudad es un correlato directo de su estructura social, o si, en cambio, esta relación requiere de una complejización adicional.
-
-Si bien se contemplan los límites propios de los datos disponibles (fundamentalmente en lo que respecta a su dimension temporal y sus variables de analisis), y aquellos vinculados a la extension y propuesta de esta instancia del Curso, el presente trabajo sugiere un punto de partida para avanzar en el análisis de lo urbano en la Ciudad, considerando no sólo la cuestión habitacional, sino también la distribución de bienes y servicios que resulta constitutiva de la calidad de vida de quienes habitan el mencionado territorio. Desde este lugar, ofrece algunos cuestionamientos e interrogantes que buscan expandir los objetivos del proyecto. Por ultimo, tenemos el deseo de que este trabajo sirva para motivar futuras y diversas investigaciones que utilicen de insumo el análisis y relevamiento de datos aquí expuesto. 
-"),
+                          helpText("El presente trabajo se enmarca en el Curso de Social Data Analytics 
+                          de EANT y tiene como objetivo indagar, mediante una primera aproximacion, 
+                          la distribucion de diversos bienes y servicios urbanos a lo largo y a lo ancho 
+                          de la Ciudad Autónoma de Buenos Aires. El lapso de tiempo comprendido en el análisis 
+                          varia en funcion de la disponibilidad de datos, centrandose mayormente en el periodo 
+                          2010-2020. El interes por la cuestion proviene de una tradicion que define el acceso 
+                          a la ciudad como resultante de la forma en la que las redes de infraestructuras y 
+                          servicios se disponen a traves del territorio y del espacio social. En este sentido, 
+                          el criterio de acceso a la ciudad se configura en un tiempo y espacio determinados 
+                          -vale decir en una ciudad determinada-, y esta indicado tanto por factores 
+                          territoriales -de ubicacion-, como institucionales y economicos (Oszlak: 2017). 
+                          Dicho de otra manera, una correcta descripcion del problema no solo debe preguntarse 
+                          donde se concentran estos bienes, sino tambien -y especialmente- por aquellos criterios
+                          legales y/o mercantiles que han sido definidos para su usufructo.",
+                          br(),
+                          br(),
+                          "De este modo, con el fin de alcanzar los mencionados propositos, el trabajo parte 
+                          de explorar y representar graficamente la distribucion de algunas dimensiones de la 
+                          materialidad urbana que adquieren relevancia a la luz de los aportes de los autores 
+                          considerados. Ademas, mediante el relevamiento de algunos indicadores clave, se 
+                          caracteriza la estructura sociodemografica de la poblacion a efectos de saber 
+                          si la estructura espacial de la ciudad es un correlato directo de su estructura social,
+                          o si, en cambio, esta relación requiere de una complejización adicional.",
+                          br(),
+                          br(),
+                          "Si bien se contemplan los límites propios de los datos disponibles 
+                          (fundamentalmente en lo que respecta a su dimension temporal y sus variables de 
+                          analisis), y aquellos vinculados a la extension y propuesta de esta instancia 
+                          del Curso, el presente trabajo sugiere un punto de partida para avanzar en el 
+                          análisis de lo urbano en la Ciudad, considerando no sólo la cuestión habitacional, 
+                          sino también la distribución de bienes y servicios que resulta constitutiva de la 
+                          calidad de vida de quienes habitan el mencionado territorio. Desde este lugar, 
+                          ofrece algunos cuestionamientos e interrogantes que buscan expandir los objetivos del 
+                          proyecto. Por ultimo, tenemos el deseo de que este trabajo sirva para motivar futuras y 
+                          diversas investigaciones que utilicen de insumo el análisis y relevamiento de datos 
+                          aquí expuesto."),
                           hr(),
                           h4("Sobre las unidades de analisis"),
                           helpText("A los fines de precisar el análisis, cabe aclarar que, por la ley orgánica nº 1777 de 2005, la Ciudad Autonoma de Buenos Aires se divide territorialmente y administrativamente en 15 comunas. 
@@ -193,7 +235,7 @@ Si bien se contemplan los límites propios de los datos disponibles (fundamental
                                    "-Comuna 14: Palermo.",
                                    br(),
                                    "-Comuna 15: Chacarita, Villa Crespo, Paternal, Villa Ortuzar, Agronomia y Parque Chas."))),
-        tabPanel("Estructura socio-demografica",
+        tabPanel("Estructura sociodemografica",
                  navlistPanel(
                    tabPanel("Datos demograficos",
                             h3(strong("Distribucion etaria de la poblacion de la Ciudad.")),
