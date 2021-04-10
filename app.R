@@ -151,21 +151,8 @@ ui <- fluidPage(
     tabsetPanel(
         tabPanel("Introduccion",
                  tabPanel("Introduccion",
-                          h3("Marco Conceptual"),
-                          helpText("Cuando nos referimos a una ciudad, podemos decir que 
-                          estamos tanto ante una forma de vivir en comun, como ante una forma de producir, 
-                          caracterizada por concentrar en un espacio mas bien reducido una gran diversidad
-                          de personas, actividades y culturas. Sin embargo, esta forma de organizacion social 
-                          no es posible sin vastos conjuntos de bienes colectivos en los que las ciudades 
-                          se materializan. Es decir que, por un lado, se trata de una forma social que se 
-                          distingue por concentrar lo distinto, por poner en relacion los componentes mas 
-                          diversos del espacio social con la finalidad de reproducirse (Lefevbre, 1978). 
-                          Mientras que, por otro, comprende el conjunto de bienes y servicios producidos 
-                          que fungen de sustento material de la vida urbana. Entonces, si ademas de ser 
-                          un espacio de vida, las ciudades son también un conjunto de elementos materiales 
-                          dispuestos sobre este espacio, queda claro que lo urbano en conjunto se distribuye 
-                          por un territorio determinado no de manera continua y plena, sino más bien discreta, 
-                          desigual (Pirez, 2013)."),
+                         actionLink("AccionPrueba",(h3("Marco Conceptual"))),
+                          textOutput("TextoPrueba"),
                           hr(),
                           h3("Objetivos"),
                           helpText("El presente trabajo se enmarca en el Curso de Social Data Analytics 
@@ -702,8 +689,11 @@ server <- function(input, output) {
     
     
     #############################INTRODUCCION##############################                
-    output$Marco <- renderText({
-        ""
+   Prueba <- eventReactive(input$AccionPrueba,{
+        "Cuando nos referimos a una ciudad, podemos decir que estamos tanto ante una forma de vivir en comun, como ante una forma de producir, caracterizada por concentrar en un espacio mas bien reducido una gran diversidad de personas, actividades y culturas. Sin embargo, esta forma de organizacion social no es posible sin vastos conjuntos de bienes colectivos en los que las ciudades se materializan. Es decir que, por un lado, se trata de una forma social que se distingue por concentrar lo distinto, por poner en relacion los componentes mas diversos del espacio social con la finalidad de reproducirse (Lefevbre, 1978). Mientras que, por otro, comprende el conjunto de bienes y servicios producidos que fungen de sustento material de la vida urbana. Entonces, si ademas de ser un espacio de vida, las ciudades son también un conjunto de elementos materiales dispuestos sobre este espacio, queda claro que lo urbano en conjunto se distribuye por un territorio determinado no de manera continua y plena, sino más bien discreta, desigual (Pirez, 2013)."
+    })
+    output$TextoPrueba<- renderPrint({
+        Prueba()
     })
     
     
