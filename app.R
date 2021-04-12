@@ -26,7 +26,7 @@ library(dplyr)
 library(rsconnect)
 library(rmarkdown)
 
-deployApp()
+#deployApp()
 
 rm(list = ls())
 
@@ -145,7 +145,7 @@ ui <- fluidPage(
   titlePanel(
     fluidRow(
       column(9,(h2(id="Titulo", "Acceder a la Ciudad: sobre la distribución de servicios en la Ciudad Autónoma de Buenos Aires"))), 
-      column(3, (h6(tags$a("Melina Shamberger",href="https://www.linkedin.com/in/melina-schamberger"),align="right"))),
+      column(3, (h6(tags$a("Melina Schamberger",href="https://www.linkedin.com/in/melina-schamberger"),align="right"))),
       column(3,(h6(tags$a("Ignacio Gomar", href="https://www.linkedin.com/in/ignacio-gomar"), align="right")))
       
       
@@ -571,7 +571,7 @@ En la vereda opuesta se encuentran la comunas 8 -la menos provista por este serv
              mainPanel(
                br(),
                h3(strong("Autores")),
-               helpText(strong("Lic. Melina Shamberger")),
+               helpText(strong("Lic. Melina Schamberger")),
                helpText("Licenciada en Sociología (UBA)"),
                helpText(tags$a("LinkedIn",href="https://www.linkedin.com/in/melina-schamberger/")),
                hr(),
