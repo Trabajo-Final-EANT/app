@@ -1,4 +1,13 @@
 
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
 library(shiny)
 library(shinythemes)
 library(tidyverse)
@@ -51,7 +60,10 @@ hacinamiento <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/A
 Viviendas <- read_csv ("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/Viviendas.csv")
 Viv_Com_Geo <- st_read("https://raw.githubusercontent.com/melinaschamberger/Aplicacion/main/VIVCOM.geojson")
 Regimen<-fread("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen.csv",encoding = "UTF-8")
-Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18.geojson",options = "ENCODING=UTF-8")
+
+Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18sBOM.geojson")
+#Regimen18<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Regimen18cBOM.geojson")
+
 VivPal<-colorNumeric(palette = "PuRd", domain = Regimen18$porcentaje)
 Precm2<-st_read("https://raw.githubusercontent.com/Trabajo-Final-EANT/Archivos/main/Precm2xC.geojson")
 palm2<-colorNumeric(palette="Greens", domain=Precm2$US_x_m2)
@@ -535,38 +547,38 @@ En la vereda opuesta se encuentran la comunas 8 -la menos provista por este serv
                                           estas carencias a través del mercado. Estrategia que se vuelve 
                                           especialmente difícil para la población de las comunas de la zona sur, 
                                           como la 7 o la 8 que superan la media de NBI y de Tenencia Precaria."))),
-                        tabPanel("Bibliografia y fuentes",
-                                 h3(strong("Bibliografia")),
-                                 hr(),
-                                 helpText("-Arakaki, A. (2011).  La pobreza en Argentina 1974-2006. Construcción y análisis de la información. Buenos Aires: CLACSO."),
-                                 helpText("-Carta Mundial por el Derecho a la Ciudad."),
-                                 helpText("-Defensoría del Pueblo (2015). La situación habitacional en la Ciudad Autónoma de Buenos Aires. Disponible en: https://www.defensoria.org.ar/wp-content/uploads/2015/09/SituacionHabitiacional-1.pdf"),
-                                 helpText("-Judzik, D., Moschetti, M. (2016). ¿Una segunda fase de privatización de la matrícula escolar?… RASE. Vol. 9. Nº2: Págs. 197-211."),
-                                 helpText("-Lefebvre, H. (1978). El derecho a la ciudad. Barcelona: Península."),
-                                 helpText("-Oszlak, O. (2017). Merecer la ciudad. Buenos Aires: EDUNTREF."),
-                                 helpText("-Pírez, P. (2009). Los servicios urbanos y el funcionamiento de la ciudad. EUDEBA, Ciudad Autónoma de Buenos Aires"),
-                                 helpText("-Pírez, P. (2016). Las heterogeneidades en la producción de la urbanización y los servicios urbanos en América Latina. Universidad de Bogota, Colombia"),
-                                 helpText("-Stolkiner, A. (2003). DESCENTRALIZACIÓN Y EQUIDAD EN SALUD: Estudio sobre la utilización de servicios de salud de la Ciudad de Buenos Aires por parte de usuarios pobres del conurbano bonaerense. Buenos Aires: CEDES."),
-                                 helpText("-Svampa, M. (2005). La sociedad excluyente. La Argentina bajo el signo del neoliberalismo. Buenos Aires: Taurus."),
-                                 helpText("-Topalov, C. (2006). La urbanizacion capitalista. Catedra de Sociologia Urbana, FSOC (UBA)"),
-                                 helpText("Torres, H. (1999). El mapa social de Buenos Aires(1940-1990). Serie Difusion N°3, FADU (UBA)"),
-                                 helpText(""),
-                                 hr(),
-                                 h3(strong("Fuentes")),
-                                 helpText("https://data.buenosaires.gob.ar/"),
-                                 helpText("-INDEC (2007). Incidencia de la pobreza y de la indigencia en 31 aglomerados urbanos. http://www.estadistica.ec.gba.gov.ar/dpe/images/SOCIEDAD/pob_tot_2sem06.pdf"),
-                                 helpText("https://www.estadisticaciudad.gob.ar/eyc/publicaciones/anuario_2003/Cap06/dyc6.htm"),
-                                 helpText("https://www.buenosaires.gob.ar/hospitales-generales-de-ninos"),
-                                 helpText("https://www.defensoria.org.ar/wp-content/uploads/2015/09/SituacionHabitiacional-1.pdf"),
-                                 helpText("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2015/04/ir_2014_696.pdf"),
-                                 helpText("https://www.a24.com/actualidad/ecobici-promedio-pierden-4-bicis-dia-02172020_r1QGhnb7L"),
-                                 helpText("https://www.enelsubte.com/noticias/berlin-la-ciudad-que-aposto-al-premetro/"),
-                                 helpText("https://www.buenosaires.gob.ar/sites/gcaba/files/analisis_urbano__lineas_proyectadas.pdf"),
-                                 helpText(""),
-                                 hr(),
-                                 br()
-                                 
-                        ))),
+               tabPanel("Bibliografia y fuentes",
+                        h3(strong("Bibliografia")),
+                        hr(),
+                        helpText("-Arakaki, A. (2011).  La pobreza en Argentina 1974-2006. Construcción y análisis de la información. Buenos Aires: CLACSO."),
+                        helpText("-Carta Mundial por el Derecho a la Ciudad."),
+                        helpText("-Defensoría del Pueblo (2015). La situación habitacional en la Ciudad Autónoma de Buenos Aires. Disponible en: https://www.defensoria.org.ar/wp-content/uploads/2015/09/SituacionHabitiacional-1.pdf"),
+                        helpText("-Judzik, D., Moschetti, M. (2016). ¿Una segunda fase de privatización de la matrícula escolar?… RASE. Vol. 9. Nº2: Págs. 197-211."),
+                        helpText("-Lefebvre, H. (1978). El derecho a la ciudad. Barcelona: Península."),
+                        helpText("-Oszlak, O. (2017). Merecer la ciudad. Buenos Aires: EDUNTREF."),
+                        helpText("-Pírez, P. (2009). Los servicios urbanos y el funcionamiento de la ciudad. EUDEBA, Ciudad Autónoma de Buenos Aires"),
+                        helpText("-Pírez, P. (2016). Las heterogeneidades en la producción de la urbanización y los servicios urbanos en América Latina. Universidad de Bogota, Colombia"),
+                        helpText("-Stolkiner, A. (2003). DESCENTRALIZACIÓN Y EQUIDAD EN SALUD: Estudio sobre la utilización de servicios de salud de la Ciudad de Buenos Aires por parte de usuarios pobres del conurbano bonaerense. Buenos Aires: CEDES."),
+                        helpText("-Svampa, M. (2005). La sociedad excluyente. La Argentina bajo el signo del neoliberalismo. Buenos Aires: Taurus."),
+                        helpText("-Topalov, C. (2006). La urbanizacion capitalista. Catedra de Sociologia Urbana, FSOC (UBA)"),
+                        helpText("Torres, H. (1999). El mapa social de Buenos Aires(1940-1990). Serie Difusion N°3, FADU (UBA)"),
+                        helpText(""),
+                        hr(),
+                        h3(strong("Fuentes")),
+                        helpText("https://data.buenosaires.gob.ar/"),
+                        helpText("-INDEC (2007). Incidencia de la pobreza y de la indigencia en 31 aglomerados urbanos. http://www.estadistica.ec.gba.gov.ar/dpe/images/SOCIEDAD/pob_tot_2sem06.pdf"),
+                        helpText("https://www.estadisticaciudad.gob.ar/eyc/publicaciones/anuario_2003/Cap06/dyc6.htm"),
+                        helpText("https://www.buenosaires.gob.ar/hospitales-generales-de-ninos"),
+                        helpText("https://www.defensoria.org.ar/wp-content/uploads/2015/09/SituacionHabitiacional-1.pdf"),
+                        helpText("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2015/04/ir_2014_696.pdf"),
+                        helpText("https://www.a24.com/actualidad/ecobici-promedio-pierden-4-bicis-dia-02172020_r1QGhnb7L"),
+                        helpText("https://www.enelsubte.com/noticias/berlin-la-ciudad-que-aposto-al-premetro/"),
+                        helpText("https://www.buenosaires.gob.ar/sites/gcaba/files/analisis_urbano__lineas_proyectadas.pdf"),
+                        helpText(""),
+                        hr(),
+                        br()
+                        
+               ))),
     tabPanel("Créditos",
              mainPanel(
                br(),
@@ -1548,4 +1560,7 @@ server <- function(input, output) {
 }                  
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+
+
 
