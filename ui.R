@@ -396,8 +396,7 @@ En la vereda opuesta se encuentran la comunas 8 -la menos provista por este serv
                                           del acceso a la ciudad y a sus servicios, en su capacidad de suplir 
                                           estas carencias a través del mercado. Estrategia que se vuelve 
                                           especialmente difícil para la población de las comunas de la zona sur, 
-                                          como la 7 o la 8 que superan la media de NBI y de Tenencia Precaria."),
-                                 hr())),
+                                          como la 7 o la 8 que superan la media de NBI y de Tenencia Precaria."))),
                tabPanel("Bibliografia y fuentes",
                         h3(strong("Bibliografia")),
                         hr(),

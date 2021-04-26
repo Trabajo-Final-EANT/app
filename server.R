@@ -1,5 +1,5 @@
 #Server
-server<- function(input, output) {
+server <- function(input, output) {
   
   #####################REACTIVE###################################
   
@@ -954,7 +954,7 @@ server<- function(input, output) {
   ###############CIERRE#############
   
   output$Cierre <- renderText({
-    "prueba"
+    ""
   })
   
-}
+}  
